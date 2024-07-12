@@ -6,7 +6,7 @@ export function createBlock({
     content,
     type,
     order
-}: Pick<Block, 'type' | 'order'> & { content: object }) {
+}: Pick<Block, 'type' | 'order'> & { content: string }) {
     return prisma.block.create({
         data: {
             content,
