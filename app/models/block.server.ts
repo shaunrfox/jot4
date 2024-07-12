@@ -20,6 +20,10 @@ export function getAllBlocks() {
     return prisma.block.findMany();
 }
 
+export function getBlockCount() {
+    return prisma.block.count();
+}
+
 export function deleteAllBlocks() {
     return prisma.block.deleteMany();
 }

@@ -4,7 +4,8 @@ import { json, useFetcher, useLoaderData } from '@remix-run/react';
 import {
     createBlock,
     deleteAllBlocks,
-    getAllBlocks
+    getAllBlocks,
+    getBlockCount
 } from '~/models/block.server';
 
 export const meta: MetaFunction = () => {
@@ -27,10 +28,12 @@ export async function action({ request }: ActionFunctionArgs) {
     const blockType = String(form.get('blockType')) as BlockType;
 
     if (intent === 'create') {
+        const order = await getBlockCount();
+
         await createBlock({
             type: blockType,
             content: { test: 1234 },
-            order: 1
+            order
         });
     }
 
