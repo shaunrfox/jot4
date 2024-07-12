@@ -15,6 +15,7 @@
     "@remix-run/react": "^2.10.2",
     "@remix-run/serve": "^2.10.2",
     "isbot": "^4.1.0",
+    "jot-pattern-library": "file:../../Downloads/jot-pattern-library-1.0.0.tgz",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
@@ -32,7 +33,6 @@
     "eslint-plugin-react": "^7.33.2",
     "eslint-plugin-react-hooks": "^4.6.0",
     "postcss": "^8.4.38",
-    "tailwindcss": "^3.4.4",
     "typescript": "^5.1.6",
     "vite": "^5.1.0",
     "vite-tsconfig-paths": "^4.2.1"
