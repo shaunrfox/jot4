@@ -1,7 +1,7 @@
 export default function DocumentsRoute() {
-    return (
-        <>
-            <h1>Documents page</h1>
-        </>
-    );
+  return (
+    <>
+      <h1>Documents page</h1>
+    </>
+  );
 }
