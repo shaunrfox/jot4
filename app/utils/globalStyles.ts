@@ -52,6 +52,10 @@ export default (mode: modes): SystemStyleObject => ({
     margin: '2rem 0',
   },
   '.tiptap': {
-    p: 8,
+    // p: 8,
+    '&:focus': {
+      outline: 'none',
+      // borderColor: mode === modes.dark ? 'gray.4' : 'gray.70',
+    },
   }
 });

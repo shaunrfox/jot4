@@ -1,5 +1,5 @@
-import styled from '@emotion/styled';
-import { sxPropHelper, StyleProps } from '../../utils/styled';
+import styled from "@emotion/styled";
+import { sxPropHelper, StyleProps } from "~/utils/styled";
 
 export type BoxProps = StyleProps;
 

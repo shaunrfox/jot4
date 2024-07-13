@@ -1,4 +1,3 @@
-import React from "react";
 import Box from "../Box";
 import Heading from "../Heading";
 import Button from "../Button";
@@ -39,7 +38,7 @@ export function Navbar() {
   );
 }
 
-const AppHeader: React.FunctionComponent = () => {
+const AppHeader = () => {
   // const user = useUserContext();
 
   return (
@@ -48,6 +47,7 @@ const AppHeader: React.FunctionComponent = () => {
         display: "flex",
         justifyContent: "space-between",
         alignItems: "center",
+        width: "100%",
         position: "sticky",
         top: 0,
         zIndex: 1,
@@ -55,14 +55,23 @@ const AppHeader: React.FunctionComponent = () => {
           mode === modes.dark ? "gray.80" : "gray.0",
       }}
     >
-      <Box sx={{ display: "flex", alignItems: "center", flexDirection: "row" }}>
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          flexDirection: "row",
+          flexBasis: "100%",
+          flexShrink: 0,
+          // width: "100%",
+        }}
+      >
         <Button variant="hollow">
           <Hamburger />
         </Button>
         <Heading level={3} as="h1">
           Jot Home
         </Heading>
-        <Navbar />
+        {/* <Navbar /> */}
       </Box>
       {/* <Box sx={{ display: "flex", alignItems: "center" }}>
         <Avatar srcUrl={user?.photos?.[0].value ?? ""} />
