@@ -106,6 +106,12 @@ const theme = makeTheme({
     5: '1rem',
     full: '100%',
   },
+  shadows: {
+    light_high: '0 3px 6px 0 gray.20',
+    light_low: '0 1px 3px 0 gray.20',
+    dark_high: '0 3px 6px 0 gray.100',
+    dark_low: '0 1px 3px 0 gray.100',
+  },
   breakpoints: ["640px", "768px", "1024px", "1280px", "1536px"],
   styles: {
     root: {

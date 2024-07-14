@@ -4,9 +4,16 @@ import { useTheme } from "@emotion/react";
 
 import theme, { modes } from "~/utils/theme";
 
-import { useEditor, EditorContent, Content } from "@tiptap/react";
-import { EditorProvider, useCurrentEditor } from "@tiptap/react";
-import StarterKit from "@tiptap/starter-kit";
+import {
+  useEditor,
+  useCurrentEditor,
+  EditorProvider,
+  EditorContent,
+  Content,
+  BubbleMenu,
+} from "@tiptap/react";
+import { StarterKit } from "@tiptap/starter-kit";
+import TextControls from "~/components/TextControls";
 
 // import { CodeBlockLowlight } from "@tiptap/extension-code-block-lowlight";
 // import { Image } from "@tiptap/extension-image";
@@ -32,6 +39,7 @@ import { Color } from "@tiptap/extension-color";
 // import { Suggestion } from "@tiptap/suggestion";
 
 // import Box from "~/components/Box";
+import Text from "../Text";
 
 // const MenuBar = () => {
 //   const { editor } = useCurrentEditor();
@@ -202,7 +210,10 @@ import { Color } from "@tiptap/extension-color";
 //   );
 // };
 
+// import BubbleMenu from "@tiptap/extension-bubble-menu";
+
 const extensions = [
+  // TextControls,
   Color.configure({ types: [TextStyle.name, ListItem.name] }),
   TextStyle.configure({ types: [ListItem.name] }),
   StarterKit.configure({
@@ -249,12 +260,49 @@ const content = `
 `;
 
 const Editor = () => {
+  const editor = useEditor({
+    extensions,
+    content,
+  });
+
+  // const editor = useEditor({
+  //   // extensions: [
+  //   //   StarterKit,
+  //   // ],
+  //   content: `
+  //     <p>
+  //       Hey, try to select some text here. There will popup a menu for selecting some inline styles. Remember: you have full control about content and styling of this menu.
+  //     </p>
+  //   `,
+  // });
+
+  // const [isEditable, setIsEditable] = React.useState(true);
+
+  // useEffect(() => {
+  //   if (editor) {
+  //     editor.setEditable(isEditable);
+  //   }
+  // }, [isEditable, editor]);
+
+  // if TextControls, console.log({ editor });
+  // if (TextControls) {
+  //   console.log({ TextControls });
+  // }
+
   return (
-    <EditorProvider
-      // slotBefore={<PageTitleArea />}
-      extensions={extensions}
-      content={content}
-    ></EditorProvider>
+    <>
+      {editor && <TextControls editor={editor} />}
+      <EditorContent editor={editor} />
+    </>
+
+    // <EditorProvider
+    //   // slotBefore={<PageTitleArea />}
+    //   extensions={extensions}
+    //   content={content}
+    // >
+    //   {/* <TextControls /> */}
+    //   {/* {editor && <TextControls editor={editor} />} */}
+    // </EditorProvider>
   );
 };
 

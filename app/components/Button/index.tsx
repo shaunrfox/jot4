@@ -216,6 +216,54 @@ const variants = {
             },
           },
         },
+  selected: (mode: modes) =>
+    mode === modes.dark
+      ? {
+          backgroundColor: "gray.80",
+          color: "gray.5",
+          ":hover": {
+            backgroundColor: "gray.60",
+          },
+          ":active": {
+            backgroundColor: "gray.100",
+            borderColor: "transparent",
+          },
+          ":focus-visible": {
+            borderColor: "blue.20",
+            backgroundColor: "gray.70",
+            ":active": {
+              backgroundColor: "gray.100",
+            },
+          },
+          ":disabled": {
+            ":hover": {
+              backgroundColor: "transparent",
+            },
+          },
+        }
+      : {
+          backgroundColor: "gray.5",
+          color: "gray.80",
+          ":hover": {
+            backgroundColor: "gray.2",
+          },
+          ":active": {
+            backgroundColor: "gray.20",
+            borderColor: "transparent",
+          },
+          ":focus-visible": {
+            borderColor: "blue.50",
+            backgroundColor: "gray.5",
+            ":active": {
+              backgroundColor: "gray.20",
+            },
+          },
+          ":disabled": {
+            ":hover": {
+              backgroundColor: "transparent",
+            },
+          },
+        },
 };
 
 const baseStyles = themeHelper({
