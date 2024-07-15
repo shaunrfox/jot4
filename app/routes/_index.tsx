@@ -2,7 +2,6 @@ import { BlockType } from "@prisma/client";
 import type { ActionFunctionArgs, MetaFunction } from "@remix-run/node";
 import { json, useFetcher, useLoaderData } from "@remix-run/react";
 
-// import { Editor } from "../components/Editor/Editor";
 import Editor from "../components/Editor";
 import {
   createBlock,
@@ -10,7 +9,7 @@ import {
   getAllBlocks,
   getBlockCount,
 } from "~/models/block.server";
-// import { useState } from "react";
+import { useState } from "react";
 
 import styled from "@emotion/styled";
 import { sxPropHelper } from "~/utils/styled";
@@ -18,7 +17,7 @@ import theme, { modes } from "~/utils/theme";
 import Box from "~/components/Box";
 import AppHeader from "~/components/AppHeader";
 import PageTitleArea from "~/components/PageTitleArea";
-import { Children } from "react";
+// import { Children } from "react";
 
 export const meta: MetaFunction = () => {
   return [
@@ -89,16 +88,10 @@ export default function Index() {
       }}
     >
       <AppHeader />
-      {/* <h1>Home</h1> */}
-      {/* <h3>Blocks ({blocks.length})</h3> */}
       <MainContent>
         <PageTitleArea />
-        {/* <div style={{ display: "flex", justifyContent: "center" }}> */}
-        {/* <div style={{ flexBasis: "50%" }}> */}
         <Editor />
         {/* <Editor handleContent={setBlockContent} /> */}
-        {/* </div> */}
-        {/* </div> */}
       </MainContent>
     </Box>
   );

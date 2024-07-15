@@ -1,9 +1,7 @@
 import { type Theme as StyledSystemTheme } from '@styled-system/css';
 
-const makeTheme = <T extends StyledSystemTheme>(t: T) => t;
-const theme = makeTheme({
-  colors: {
-    blue: {
+const colors = {
+  blue: {
       5: '#E8F5FF',
       10: '#CFE8FF',
       20: '#A1D3FF',
@@ -54,7 +52,11 @@ const theme = makeTheme({
       70: '#8B0A03',
       80: '#5C1111',
     },
-  },
+}
+
+const makeTheme = <T extends StyledSystemTheme>(t: T) => t;
+const theme = makeTheme({
+  colors,
   fonts: {
     default: '"Source Sans 3", "Roboto", "Helvetica Neue", Helvetica, Arial, sans-serif',
     mono: '"Source Code Pro", "Roboto Mono", Menlo, Monaco, "Cascadia Mono", "Segoe UI Mono", monospace',
@@ -107,10 +109,10 @@ const theme = makeTheme({
     full: '100%',
   },
   shadows: {
-    light_high: '0 3px 6px 0 gray.20',
-    light_low: '0 1px 3px 0 gray.20',
-    dark_high: '0 3px 6px 0 gray.100',
-    dark_low: '0 1px 3px 0 gray.100',
+    low_light: `0 1px 3px 0 ${colors.gray[20]}`,
+    low_dark: `0 1px 3px 0 ${colors.gray[100]}`,
+    high_light: `0 3px 6px 0 ${colors.gray[20]}`,
+    high_dark: `0 3px 6px 0 ${colors.gray[100]}`,
   },
   breakpoints: ["640px", "768px", "1024px", "1280px", "1536px"],
   styles: {
