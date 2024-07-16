@@ -39,6 +39,7 @@ npm install
 @tiptap/extension-placeholder 
 @tiptap/extension-text-align 
 @tiptap/extension-typography
+@tiptap/extension-character-count
 ```
 
 #### Nodes
@@ -73,6 +74,7 @@ npm install
 - Placeholder `@tiptap/extension-placeholder`
 - Text Align `@tiptap/extension-text-align`
 - Typography `@tiptap/extension-typography`
+- Character Count `@tiptap/extension-character-count`
 - ??? Undo/Redo `@tiptap/extension-history`
   - Same as History, which is a Pro feature?
 - ??? Font Family? `@tiptap/extension-font-family`

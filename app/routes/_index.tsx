@@ -11,8 +11,6 @@ import {
 } from "~/models/block.server";
 import { useState } from "react";
 
-import styled from "@emotion/styled";
-import { sxPropHelper } from "~/utils/styled";
 import theme, { modes } from "~/utils/theme";
 import Box from "~/components/Box";
 import AppHeader from "~/components/AppHeader";
@@ -58,19 +56,6 @@ export async function action({ request }: ActionFunctionArgs) {
   return null;
 }
 
-const MainContent = styled(Box)(
-  {
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "center",
-    width: "100%",
-    maxWidth: "650px",
-    padding: theme.space[8],
-    gap: theme.space[8],
-  },
-  sxPropHelper
-);
-
 export default function Index() {
   const { blocks } = useLoaderData<typeof loader>();
   // if block type = ___, return ___ component
@@ -82,11 +67,11 @@ export default function Index() {
   console.log("BLOCKS");
   console.log(JSON.stringify(blocks));
 
-  console.log("BLOCKFETCHER");
-  console.log(JSON.stringify(blockFetcher));
+  // console.log("BLOCKFETCHER");
+  // console.log(JSON.stringify(blockFetcher));
 
-  console.log("BLOCKCONTENT");
-  console.log(blockContent);
+  // console.log("BLOCKCONTENT");
+  // console.log(blockContent);
 
   // const options = [
   //   {
@@ -108,21 +93,11 @@ export default function Index() {
   // ];
 
   return (
-    <Box
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        width: "100%",
-      }}
-    >
-      <AppHeader />
-      <MainContent>
-        <PageTitleArea />
-        {/* <Select options={options} /> */}
-        {/* <Editor /> */}
-        <Editor handleContent={setBlockContent} />
-      </MainContent>
-    </Box>
+    <>
+      <PageTitleArea />
+      {/* <Select options={options} /> */}
+      {/* <Editor /> */}
+      <Editor handleContent={setBlockContent} />
+    </>
   );
 }

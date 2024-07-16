@@ -1,5 +1,5 @@
 import { ActionFunction } from '@remix-run/node';
-import { createBlock, getBlockCount } from './block.server';
+import { createBlock, getBlockCount } from '../models/block.server';
 
 export const action: ActionFunction = async ({ request }) => {
   const formData = await request.formData();
@@ -8,7 +8,7 @@ export const action: ActionFunction = async ({ request }) => {
   const order = await getBlockCount();
 
   await createBlock({
-    type: 'TEXT',
+    type: 'PAGE',
     content,
     order,
   });

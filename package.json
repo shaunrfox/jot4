@@ -21,6 +21,7 @@
     "@remix-run/react": "^2.10.2",
     "@remix-run/serve": "^2.10.2",
     "@tiptap/extension-bubble-menu": "^2.4.0",
+    "@tiptap/extension-character-count": "^2.5.1",
     "@tiptap/extension-code-block-lowlight": "^2.4.0",
     "@tiptap/extension-color": "^2.4.0",
     "@tiptap/extension-focus": "^2.4.0",

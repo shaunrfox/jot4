@@ -27,6 +27,7 @@ model Block {
 }
 
 enum BlockType {
+    PAGE
     CODE
     EVENT
     IMAGE

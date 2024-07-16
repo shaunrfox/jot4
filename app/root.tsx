@@ -12,6 +12,10 @@ import { ThemeProvider, Global } from "@emotion/react";
 import { css } from "@styled-system/css";
 import theme, { modes } from "./utils/theme";
 import globalStyles from "./utils/globalStyles";
+import styled from "@emotion/styled";
+import { sxPropHelper } from "~/utils/styled";
+import Box from "./components/Box";
+import AppHeader from "./components/AppHeader";
 
 export const links: LinksFunction = () => [
   ...(cssBundleHref ? [{ rel: "stylesheet", href: cssBundleHref }] : []),
@@ -41,6 +45,19 @@ export function Layout({ children }: { children: React.ReactNode }) {
     return () => mediaQuery.removeEventListener("change", handleChange);
   }, []);
 
+  const MainContent = styled(Box)(
+    {
+      display: "flex",
+      flexDirection: "column",
+      justifyContent: "center",
+      width: "100%",
+      maxWidth: "650px",
+      padding: theme.space[8],
+      gap: theme.space[8],
+    },
+    sxPropHelper
+  );
+
   return (
     <ThemeProvider theme={{ ...theme, mode }}>
       <Global styles={css(globalStyles(mode))} />
@@ -52,6 +69,17 @@ export function Layout({ children }: { children: React.ReactNode }) {
           <Links />
         </head>
         <body>
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              width: "100%",
+            }}
+          >
+            <AppHeader />
+            <MainContent></MainContent>
+          </Box>
           {children}
           <ScrollRestoration />
           <Scripts />

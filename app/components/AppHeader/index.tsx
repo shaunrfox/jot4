@@ -25,12 +25,6 @@ export function Navbar() {
           <Link to="/">Home</Link>
         </NavItem>
         <NavItem>
-          <Link to="calendar">Calendar</Link>
-        </NavItem>
-        <NavItem>
-          <Link to="event/new">New event</Link>
-        </NavItem>
-        <NavItem>
           <Link to="documents">Documents</Link>
         </NavItem>
       </NavList>
@@ -71,7 +65,7 @@ const AppHeader = () => {
         <Heading level={3} as="h1">
           Jot Home
         </Heading>
-        {/* <Navbar /> */}
+        <Navbar />
       </Box>
       {/* <Box sx={{ display: "flex", alignItems: "center" }}>
         <Avatar srcUrl={user?.photos?.[0].value ?? ""} />
