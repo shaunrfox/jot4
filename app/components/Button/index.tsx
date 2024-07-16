@@ -274,7 +274,8 @@ const variants = {
 
 const baseStyles = themeHelper({
   display: "flex",
-  justifyContent: "center",
+  alignItems: "center",
+  gap: 3,
   fontWeight: "normal",
   fontFamily: "default",
   fontSize: 3,
@@ -291,6 +292,9 @@ const baseStyles = themeHelper({
     opacity: 0.4,
   },
   cursor: "pointer",
+  "& svg": {
+    fill: "currentColor",
+  },
 });
 
 const iconButtonBaseStyles = themeHelper({
@@ -301,7 +305,7 @@ const iconButtonBaseStyles = themeHelper({
   fontSize: "0rem",
 });
 
-const variantStyles = ({ variant = "primary", ...props }: ButtonProps) => {
+const variantStyles = ({ variant = "standard", ...props }: ButtonProps) => {
   const mode = props.theme?.mode ?? modes.light;
   const variantStyleObject = variants[variant](mode);
 

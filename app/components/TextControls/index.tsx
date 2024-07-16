@@ -18,8 +18,8 @@ const TextControls = ({ editor }) => {
 
   const { mode } = useTheme();
 
-  console.log("Editor object:", editor);
-  console.log("Is bold active:", editor?.isActive("bold"));
+  // console.log("Editor object:", editor);
+  // console.log("Is bold active:", editor?.isActive("bold"));
 
   return (
     <BubbleMenu editor={editor} tippyOptions={{ duration: 100 }}>

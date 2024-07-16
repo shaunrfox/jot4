@@ -17,6 +17,7 @@ import theme, { modes } from "~/utils/theme";
 import Box from "~/components/Box";
 import AppHeader from "~/components/AppHeader";
 import PageTitleArea from "~/components/PageTitleArea";
+import { Select } from "~/components/Select";
 // import { Children } from "react";
 
 export const meta: MetaFunction = () => {
@@ -71,12 +72,40 @@ const MainContent = styled(Box)(
 );
 
 export default function Index() {
-  // const { blocks } = useLoaderData<typeof loader>();
+  const { blocks } = useLoaderData<typeof loader>();
   // if block type = ___, return ___ component
 
-  // const blockFetcher = useFetcher();
+  const blockFetcher = useFetcher();
 
-  // const [blockContent, setBlockContent] = useState();
+  const [blockContent, setBlockContent] = useState();
+
+  console.log("BLOCKS");
+  console.log(JSON.stringify(blocks));
+
+  console.log("BLOCKFETCHER");
+  console.log(JSON.stringify(blockFetcher));
+
+  console.log("BLOCKCONTENT");
+  console.log(blockContent);
+
+  // const options = [
+  //   {
+  //     label: "Text",
+  //     value: "text",
+  //   },
+  //   {
+  //     label: "Quote",
+  //     value: "quote",
+  //   },
+  //   {
+  //     label: "Code",
+  //     value: "code",
+  //   },
+  //   {
+  //     label: "Image",
+  //     value: "image",
+  //   },
+  // ];
 
   return (
     <Box
@@ -90,8 +119,9 @@ export default function Index() {
       <AppHeader />
       <MainContent>
         <PageTitleArea />
-        <Editor />
-        {/* <Editor handleContent={setBlockContent} /> */}
+        {/* <Select options={options} /> */}
+        {/* <Editor /> */}
+        <Editor handleContent={setBlockContent} />
       </MainContent>
     </Box>
   );
