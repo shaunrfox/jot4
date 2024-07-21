@@ -1,14 +1,10 @@
-import React from 'react';
-import Icon, { IconProps } from '../../Icon';
+import React from "react";
+import Icon, { IconProps } from "../../Icon";
 
 const Check: React.FunctionComponent<IconProps> = (props) => {
   return (
     <Icon {...props}>
-      <path
-        fillRule="evenodd"
-        clipRule="evenodd"
-        d="M18.24 7.76a.75.75 0 010 1.06l-7.42 7.42a.75.75 0 01-1.06.001l-3.54-3.53a.75.75 0 011.06-1.062l3.01 3.001 6.89-6.89a.75.75 0 011.06 0z"
-      />
+      <path d="M9.72 16.345L6.12 12.745C5.96 12.585 5.96 12.325 6.12 12.165L6.63 11.655C6.79 11.495 7.05 11.495 7.21 11.655L10.01 14.455L16.79 7.66498C16.95 7.50498 17.21 7.50498 17.37 7.66498L17.88 8.17498C18.04 8.33498 18.04 8.59498 17.88 8.74498L10.29 16.335C10.13 16.495 9.87 16.495 9.71 16.335L9.72 16.345Z" />
     </Icon>
   );
 };

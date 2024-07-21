@@ -23,7 +23,6 @@ const PageTitleArea = () => {
         gap: 6,
         borderBottom: "1px solid",
         borderColor: "gray.20",
-        pb: 6,
       }}
     >
       <Box

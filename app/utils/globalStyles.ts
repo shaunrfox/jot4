@@ -52,6 +52,7 @@ export default (mode: modes): SystemStyleObject => ({
     margin: '2rem 0',
   },
   '.tiptap': {
+    py: 9,
     '&:focus': {
       outline: 'none',
     },
