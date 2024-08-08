@@ -7,7 +7,7 @@ import {
   ScrollRestoration,
 } from "@remix-run/react";
 import { cssBundleHref } from "@remix-run/css-bundle";
-import type { LinksFunction } from "@remix-run/node";
+import type { MetaFunction, LinksFunction } from "@remix-run/node";
 import { ThemeProvider, Global } from "@emotion/react";
 import { css } from "@styled-system/css";
 import theme, { modes } from "./utils/theme";
@@ -17,6 +17,13 @@ import { sxPropHelper } from "~/utils/styled";
 import Box from "./components/Box";
 import AppHeader from "./components/AppHeader";
 
+export const meta: MetaFunction = () => {
+  return [
+    { charset: "utf-8" },
+    { title: "Jot" },
+    { name: "viewport", content: "width=device-width,initial-scale=1" },
+  ];
+};
 export const links: LinksFunction = () => [
   ...(cssBundleHref ? [{ rel: "stylesheet", href: cssBundleHref }] : []),
 ];
@@ -32,7 +39,10 @@ function getPreferredTheme() {
 }
 
 export function Layout({ children }: { children: React.ReactNode }) {
-  const [mode, setMode] = useState(modes.light);
+  const [mode, setMode] = useState(() => {
+    if (typeof window === "undefined") return modes.light;
+    return getPreferredTheme();
+  });
 
   useEffect(() => {
     setMode(getPreferredTheme());
@@ -53,7 +63,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
       width: "100%",
       maxWidth: "650px",
       padding: theme.space[8],
-      gap: theme.space[8],
+      // gap: theme.space[8],
     },
     sxPropHelper
   );
@@ -63,10 +73,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
       <Global styles={css(globalStyles(mode))} />
       <html lang="en">
         <head>
-          <meta charSet="utf-8" />
-          <meta name="viewport" content="width=device-width, initial-scale=1" />
           <Meta />
           <Links />
+          {/* {typeof document === "undefined" ? "__STYLES__" : null} */}
         </head>
         <body>
           <Box
@@ -78,9 +87,8 @@ export function Layout({ children }: { children: React.ReactNode }) {
             }}
           >
             <AppHeader />
-            <MainContent></MainContent>
+            <MainContent>{children}</MainContent>
           </Box>
-          {children}
           <ScrollRestoration />
           <Scripts />
         </body>

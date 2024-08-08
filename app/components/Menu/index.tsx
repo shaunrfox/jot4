@@ -4,17 +4,99 @@ import { themeHelper, sxPropHelper, StyleProps } from "~/utils/styled";
 import { useTheme } from "@emotion/react";
 import { modes } from "~/utils/theme";
 import Box from "../Box";
+import Divider from "../icons/Divider";
+import Text from "../Text";
+import Check from "../icons/Check";
+
+// Menu item types
+// Icon left
+// Icon right
+// hotkeys
+// selectable
+// divider
+// subheader
+
+const { mode } = useTheme();
+
+type SelectProps = {
+  label: string;
+  value: string;
+  labelDetails: string;
+  iconLeft?: React.ReactNode;
+  hotKeys?: string[];
+  divider?: boolean;
+  subHeader?: boolean;
+  sx?: StyleProps;
+};
+
+const MenuItem = ({
+  label,
+  labelDetails,
+  iconLeft,
+  hotKeys,
+  divider,
+  subHeader,
+}: SelectProps) => {
+  return (
+    <Box
+      sx={{
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-between",
+        padding: "10px 20px",
+        borderRadius: "4px",
+        cursor: "pointer",
+        backgroundColor: mode === modes.dark ? "gray.80" : "gray.0",
+        "&:hover": {
+          backgroundColor: mode === modes.dark ? "gray.70" : "gray.10",
+        },
+      }}
+    >
+      {subHeader && (
+        <Text sx={{ color: mode === modes.dark ? "gray.40" : "gray.60" }}>
+          {subHeader}
+        </Text>
+      )}
+      {divider && <Divider />}
+      {!divider && !subHeader && (
+        <>
+          {iconLeft && iconLeft}
+          {Check && <Check />}
+          <Text level={3}>
+            {label}
+            {labelDetails && (
+              <Text sx={{ color: mode === modes.dark ? "gray.40" : "gray.60" }}>
+                {labelDetails}
+              </Text>
+            )}
+          </Text>
+
+          {hotKeys && (
+            <Box sx={{ display: "flex", gap: 1 }}>
+              {hotKeys.map((hotKey) => (
+                <Box
+                  sx={{
+                    backgroundColor:
+                      mode === modes.dark ? "gray.40" : "gray.60",
+                    color: mode === modes.dark ? "gray.80" : "gray.20",
+                  }}
+                  key={hotKey}
+                >
+                  {hotKey}
+                </Box>
+              ))}
+            </Box>
+          )}
+        </>
+      )}
+    </Box>
+  );
+};
+
+// MenuItem props
 
 const Menu = ({ options }: { options: { value: string; label: string }[] }) => {
-  const { mode } = useTheme();
-
-  // Menu item types
-  // Icon left
-  // Icon right
-  // hotkeys
-  // selectable
-  // divider
-  // subheader
+  // const { mode } = useTheme();
 
   const MenuWrapper = ({ children }: { children: React.ReactNode }) => {
     return (
@@ -62,7 +144,6 @@ const Menu = ({ options }: { options: { value: string; label: string }[] }) => {
 
   return (
     <MenuWrapper>
-      Menu
       {options.map((option) => (
         <MenuOption key={option.value} option={option} />
       ))}

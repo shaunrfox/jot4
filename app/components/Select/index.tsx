@@ -22,7 +22,7 @@ export function Select({ value, onChange, options }: SelectProps) {
   return (
     <Box sx={{ position: "relative" }}>
       <Button onClick={() => onChange(value)}>
-        Select <CaretDown />
+        {value?.label} <CaretDown />
       </Button>
       <Menu options={options} />
     </Box>

@@ -1,5 +1,4 @@
 import { Block } from '@prisma/client';
-
 import { prisma } from '~/db.server';
 
 // create
@@ -20,6 +19,25 @@ export function createBlock({
             type,
             order
         }
+    });
+}
+
+export function updateBlock(id: string, content: string) {
+    return prisma.block.update({
+        where: { id },
+        data: { content }
+    });
+}
+
+export function deleteBlock(id: string) {
+    return prisma.block.delete({
+        where: { id }
+    });
+}
+
+export function getBlockById(id: string) {
+    return prisma.block.findUnique({
+        where: { id }
     });
 }
 

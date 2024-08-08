@@ -50,7 +50,7 @@ const Editor = (content: Content) => {
   };
 
   const handleEditorChange = (content: Content) => {
-    saveContent(content);
+    // saveContent(content);
   };
 
   const editor = useEditor({
