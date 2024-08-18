@@ -1,8 +1,8 @@
-import { css, type SystemStyleObject } from '@styled-system/css';
-import { type CSSObject } from '@emotion/styled';
-import { type ElementType } from 'react';
+import { css, type SystemStyleObject } from "@styled-system/css";
+import { type CSSObject } from "@emotion/styled";
+import { type ElementType } from "react";
 
-import { type Theme } from '../utils/theme';
+import { type Theme } from "../utils/theme";
 
 export interface StyleProps {
   as?: ElementType;
@@ -10,7 +10,10 @@ export interface StyleProps {
   theme?: Theme;
 }
 
-export const sxPropHelper = (props: StyleProps): CSSObject => themeHelper(props.sx)(props);
+export const sxPropHelper = (props: StyleProps): CSSObject => {
+  // console.log("sxPropHelper called with props:", props);
+  return themeHelper(props.sx)(props);
+};
 
 export const themeHelper =
   (input?: SystemStyleObject | SystemStyleObject[]) =>

@@ -1,8 +1,14 @@
 import { BlockType } from "@prisma/client";
 import type { ActionFunctionArgs } from "@remix-run/node";
-import { json, useFetcher, useLoaderData } from "@remix-run/react";
+import {
+  json,
+  useFetcher,
+  useLoaderData,
+  useSearchParams,
+} from "@remix-run/react";
+import { TiptapCollabProvider } from "@hocuspocus/provider";
 
-import Editor from "../components/Editor";
+import BlockEditor from "../components/BlockEditor";
 import {
   createBlock,
   updateBlock,
@@ -11,7 +17,13 @@ import {
   getAllBlocks,
   getBlockCount,
 } from "~/models/block.server";
-import { useState } from "react";
+import {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useState,
+} from "react";
 
 // import theme, { modes } from "~/utils/theme";
 import Box from "~/components/Box";
@@ -60,6 +72,12 @@ export async function action({ request }: ActionFunctionArgs) {
 }
 
 export default function Index() {
+  const [provider, setProvider] = useState<TiptapCollabProvider | null>(null);
+  const [collabToken, setCollabToken] = useState<string | null>(null);
+  const [searchParams] = useSearchParams();
+
+  const hasCollab = parseInt(searchParams.get("noCollab") as string) !== 1;
+
   const { blocks } = useLoaderData<typeof loader>();
   const deleteFetcher = useFetcher();
 
@@ -70,9 +88,10 @@ export default function Index() {
   const [blockContent, setBlockContent] = useState();
 
   const handleDeleteBlock = (blockId: string) => {
-    console.log(blockId);
     deleteFetcher.submit({ intent: "delete", blockId }, { method: "POST" });
   };
+
+  // if (hasCollab && (!collabToken || !provider)) return;
 
   // console.log("BLOCKS");
   // console.log(JSON.stringify(blocks));
@@ -119,12 +138,19 @@ export default function Index() {
   const [value, setValue] = useState(options[0]);
 
   return (
-    <>
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        height: "100%",
+        width: "100%",
+      }}
+    >
       <PageTitleArea />
       {/* <Select options={options} value={value} onChange={(o) => setValue(o)} /> */}
-      <Editor />
+      <BlockEditor hasCollab={hasCollab} provider={provider} />
       {/* <Editor handleContent={setBlockContent} /> */}
-      <Box
+      {/* <Box
         sx={{
           position: "fixed",
           top: "50px",
@@ -138,14 +164,13 @@ export default function Index() {
           {blocks.map((block) => (
             <li key={block.id} style={{ fontSize: ".8rem" }}>
               {block.id}: {block.type}
-              {/* Button to delete block here. */}
               <IconButton onClick={() => handleDeleteBlock(block.id)}>
                 <Trash />
               </IconButton>
             </li>
           ))}
         </ol>
-      </Box>
-    </>
+      </Box> */}
+    </Box>
   );
 }

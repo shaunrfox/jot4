@@ -1,6 +1,12 @@
-node_modules
+.env
+.npmrc
+.env*.local
+
+/node_modules
+/.pnp
+.pnp.js
 
 /.cache
 /build
-.env
 *.DS_Store
+*.tsbuildinfo

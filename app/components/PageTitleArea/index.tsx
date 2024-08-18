@@ -4,6 +4,8 @@ import Heading from "~/components/Heading";
 import Text from "~/components/Text";
 import More from "~/components/icons/More";
 import { IconButton } from "../Button";
+import { themeHelper } from "~/utils/styled";
+import theme from "~/utils/theme";
 
 const DateString = () => {
   const date = new Date();
@@ -14,6 +16,10 @@ const DateString = () => {
   );
 };
 
+// const pageTitleStyles = themeHelper({
+
+// });
+
 const PageTitleArea = () => {
   return (
     <Box
@@ -23,6 +29,11 @@ const PageTitleArea = () => {
         gap: 6,
         borderBottom: "1px solid",
         borderColor: "gray.20",
+        marginLeft: "auto",
+        marginRight: "auto",
+        width: "100%",
+        maxWidth: "650px",
+        minWidth: "1px",
       }}
     >
       <Box
@@ -31,6 +42,7 @@ const PageTitleArea = () => {
           alignItems: "baseline",
           gap: 6,
           flexGrow: 1,
+          width: "100%",
         }}
       >
         <Heading level={5} sx={{ width: "100%" }}>

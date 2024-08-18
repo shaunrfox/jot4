@@ -1,0 +1,97 @@
+.node-element {
+	/* position: relative; */
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	border-radius: 5px;
+	margin-top: 10px;
+	background-color: #e8f1ee;
+}
+
+.node-details {
+	/* position: relative; */
+	height: auto;
+	margin-bottom: 0;
+	border-radius: 5px;
+	overflow: hidden;
+}
+
+.node-details[open] {
+	height: auto;
+	margin-bottom: 10px;
+}
+
+.node-header {
+	position: sticky;
+	top: 0;
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	padding: 10px;
+	width: 100%;
+	list-style: none;
+	cursor: pointer;
+	user-select: none;
+	z-index: 1;
+	background-color: #e8f1ee;
+}
+
+.node-index {
+	/* content: counters(section, ".") " "; */
+	/* counter-increment: section; */
+	font-weight: bold;
+	padding: 2px 6px;
+	background-color: #03242416;
+	border-radius: 3px;
+}
+
+/* .node-details summary {
+	
+
+	padding: 0 0 0 6px;
+
+	
+} */
+
+.node-header:hover {
+	background-color: #d4e5df;
+}
+
+.code-icons {
+	display: flex;
+	align-items: center;
+	gap: 5px;
+	font-size: 0.8em;
+	font-weight: bold;
+}
+
+.node-header:hover .code-icons::before {
+	content: "JSON";
+	opacity: 0.6;
+}
+
+.code-icons svg:nth-child(2) {
+	display: none;
+}
+
+.node-details[open] .node-header:hover .code-icons::before {
+	content: "HIDE";
+	opacity: 0.6;
+}
+
+.node-details[open] .code-icons svg:nth-child(2) {
+	display: block;
+}
+
+.node-details[open] .code-icons svg:nth-child(1) {
+	display: none;
+}
+
+.node-content {
+	background-color: #404040;
+	font-size: 10px;
+	color: #fff;
+	padding: 10px;
+	border-radius: 5px;
+	margin: 0 10px;
+}

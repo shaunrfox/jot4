@@ -1,43 +1,42 @@
 import styled from "@emotion/styled";
 import { sxPropHelper, type StyleProps, themeHelper } from "../../utils/styled";
 import { modes, type Theme } from "../../utils/theme";
+import { Box } from "~/components/Box";
 
 interface RuleProps extends StyleProps {
-  variant?: "horizontal" | "vertical";
+  orientation?: "horizontal" | "vertical";
 }
 
-// TODO: this isn't working yet...
-const variants = {
-  horizontal: {
-    minWidth: 0,
-    height: "1px",
-    width: "100%",
-    backgroundColor: ({ mode }: Theme) =>
-      mode === modes.dark ? "gray.60" : "gray.20",
-  },
-  vertical: {
-    minHeight: 0,
-    height: "100%",
-    width: "1px",
-    backgroundColor: ({ mode }: Theme) =>
-      mode === modes.dark ? "gray.60" : "gray.20",
-  },
+const baseRuleStyles = themeHelper({
+  minWidth: "1px",
+  minHeight: "1px",
+  flexGrow: 1,
+  flexShrink: 0,
+  alignSelf: "center",
+  justifySelf: "center",
+  borderColor: ({ mode }: Theme) =>
+    mode === modes.dark ? "gray.60" : "gray.20",
+  borderStyle: "solid",
+});
+
+export const Rule = ({ orientation = "horizontal", ...props }: RuleProps) => {
+  const orientationStyles = {
+    width: orientation === "vertical" ? "1px" : "100%",
+    height: orientation === "vertical" ? "100%" : "1px",
+    borderWidth: orientation === "vertical" ? "0 1px 0 0" : "0 0 1px 0",
+  };
+
+  return (
+    <Box
+      sx={(theme) => ({
+        ...baseRuleStyles(theme),
+        ...orientationStyles,
+      })}
+      {...props}
+    >
+      &nbsp;
+    </Box>
+  );
 };
-
-export const Rule = styled.div<RuleProps>(
-  themeHelper(variants.horizontal),
-  sxPropHelper
-);
-
-// const Rule = styled.div<RuleProps>(
-//   themeHelper({
-//     minWidth: 0,
-//     height: "1px",
-//     width: "100%",
-//     backgroundColor: ({ mode }: Theme) =>
-//       mode === modes.dark ? "gray.60" : "gray.20",
-//   }),
-//   sxPropHelper
-// );
 
 export default Rule;

@@ -2,9 +2,12 @@ import styled from "@emotion/styled";
 import { themeHelper, sxPropHelper, type StyleProps } from "~/utils/styled";
 import { modes } from "~/utils/theme";
 
-interface ButtonProps extends StyleProps {
+export interface ButtonProps extends StyleProps {
   variant?: keyof typeof variants;
   to?: string;
+  active?: boolean;
+  iconButton?: boolean;
+  size?: "small" | "medium" | "default";
 }
 
 const variants = {
@@ -24,6 +27,7 @@ const variants = {
             borderColor: "blue.20",
           },
           ":disabled": {
+            cursor: "not-allowed",
             ":hover": {
               backgroundColor: "gray.70",
             },
@@ -43,6 +47,7 @@ const variants = {
             borderColor: "blue.50",
           },
           ":disabled": {
+            cursor: "not-allowed",
             ":hover": {
               backgroundColor: "gray.5",
             },
@@ -64,6 +69,7 @@ const variants = {
             borderColor: "blue.20",
           },
           ":disabled": {
+            cursor: "not-allowed",
             ":hover": {
               backgroundColor: "blue.50",
             },
@@ -83,6 +89,7 @@ const variants = {
             borderColor: "blue.70",
           },
           ":disabled": {
+            cursor: "not-allowed",
             ":hover": {
               backgroundColor: "blue.50",
             },
@@ -104,6 +111,7 @@ const variants = {
             borderColor: "blue.20",
           },
           ":disabled": {
+            cursor: "not-allowed",
             ":hover": {
               backgroundColor: "mint.50",
             },
@@ -123,6 +131,7 @@ const variants = {
             borderColor: "mint.70",
           },
           ":disabled": {
+            cursor: "not-allowed",
             ":hover": {
               backgroundColor: "mint.50",
             },
@@ -144,6 +153,7 @@ const variants = {
             borderColor: "blue.20",
           },
           ":disabled": {
+            cursor: "not-allowed",
             ":hover": {
               backgroundColor: "red.50",
             },
@@ -163,6 +173,7 @@ const variants = {
             borderColor: "red.70",
           },
           ":disabled": {
+            cursor: "not-allowed",
             ":hover": {
               backgroundColor: "red.50",
             },
@@ -188,6 +199,7 @@ const variants = {
             },
           },
           ":disabled": {
+            cursor: "not-allowed",
             ":hover": {
               backgroundColor: "transparent",
             },
@@ -211,65 +223,100 @@ const variants = {
             },
           },
           ":disabled": {
+            cursor: "not-allowed",
             ":hover": {
               backgroundColor: "transparent",
             },
           },
         },
-  selected: (mode: modes) =>
-    mode === modes.dark
-      ? {
-          backgroundColor: "gray.5",
-          color: "gray.80",
-          svg: {
-            fill: "gray.80",
-          },
-          ":hover": {
-            backgroundColor: "gray.2",
-          },
-          ":active": {
-            backgroundColor: "gray.20",
-            borderColor: "transparent",
-          },
-          ":focus-visible": {
-            borderColor: "blue.50",
-            backgroundColor: "gray.5",
-            ":active": {
-              backgroundColor: "gray.20",
-            },
-          },
-          ":disabled": {
-            ":hover": {
-              backgroundColor: "transparent",
-            },
-          },
-        }
-      : {
-          backgroundColor: "gray.80",
-          color: "gray.5",
-          svg: {
-            fill: "gray.5",
-          },
-          ":hover": {
-            backgroundColor: "gray.60",
-          },
+};
+
+const activeStyles = (mode: modes) =>
+  mode === modes.dark
+    ? {
+        backgroundColor: "gray.80",
+        color: "gray.5",
+        svg: {
+          fill: "gray.5",
+        },
+        ":hover": {
+          backgroundColor: "gray.60",
+        },
+        ":active": {
+          backgroundColor: "gray.100",
+          borderColor: "transparent",
+        },
+        ":focus-visible": {
+          borderColor: "blue.20",
+          backgroundColor: "gray.70",
           ":active": {
             backgroundColor: "gray.100",
-            borderColor: "transparent",
-          },
-          ":focus-visible": {
-            borderColor: "blue.20",
-            backgroundColor: "gray.70",
-            ":active": {
-              backgroundColor: "gray.100",
-            },
-          },
-          ":disabled": {
-            ":hover": {
-              backgroundColor: "transparent",
-            },
           },
         },
+        ":disabled": {
+          cursor: "not-allowed",
+          ":hover": {
+            backgroundColor: "transparent",
+          },
+        },
+      }
+    : {
+        backgroundColor: "gray.5",
+        color: "gray.80",
+        svg: {
+          fill: "gray.80",
+        },
+        ":hover": {
+          backgroundColor: "gray.2",
+        },
+        ":active": {
+          backgroundColor: "gray.20",
+          borderColor: "transparent",
+        },
+        ":focus-visible": {
+          borderColor: "blue.50",
+          backgroundColor: "gray.5",
+          ":active": {
+            backgroundColor: "gray.20",
+          },
+        },
+        ":disabled": {
+          cursor: "not-allowed",
+          ":hover": {
+            backgroundColor: "transparent",
+          },
+        },
+      };
+
+const sizeStyles = (
+  size: "small" | "medium" | "default" | undefined,
+  iconButton: boolean = false,
+) => {
+  // console.log("Size in sizeStyles:", size);
+  return themeHelper({
+    ...(() => {
+      switch (size) {
+        case "small":
+          return {
+            fontSize: 2.5,
+            py: 2,
+            px: iconButton ? 2 : 4,
+          };
+        case "medium":
+          return {
+            fontSize: 3,
+            py: 2,
+            px: iconButton ? 2 : 4,
+          };
+        default:
+          return {
+            fontSize: 3,
+            py: 3,
+            px: iconButton ? 3 : 5,
+          };
+      }
+    })(),
+  });
 };
 
 const baseStyles = themeHelper({
@@ -278,7 +325,6 @@ const baseStyles = themeHelper({
   gap: 3,
   fontWeight: "normal",
   fontFamily: "default",
-  fontSize: 3,
   lineHeight: 2,
   borderRadius: 3,
   borderColor: "transparent",
@@ -286,8 +332,6 @@ const baseStyles = themeHelper({
   borderStyle: "solid",
   outline: "none",
   textDecoration: "none",
-  py: 3,
-  px: 5,
   ":disabled": {
     opacity: 0.4,
   },
@@ -298,11 +342,13 @@ const baseStyles = themeHelper({
 });
 
 const iconButtonBaseStyles = themeHelper({
-  px: 2,
-  py: 2,
   lineHeight: 1,
   display: "block",
   fontSize: "0rem",
+  svg: {
+    width: "1.375rem",
+    height: "1.375rem",
+  },
 });
 
 const variantStyles = ({ variant = "standard", ...props }: ButtonProps) => {
@@ -314,15 +360,36 @@ const variantStyles = ({ variant = "standard", ...props }: ButtonProps) => {
 
 const Button = styled.button<ButtonProps>(
   baseStyles,
+  ({ iconButton }) => iconButton && iconButtonBaseStyles,
+  ({ size, iconButton }) => {
+    // console.log("Button size:", size);
+    // console.log("Button iconButton:", iconButton);
+    return sizeStyles(size || "default", iconButton);
+  },
   variantStyles,
-  sxPropHelper
+  ({ active, theme }) => {
+    if (active) {
+      const mode = theme?.mode ?? modes.light;
+      return themeHelper(activeStyles(mode));
+    }
+    return {};
+  },
+  sxPropHelper,
 );
 
 export const IconButton = styled.button<ButtonProps>(
   baseStyles,
   iconButtonBaseStyles,
+  ({ size = "default" }) => sizeStyles(size, true),
   variantStyles,
-  sxPropHelper
+  ({ active, theme }) => {
+    if (active) {
+      const mode = theme?.mode ?? modes.light;
+      return themeHelper(activeStyles(mode));
+    }
+    return {};
+  },
+  sxPropHelper,
 );
 
 export default Button;

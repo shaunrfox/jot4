@@ -61,11 +61,11 @@ export function Layout({ children }: { children: React.ReactNode }) {
       flexDirection: "column",
       justifyContent: "center",
       width: "100%",
-      maxWidth: "650px",
+      height: "100%",
       padding: theme.space[8],
       // gap: theme.space[8],
     },
-    sxPropHelper
+    sxPropHelper,
   );
 
   return (
@@ -84,6 +84,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
               flexDirection: "column",
               alignItems: "center",
               width: "100%",
+              height: "100%",
             }}
           >
             <AppHeader />

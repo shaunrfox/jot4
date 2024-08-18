@@ -8,12 +8,21 @@ const baseStyles = (props: IconProps) => {
   const mode = props.theme?.mode ?? modes.light;
 
   return themeHelper({
-    width: "24px",
-    height: "24px",
+    width: "1.5rem",
+    height: "1.5rem",
     fill: mode === modes.dark ? "gray.5" : "gray.80",
   })(props);
 };
 
-const Icon = styled.svg<IconProps>(baseStyles, sxPropHelper);
+const Icon = styled.svg<IconProps>((props) => {
+  const baseStylesResult = baseStyles(props);
+  const sxStyles = props.sx ? sxPropHelper(props) : {};
+
+  return {
+    ...baseStylesResult,
+    ...sxStyles,
+    "&&": sxStyles,
+  };
+});
 
 export default Icon;

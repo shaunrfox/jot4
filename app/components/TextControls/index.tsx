@@ -1,4 +1,4 @@
-import { BubbleMenu } from "@tiptap/react";
+import { BubbleMenu, Editor } from "@tiptap/react";
 import React from "react";
 import theme, { modes } from "~/utils/theme";
 import { useTheme } from "@emotion/react";
@@ -11,7 +11,7 @@ import Underline from "../icons/Underline";
 import Code from "../icons/Code";
 import Rule from "~/components/Rule";
 
-const TextControls = ({ editor }) => {
+const TextControls = ({ editor }: { editor: Editor }) => {
   if (!editor) {
     return null;
   }
@@ -35,32 +35,32 @@ const TextControls = ({ editor }) => {
       >
         <IconButton
           onClick={() => editor.chain().focus().toggleBold().run()}
-          variant={editor.isActive("bold") ? "selected" : "hollow"}
+          variant={editor.isActive("bold") ? "isActive" : "hollow"}
         >
           <Bold />
         </IconButton>
         <IconButton
           onClick={() => editor.chain().focus().toggleItalic().run()}
-          variant={editor.isActive("italic") ? "selected" : "hollow"}
+          variant={editor.isActive("italic") ? "isActive" : "hollow"}
         >
           <Italic />
         </IconButton>
         <IconButton
           onClick={() => editor.chain().focus().toggleStrike().run()}
-          variant={editor.isActive("strike") ? "selected" : "hollow"}
+          variant={editor.isActive("strike") ? "isActive" : "hollow"}
         >
           <Strike />
         </IconButton>
         <IconButton
-          onClick={() => editor.chain().focus().toggleStrike().run()}
-          variant={editor.isActive("underline") ? "selected" : "hollow"}
+          onClick={() => editor.chain().focus().toggleUnderline().run()}
+          variant={editor.isActive("underline") ? "isActive" : "hollow"}
         >
           <Underline />
         </IconButton>
-        <Rule variant="vertical" />
+        <Rule orientation="vertical" />
         <IconButton
           onClick={() => editor.chain().focus().toggleCode().run()}
-          variant={editor.isActive("code") ? "selected" : "hollow"}
+          variant={editor.isActive("code") ? "isActive" : "hollow"}
         >
           <Code />
         </IconButton>
