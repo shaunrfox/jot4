@@ -34,6 +34,7 @@ const PageTitleArea = () => {
         width: "100%",
         maxWidth: "650px",
         minWidth: "1px",
+        pb: 5,
       }}
     >
       <Box

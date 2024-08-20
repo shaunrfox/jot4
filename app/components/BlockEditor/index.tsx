@@ -10,7 +10,6 @@ import { themeHelper } from "~/utils/styled";
 import Box from "~/components/Box";
 
 import { EditorContent, PureEditorContent } from "@tiptap/react";
-import TextControls from "~/components/TextControls";
 
 // import { StarterKit } from "@tiptap/starter-kit";
 // import { ListItem } from "@tiptap/extension-list-item";
@@ -68,12 +67,21 @@ export const BlockEditor = ({ provider }: TiptapProps) => {
       gap: "10px",
 
       "> *": {
+        position: "relative",
         marginLeft: "auto",
         marginRight: "auto",
         width: "100%",
         maxWidth: "650px",
         minWidth: "1px",
       },
+      // ".ProseMirror-gapcursor": {
+      //   position: "relative",
+      //   marginLeft: "auto",
+      //   marginRight: "auto",
+      //   width: "100%",
+      //   maxWidth: "650px",
+      //   minWidth: "1px",
+      // },
     },
   });
 

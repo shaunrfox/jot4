@@ -36,7 +36,7 @@ export const ColorPicker = ({
       if (onChange) {
         onChange(newColor);
       }
-      setIsOpen(false);
+      // setIsOpen(false);
     },
     [onChange],
   );
@@ -111,6 +111,7 @@ export const ColorPicker = ({
               >
                 <Check
                   sx={{
+                    mr: 3,
                     opacity:
                       option.value === null
                         ? !color

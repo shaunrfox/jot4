@@ -10,7 +10,6 @@ import {
   Color,
   Document,
   Dropcursor,
-  GapCursor,
   Emoji,
   Figcaption,
   FileHandler,
@@ -85,7 +84,8 @@ export const ExtensionKit = ({ provider }: ExtensionKitProps) => [
     heading: false,
     horizontalRule: false,
     blockquote: false,
-    history: false,
+    // history: false,
+    gapcursor: true,
     codeBlock: false,
     bulletList: {
       keepMarks: true,

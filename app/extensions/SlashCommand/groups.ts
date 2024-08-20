@@ -105,7 +105,7 @@ export const GROUPS: Group[] = [
         action: (editor) => {
           editor.chain().focus().setBlockquote().run();
         },
-        hotkeys: ["⌘", ">"],
+        hotkeys: [">"],
       },
       {
         name: "codeBlock",

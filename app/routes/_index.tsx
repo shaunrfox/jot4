@@ -28,7 +28,6 @@ import {
 // import theme, { modes } from "~/utils/theme";
 import Box from "~/components/Box";
 import PageTitleArea from "~/components/PageTitleArea";
-import { Select } from "~/components/Select";
 import { IconButton } from "~/components/Button";
 import Trash from "~/components/icons/Trash";
 
@@ -102,41 +101,6 @@ export default function Index() {
   // console.log("BLOCKCONTENT");
   // console.log(blockContent);
 
-  const options = [
-    {
-      subHeader: "Options",
-    },
-    {
-      divider: true,
-    },
-    {
-      label: "Text",
-      value: "text",
-      iconLeft: Trash,
-      hotKeys: ["ctrl", "t"],
-    },
-    {
-      label: "Quote",
-      value: "quote",
-      iconLeft: Trash,
-      hotKeys: ["ctrl", "t"],
-    },
-    {
-      label: "Code",
-      value: "code",
-      iconLeft: Trash,
-      hotKeys: ["ctrl", "t"],
-    },
-    {
-      label: "Image",
-      value: "image",
-      iconLeft: Trash,
-      hotKeys: ["ctrl", "t"],
-    },
-  ];
-
-  const [value, setValue] = useState(options[0]);
-
   return (
     <Box
       sx={{
@@ -147,7 +111,6 @@ export default function Index() {
       }}
     >
       <PageTitleArea />
-      {/* <Select options={options} value={value} onChange={(o) => setValue(o)} /> */}
       <BlockEditor hasCollab={hasCollab} provider={provider} />
       {/* <Editor handleContent={setBlockContent} /> */}
       {/* <Box

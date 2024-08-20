@@ -169,9 +169,9 @@ export const TextMenu = ({ editor }: TextMenuProps) => {
         >
           <CodeInline />
         </MemoButton>
-        <MemoButton tooltip="Code block" onClick={commands.onCodeBlock}>
+        {/* <MemoButton tooltip="Code block" onClick={commands.onCodeBlock}>
           <Code />
-        </MemoButton>
+        </MemoButton> */}
         <EditLinkPopover onSetLink={commands.onLink} />
         <Rule orientation="vertical" />
         <MemoColorPicker
