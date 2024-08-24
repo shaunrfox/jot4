@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
 import { sxPropHelper, type StyleProps, themeHelper } from "../../utils/styled";
 import { modes, type Theme } from "../../utils/theme";
-import { Box } from "~/components/Box";
+import Box from "~/components/Box";
 
 interface RuleProps extends StyleProps {
   orientation?: "horizontal" | "vertical";

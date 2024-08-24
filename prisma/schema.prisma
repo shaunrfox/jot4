@@ -13,26 +13,45 @@ datasource db {
     url      = env("DATABASE_URL")
 }
 
-model User {
-    id    String @id @default(auto()) @map("_id") @db.ObjectId
-    email String @unique
-    name  String
+model Page {
+    id         String   @id @default(auto()) @map("_id") @db.ObjectId
+    title      String
+    content    Json
+    blocks     Block[]
+    date       DateTime @default(now()) @map("date")
+    created_at DateTime @default(now()) @map("createdAt")
+    updated_at DateTime @updatedAt @map("updatedAt")
 }
 
 model Block {
-    id      String    @id @default(auto()) @map("_id") @db.ObjectId
-    type    BlockType
-    content Json
-    order   Int
+    id            String    @id @default(auto()) @map("_id") @db.ObjectId
+    type          BlockType
+    parent_id     String    @db.ObjectId
+    attrs         Json
+    content       Json?
+    referenced_in String[]  @db.ObjectId
+    created_at    DateTime  @default(now()) @map("createdAt")
+    updated_at    DateTime  @updatedAt @map("updatedAt")
+    page          Page      @relation(fields: [parent_id], references: [id])
 }
 
 enum BlockType {
-    PAGE
-    CODE
-    EVENT
+    HEADING
+    PARAGRAPH
+    CODE_BLOCK
     IMAGE
-    LIST
-    QUOTE
-    TEXT
-    VIDEO
+    BULLET_LIST
+    ORDERED_LIST
+    TASK_LIST
+    TABLE
+    BLOCKQUOTE
+    RULE
+    COLUMNS
 }
+
+// Future blocks
+// EVENT
+// USER
+// LINK
+// FILE
+// COLLECTION

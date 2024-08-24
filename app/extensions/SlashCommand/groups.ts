@@ -13,7 +13,6 @@ import Columns from "~/components/icons/Columns/index";
 import Divider from "~/components/icons/Divider/index";
 import Placeholder from "~/components/icons/Placeholder";
 import Paragraph from "~/components/icons/Paragraph";
-console.log("Heading1 icon:", Heading1);
 
 export const GROUPS: Group[] = [
   {

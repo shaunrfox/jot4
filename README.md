@@ -4,13 +4,14 @@ For real this time...
 
 ## Development
 
-| | Step | Command |
-| --- | --- | --- |
-| 1 | Install dependencies | `npm install` |
-| 2 | Run Docker | `docker compose up` |
-| 3 | Generate Prisma Client | `npx prisma generate` |
-| 4 | Seed DB (if needed) | `npm run seed` |
-| 5 | Run Remix | `npm run dev` |
+|     | Step                   | Command               |
+| --- | ---------------------- | --------------------- |
+| 1   | Install dependencies   | `npm install`         |
+| 2   | Run Docker             | `docker compose up`   |
+| 3   | Generate Prisma Client | `npx prisma generate` |
+| 4   | Seed DB (if needed)    | `npm run seed`        |
+| 5   | Run Remix              | `npm run dev`         |
+| 6   | Run Prisma Studio      | `npx prisma studio`   |
 
 ## Technologies
 

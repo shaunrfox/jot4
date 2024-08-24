@@ -1,5 +1,5 @@
 import { forwardRef } from "react";
-import { Box, BoxProps } from "~/components/Box";
+import Box, { BoxProps } from "~/components/Box";
 import { modes } from "~/utils/theme";
 import { useTheme } from "@emotion/react";
 

@@ -35,7 +35,7 @@ export type TextMenuProps = {
 };
 
 export const TextMenu = ({ editor }: TextMenuProps) => {
-  console.log("TextMenu rendering");
+  // console.log("TextMenu rendering");
 
   const commands = useTextmenuCommands(editor);
   const states = useTextmenuStates(editor);

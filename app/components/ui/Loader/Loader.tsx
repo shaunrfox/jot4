@@ -1,6 +1,8 @@
-import { createPortal } from 'react-dom'
+// TODO Update this to use the new UI components
 
-import { LoaderProps, LoadingWrapperProps } from './types'
+import { createPortal } from "react-dom";
+
+import { LoaderProps, LoadingWrapperProps } from "./types";
 
 const LoadingWrapper = ({ label }: LoadingWrapperProps) => {
   return (
@@ -17,10 +19,14 @@ const LoadingWrapper = ({ label }: LoadingWrapperProps) => {
       >
         <path d="M21 12a9 9 0 1 1-6.219-8.56" />
       </svg>
-      {label && <p className="text-sm font-semibold leading-tight text-white dark:text-black">{label}</p>}
+      {label && (
+        <p className="text-sm font-semibold leading-tight text-white dark:text-black">
+          {label}
+        </p>
+      )}
     </div>
-  )
-}
+  );
+};
 
 export const Loader = ({ hasOverlay = true, label }: LoaderProps) => {
   return hasOverlay ? (
@@ -32,7 +38,7 @@ export const Loader = ({ hasOverlay = true, label }: LoaderProps) => {
     )
   ) : (
     <LoadingWrapper label={label} />
-  )
-}
+  );
+};
 
-export default Loader
+export default Loader;

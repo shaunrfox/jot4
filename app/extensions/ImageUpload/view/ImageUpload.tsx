@@ -1,17 +1,30 @@
-import { Editor, NodeViewWrapper } from '@tiptap/react'
-import { useCallback } from 'react'
+// TODO Update this to use the new UI components
 
-import { ImageUploader } from './ImageUploader'
+import { Editor, NodeViewWrapper } from "@tiptap/react";
+import { useCallback } from "react";
 
-export const ImageUpload = ({ getPos, editor }: { getPos: () => number; editor: Editor }) => {
+import { ImageUploader } from "./ImageUploader";
+
+export const ImageUpload = ({
+  getPos,
+  editor,
+}: {
+  getPos: () => number;
+  editor: Editor;
+}) => {
   const onUpload = useCallback(
     (url: string) => {
       if (url) {
-        editor.chain().setImageBlock({ src: url }).deleteRange({ from: getPos(), to: getPos() }).focus().run()
+        editor
+          .chain()
+          .setImageBlock({ src: url })
+          .deleteRange({ from: getPos(), to: getPos() })
+          .focus()
+          .run();
       }
     },
     [getPos, editor],
-  )
+  );
 
   return (
     <NodeViewWrapper>
@@ -19,7 +32,7 @@ export const ImageUpload = ({ getPos, editor }: { getPos: () => number; editor: 
         <ImageUploader onUpload={onUpload} />
       </div>
     </NodeViewWrapper>
-  )
-}
+  );
+};
 
-export default ImageUpload
+export default ImageUpload;

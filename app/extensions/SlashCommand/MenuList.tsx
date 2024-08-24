@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 
 import { Command, MenuListProps } from "./types";
 import { Surface, SurfaceProps } from "~/components/ui/Surface";
-import { Box } from "~/components/Box";
+import Box from "~/components/Box";
 import { MenuItem } from "../../components/ui/Dropdown/MenuItem";
 import { Hotkeys } from "~/components/Hotkeys";
 

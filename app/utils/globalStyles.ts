@@ -116,7 +116,7 @@ export default (mode: modes): SystemStyleObject => ({
       "& > *:last-of-type": { mb: 0 },
     },
     /* Blockquote Placeholder */
-    "blockquote .is-empty:not(.is-editor-empty):first-child:last-child::before":
+    "blockquote .is-empty:not(.is-editor-empty):first-of-type:last-child::before":
       {
         content: '"Enter a quote"',
       },

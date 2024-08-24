@@ -1,26 +1,15 @@
-// import { useEffect, useState } from "react";
+import React from "react";
 import Box from "~/components/Box";
 import Heading from "~/components/Heading";
 import Text from "~/components/Text";
 import More from "~/components/icons/More";
 import { IconButton } from "../Button";
-import { themeHelper } from "~/utils/styled";
-import theme from "~/utils/theme";
+import DateDisplay from "~/components/DateDisplay";
 
-const DateString = () => {
-  const date = new Date();
-  const dateString = date.toISOString().split("T")[0];
-
-  return (
-    <Text sx={{ color: "gray.40", whiteSpace: "nowrap" }}>{dateString}</Text>
-  );
-};
-
-// const pageTitleStyles = themeHelper({
-
-// });
-
-const PageTitleArea = () => {
+const PageTitleArea: React.FC<{ title: string; date?: Date }> = ({
+  title,
+  date,
+}) => {
   return (
     <Box
       sx={{
@@ -47,9 +36,15 @@ const PageTitleArea = () => {
         }}
       >
         <Heading level={5} sx={{ width: "100%" }}>
-          Page title
+          {title}
         </Heading>
-        <DateString />
+        <Text sx={{ color: "gray.40", whiteSpace: "nowrap" }}>
+          {date ? (
+            <DateDisplay utcDate={date.toISOString()} />
+          ) : (
+            "Date not available"
+          )}
+        </Text>
       </Box>
       <IconButton variant="hollow">
         <More />

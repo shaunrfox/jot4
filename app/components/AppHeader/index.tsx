@@ -1,6 +1,6 @@
 import Box from "../Box";
 import Heading from "../Heading";
-import Button from "../Button";
+import Button, { IconButton } from "../Button";
 import Hamburger from "../icons/Hamburger";
 // import Avatar from "../Avatar";
 // import { useUserContext } from '../../utils/userContext';
@@ -21,9 +21,9 @@ export function Navbar() {
   return (
     <nav>
       <NavList>
-        <NavItem>
+        {/* <NavItem>
           <Link to="/">Home</Link>
-        </NavItem>
+        </NavItem> */}
         <NavItem>
           <Link to="documents">Documents</Link>
         </NavItem>
@@ -56,16 +56,24 @@ const AppHeader = () => {
           flexDirection: "row",
           flexBasis: "100%",
           flexShrink: 0,
+          gap: 4,
+          px: 4,
+          py: 4,
           // width: "100%",
         }}
       >
-        <Button variant="hollow">
+        <IconButton variant="hollow">
           <Hamburger />
-        </Button>
-        <Heading level={3} as="h1">
+        </IconButton>
+        <Button
+          variant="hollow"
+          to="/"
+          sx={{ marginRight: 8, fontWeight: "bold" }}
+        >
           Jot Home
-        </Heading>
-        <Navbar />
+        </Button>
+        <Link to="documents">Documents</Link>
+        {/* <Navbar /> */}
       </Box>
       {/* <Box sx={{ display: "flex", alignItems: "center" }}>
         <Avatar srcUrl={user?.photos?.[0].value ?? ""} />

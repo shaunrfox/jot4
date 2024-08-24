@@ -1,54 +1,41 @@
-import { Block } from '@prisma/client';
-import { prisma } from '~/db.server';
+import { Block, BlockType } from "@prisma/client";
+import { prisma } from "~/db.server";
 
-// create
-// update
-// delete
-// get by id
-// get all
-// get count
-
-export function createBlock({
-    content,
-    type,
-    order
-}: Pick<Block, 'type' | 'order'> & { content: string }) {
-    return prisma.block.create({
-        data: {
-            content,
-            type,
-            order
-        }
-    });
+export async function createBlock({
+  type,
+  content,
+  parent_id,
+}: Pick<Block, "type" | "parent_id"> & { content: string }) {
+  return prisma.block.create({
+    data: {
+      type,
+      content: JSON.parse(content),
+      parent_id,
+      attrs: {}, // Add the required 'attrs' property
+    },
+  });
 }
 
-export function updateBlock(id: string, content: string) {
-    return prisma.block.update({
-        where: { id },
-        data: { content }
-    });
+export async function updateBlock(
+  id: string,
+  { content }: { content: string },
+) {
+  return prisma.block.update({
+    where: { id },
+    data: { content: JSON.parse(content) },
+  });
 }
 
-export function deleteBlock(id: string) {
-    return prisma.block.delete({
-        where: { id }
-    });
+export async function deleteBlock(id: string) {
+  return prisma.block.delete({
+    where: { id },
+  });
 }
 
-export function getBlockById(id: string) {
-    return prisma.block.findUnique({
-        where: { id }
-    });
+export async function getBlockCount() {
+  return prisma.block.count();
 }
 
-export function getAllBlocks() {
-    return prisma.block.findMany();
-}
-
-export function getBlockCount() {
-    return prisma.block.count();
-}
-
-export function deleteAllBlocks() {
-    return prisma.block.deleteMany();
+export async function deleteAllBlocks() {
+  return prisma.block.deleteMany();
 }

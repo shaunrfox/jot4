@@ -55,24 +55,24 @@ export const Tooltip = ({
   shortcut,
   tippyOptions = {},
 }: TooltipProps): JSX.Element => {
-  console.log("Tooltip component rendered", { enabled, title, shortcut });
+  // console.log("Tooltip component rendered", { enabled, title, shortcut });
 
   const renderTooltip = useCallback(
     (attrs: TippyProps) => {
-      console.log("Rendering tooltip with sx:", {
-        display: "flex",
-        alignItems: "center",
-        gap: 2,
-        px: 4,
-        py: 2,
-        bg: "gray.90",
-        border: "1px solid",
-        borderColor: "gray.80",
-        borderRadius: 4,
-        boxShadow: "low_light",
-        zIndex: 999,
-        outline: "10px solid red",
-      });
+      // console.log("Rendering tooltip with sx:", {
+      //   display: "flex",
+      //   alignItems: "center",
+      //   gap: 2,
+      //   px: 4,
+      //   py: 2,
+      //   bg: "gray.90",
+      //   border: "1px solid",
+      //   borderColor: "gray.80",
+      //   borderRadius: 4,
+      //   boxShadow: "low_light",
+      //   zIndex: 999,
+      //   outline: "10px solid red",
+      // });
 
       return (
         <Box
@@ -119,7 +119,7 @@ export const Tooltip = ({
   );
 
   if (enabled) {
-    console.log("Tooltip is enabled, rendering Tippy");
+    // console.log("Tooltip is enabled, rendering Tippy");
     return (
       <Tippy
         delay={100}
@@ -135,7 +135,7 @@ export const Tooltip = ({
     );
   }
 
-  console.log("Tooltip is disabled, rendering children only");
+  // console.log("Tooltip is disabled, rendering children only");
   return <>{children}</>;
 };
 

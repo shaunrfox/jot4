@@ -59,10 +59,11 @@ export function Layout({ children }: { children: React.ReactNode }) {
     {
       display: "flex",
       flexDirection: "column",
-      justifyContent: "center",
+      alignItems: "center",
       width: "100%",
       height: "100%",
       padding: theme.space[8],
+      overflow: "auto",
       // gap: theme.space[8],
     },
     sxPropHelper,

@@ -7,7 +7,7 @@ import ChevronDown from "~/components/icons/ChevronDown";
 import ChevronUp from "~/components/icons/ChevronUp";
 import ParagraphSmall from "~/components/icons/ParagraphSmall";
 import { Hotkeys } from "~/components/Hotkeys";
-import { Box } from "~/components/Box";
+import Box from "~/components/Box";
 
 export type ContentTypePickerOption = {
   label: string;

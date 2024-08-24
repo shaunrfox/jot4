@@ -1,139 +1,160 @@
-import { BlockType } from "@prisma/client";
+import { useCallback, useState } from "react";
 import type { ActionFunctionArgs } from "@remix-run/node";
-import {
-  json,
-  useFetcher,
-  useLoaderData,
-  useSearchParams,
-} from "@remix-run/react";
-import { TiptapCollabProvider } from "@hocuspocus/provider";
-
-import BlockEditor from "../components/BlockEditor";
-import {
-  createBlock,
-  updateBlock,
-  deleteBlock,
-  deleteAllBlocks,
-  getAllBlocks,
-  getBlockCount,
-} from "~/models/block.server";
-import {
-  useCallback,
-  useEffect,
-  useLayoutEffect,
-  useMemo,
-  useState,
-} from "react";
-
-// import theme, { modes } from "~/utils/theme";
+import { json, useFetcher, useLoaderData } from "@remix-run/react";
+// import { TiptapCollabProvider } from "@hocuspocus/provider";
 import Box from "~/components/Box";
-import PageTitleArea from "~/components/PageTitleArea";
-import { IconButton } from "~/components/Button";
-import Trash from "~/components/icons/Trash";
+import Page from "~/components/Page";
+import * as PageService from "~/services/page.server";
+import * as BlockService from "~/services/block.server";
+import { BlockType } from "@prisma/client";
 
 export async function loader() {
-  const blocks = await getAllBlocks();
-  return json({ blocks });
+  const today = new Date();
+  today.setHours(0, 0, 0, 0); // This uses local timezone
+
+  let todayPage = await PageService.getPageByDate(today);
+
+  if (!todayPage) {
+    todayPage = await PageService.createPage({
+      title: `Journal for ${today.toISOString().split("T")[0]}`,
+      content: JSON.stringify({
+        type: "doc",
+        content: [
+          {
+            type: "paragraph",
+            content: [
+              {
+                type: "text",
+                text: "",
+              },
+            ],
+          },
+        ],
+      }),
+      date: today,
+    });
+  }
+
+  const recentPages = await PageService.getRecentPages(7);
+
+  return json({ todayPage, recentPages });
 }
 
 export async function action({ request }: ActionFunctionArgs) {
   const form = await request.formData();
   const intent = String(form.get("intent"));
 
-  const blockType = String(form.get("blockType")) as BlockType;
-  const content = JSON.parse(String(form.get("blockContent")));
+  switch (intent) {
+    case "updatePage": {
+      const pageId = String(form.get("pageId"));
+      const content = String(form.get("content"));
+      const dateString = String(form.get("date"));
 
-  if (intent === "create") {
-    const order = await getBlockCount();
+      if (!pageId || pageId === "null") {
+        throw new Error("Invalid page ID");
+      }
 
-    await createBlock({
-      type: blockType,
-      content,
-      order,
-    });
-  }
-  if (intent === "update") {
-    const blockId = String(form.get("blockId"));
-    await updateBlock(blockId, content);
-  }
+      const updateData: { content?: string; date?: Date } = {};
+      if (content) updateData.content = content;
+      if (dateString) updateData.date = new Date(dateString);
 
-  if (intent === "delete") {
-    const blockId = String(form.get("blockId"));
-    await deleteBlock(blockId);
-  }
-
-  if (intent === "deleteAll") {
-    // DEMONSTRATION PURPOSES ONLY
-    await deleteAllBlocks();
+      await PageService.updatePage(pageId, updateData);
+      break;
+    }
+    case "createPage": {
+      const title = String(form.get("title"));
+      const content = String(form.get("content"));
+      await PageService.createPage({ title, content });
+      break;
+    }
+    case "create": {
+      const blockType = String(form.get("blockType")) as BlockType;
+      const content = String(form.get("blockContent"));
+      const pageId = String(form.get("pageId"));
+      await BlockService.createBlock({
+        type: blockType,
+        content,
+        parent_id: pageId,
+      });
+      break;
+    }
+    case "update": {
+      const blockId = String(form.get("blockId"));
+      const content = String(form.get("blockContent"));
+      await BlockService.updateBlock(blockId, { content });
+      break;
+    }
+    case "delete": {
+      const blockId = String(form.get("blockId"));
+      await BlockService.deleteBlock(blockId);
+      break;
+    }
+    case "deleteAll": {
+      await BlockService.deleteAllBlocks();
+      break;
+    }
+    default:
+      throw new Error(`Unsupported intent: ${intent}`);
   }
 
   return null;
 }
 
 export default function Index() {
-  const [provider, setProvider] = useState<TiptapCollabProvider | null>(null);
-  const [collabToken, setCollabToken] = useState<string | null>(null);
-  const [searchParams] = useSearchParams();
+  const { todayPage, recentPages } = useLoaderData<typeof loader>();
+  const fetcher = useFetcher();
 
-  const hasCollab = parseInt(searchParams.get("noCollab") as string) !== 1;
+  // console.log("Today Page Content:", todayPage.content);
 
-  const { blocks } = useLoaderData<typeof loader>();
-  const deleteFetcher = useFetcher();
+  const handleContentChange = useCallback(
+    (content: string) => {
+      if (!todayPage || !todayPage.id) {
+        console.error("Today's page or its ID is not available");
+        return;
+      }
 
-  // if block type = ___, return ___ component
+      const localDate = new Date();
+      const utcDate = new Date(
+        localDate.getTime() - localDate.getTimezoneOffset() * 60000,
+      );
 
-  const blockFetcher = useFetcher();
-
-  const [blockContent, setBlockContent] = useState();
-
-  const handleDeleteBlock = (blockId: string) => {
-    deleteFetcher.submit({ intent: "delete", blockId }, { method: "POST" });
-  };
-
-  // if (hasCollab && (!collabToken || !provider)) return;
-
-  // console.log("BLOCKS");
-  // console.log(JSON.stringify(blocks));
-
-  // console.log("BLOCKFETCHER");
-  // console.log(JSON.stringify(blockFetcher));
-
-  // console.log("BLOCKCONTENT");
-  // console.log(blockContent);
+      fetcher.submit(
+        {
+          intent: "updatePage",
+          pageId: todayPage.id,
+          content,
+          date: utcDate.toISOString(),
+        },
+        { method: "post" },
+      );
+    },
+    [fetcher, todayPage],
+  );
 
   return (
     <Box
       sx={{
         display: "flex",
         flexDirection: "column",
-        height: "100%",
-        width: "100%",
+        gap: 4,
+        padding: 4,
       }}
     >
-      <PageTitleArea />
-      <BlockEditor hasCollab={hasCollab} provider={provider} />
-      {/* <Editor handleContent={setBlockContent} /> */}
-      {/* <Box
-        sx={{
-          position: "fixed",
-          top: "50px",
-          left: 0,
-          bottom: "50px",
-          width: "300px",
-          zIndex: 1000,
-        }}
-      >
-        <ol>
-          {blocks.map((block) => (
-            <li key={block.id} style={{ fontSize: ".8rem" }}>
-              {block.id}: {block.type}
-              <IconButton onClick={() => handleDeleteBlock(block.id)}>
-                <Trash />
-              </IconButton>
-            </li>
-          ))}
-        </ol>
-      </Box> */}
+      <Page
+        title={todayPage.title}
+        content={todayPage.content}
+        onContentChange={handleContentChange}
+      />
+      {/* {recentPages.map((page) => (
+        <Page
+          key={page.id}
+          title={page.title}
+          content={page.content}
+          onContentChange={(content: string) =>
+            handleContentChange(page.id, content)
+          }
+        />
+      ))} */}
     </Box>
   );
 }

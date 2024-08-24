@@ -1,9 +1,11 @@
-import { Node, NodeViewRendererProps } from '@tiptap/core'
-import { NodeViewWrapper, ReactNodeViewRenderer } from '@tiptap/react'
-import { TableOfContents } from '~/components/TiptapEditor/TableOfContents'
+// TODO Update this to use the new UI components
+
+import { Node, NodeViewRendererProps } from "@tiptap/core";
+import { NodeViewWrapper, ReactNodeViewRenderer } from "@tiptap/react";
+import { TableOfContents } from "~/components/TiptapEditor/TableOfContents";
 
 const TableOfNodeContent = (props: NodeViewRendererProps) => {
-  const { editor } = props
+  const { editor } = props;
 
   return (
     <NodeViewWrapper>
@@ -11,20 +13,20 @@ const TableOfNodeContent = (props: NodeViewRendererProps) => {
         <TableOfContents editor={editor} />
       </div>
     </NodeViewWrapper>
-  )
-}
+  );
+};
 
-declare module '@tiptap/core' {
+declare module "@tiptap/core" {
   interface Commands<ReturnType> {
     tableOfContentsNode: {
-      insertTableOfContents: () => ReturnType
-    }
+      insertTableOfContents: () => ReturnType;
+    };
   }
 }
 
 export const TableOfContentsNode = Node.create({
-  name: 'tableOfContentsNode',
-  group: 'block',
+  name: "tableOfContentsNode",
+  group: "block",
   atom: true,
   selectable: true,
   draggable: true,
@@ -35,26 +37,26 @@ export const TableOfContentsNode = Node.create({
       {
         tag: 'div[data-type="table-of-content"]',
       },
-    ]
+    ];
   },
 
   renderHTML({ HTMLAttributes }) {
-    return ['div', { ...HTMLAttributes, 'data-type': 'table-of-content' }]
+    return ["div", { ...HTMLAttributes, "data-type": "table-of-content" }];
   },
 
   addNodeView() {
-    return ReactNodeViewRenderer(TableOfNodeContent)
+    return ReactNodeViewRenderer(TableOfNodeContent);
   },
 
   addCommands() {
     return {
       insertTableOfContents:
         () =>
-          ({ commands }) => {
-            return commands.insertContent({
-              type: this.name,
-            })
-          },
-    }
+        ({ commands }) => {
+          return commands.insertContent({
+            type: this.name,
+          });
+        },
+    };
   },
-})
+});

@@ -1,10 +1,17 @@
-import { cn } from '~/utils/tiptap'
-import { HTMLProps, forwardRef } from 'react'
+// TODO Update this to use the new UI components
 
-export const Spinner = forwardRef<HTMLDivElement, HTMLProps<HTMLDivElement>>(({ className, ...rest }, ref) => {
-  const spinnerClass = cn('animate-spin rounded-full border-2 border-current border-t-transparent h-4 w-4', className)
+import { cn } from "~/utils/tiptap";
+import { HTMLProps, forwardRef } from "react";
 
-  return <div className={spinnerClass} ref={ref} {...rest} />
-})
+export const Spinner = forwardRef<HTMLDivElement, HTMLProps<HTMLDivElement>>(
+  ({ className, ...rest }, ref) => {
+    const spinnerClass = cn(
+      "animate-spin rounded-full border-2 border-current border-t-transparent h-4 w-4",
+      className,
+    );
 
-Spinner.displayName = 'Spinner'
+    return <div className={spinnerClass} ref={ref} {...rest} />;
+  },
+);
+
+Spinner.displayName = "Spinner";

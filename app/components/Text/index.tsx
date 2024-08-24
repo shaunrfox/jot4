@@ -16,7 +16,7 @@ const Text = styled.p<TextProps>(
       fontWeight: "normal",
       color: props.theme?.mode === modes.dark ? "gray.2" : "gray.60",
     })(props),
-  sxPropHelper
+  sxPropHelper,
 );
 
 export default Text;
