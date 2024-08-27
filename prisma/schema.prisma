@@ -15,6 +15,7 @@ datasource db {
 
 model Page {
     id         String   @id @default(auto()) @map("_id") @db.ObjectId
+    type       String   @default("DOC")
     title      String
     content    Json
     blocks     Block[]

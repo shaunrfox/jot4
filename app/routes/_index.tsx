@@ -10,7 +10,6 @@ import * as BlockService from "~/services/block.server";
 import { BlockType } from "@prisma/client";
 
 export async function loader() {
-  // console.log("RENDER EVENT (loader)");
   const today = new Date();
   today.setHours(0, 0, 0, 0); // This uses local timezone
 
@@ -121,7 +120,6 @@ export default function Index() {
   const debouncedFetcherSubmit = useMemo(
     () =>
       debounce((data: any) => {
-        // console.log("RENDER EVENT (fetcher)", { data });
         console.log("Debounced submit:", data);
         fetcher.submit(data, { method: "post" });
       }, 1000),
@@ -140,10 +138,6 @@ export default function Index() {
       const utcDate = new Date(
         localDate.getTime() - localDate.getTimezoneOffset() * 60000,
       );
-
-      console.log("Content changed, submitting update");
-
-      // console.log("RENDER EVENT (handleContentChange)", { content });
 
       console.log("Submitting update with fetcher", {
         intent: "updatePage",

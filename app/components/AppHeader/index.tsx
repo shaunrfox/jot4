@@ -1,33 +1,9 @@
+import { modes, HEX8 } from "../../utils/theme";
+
+import { Link } from "@remix-run/react";
 import Box from "../Box";
 import Button, { IconButton } from "../Button";
 import Hamburger from "../icons/Hamburger";
-import { modes } from "../../utils/theme";
-import { Link } from "@remix-run/react";
-import { styled } from "styled-components";
-
-const NavList = styled("ul")`
-  display: flex;
-  gap: 2rem;
-`;
-
-const NavItem = styled("li")`
-  display: block;
-`;
-
-export function Navbar() {
-  return (
-    <nav>
-      <NavList>
-        {/* <NavItem>
-          <Link to="/">Home</Link>
-        </NavItem> */}
-        <NavItem>
-          <Link to="documents">Documents</Link>
-        </NavItem>
-      </NavList>
-    </nav>
-  );
-}
 
 const AppHeader = () => {
   return (
@@ -41,7 +17,7 @@ const AppHeader = () => {
         top: 0,
         zIndex: 1,
         backgroundColor: ({ mode }) =>
-          mode === modes.dark ? "gray.80" : "gray.0",
+          mode === modes.dark ? HEX8("gray.80", 0.8) : HEX8("gray.0", 0.8),
       }}
     >
       <Box
@@ -67,7 +43,6 @@ const AppHeader = () => {
           Jot Home
         </Button>
         <Link to="documents">Documents</Link>
-        {/* <Navbar /> */}
       </Box>
     </Box>
   );

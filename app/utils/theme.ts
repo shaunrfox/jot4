@@ -1,4 +1,5 @@
 import { type Theme as StyledSystemTheme } from "@styled-system/css";
+import { useTheme } from "@emotion/react";
 
 const colors = {
   blue: {
@@ -185,6 +186,39 @@ export enum modes {
 
 export type Theme = typeof theme & {
   mode: modes;
+};
+
+export type ThemeColor = {
+  [key: string]: string;
+};
+
+export const RGBA = (colorPath: string, alpha: number) => {
+  const theme = useTheme() as Theme;
+  const [colorGroup, colorKey] = colorPath.split(".");
+  const colorObject = theme.colors[
+    colorGroup as keyof typeof theme.colors
+  ] as ThemeColor;
+  const hex = colorObject[colorKey as keyof ThemeColor];
+  const bigint = parseInt(hex.slice(1), 16);
+  const r = (bigint >> 16) & 255;
+  const g = (bigint >> 8) & 255;
+  const b = bigint & 255;
+  return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+};
+
+export const HEX8 = (colorPath: string, alpha: number) => {
+  const theme = useTheme() as Theme;
+  const [colorGroup, colorKey] = colorPath.split(".");
+  const colorObject = theme.colors[
+    colorGroup as keyof typeof theme.colors
+  ] as ThemeColor;
+  const hex = colorObject[colorKey as keyof ThemeColor];
+  const bigint = parseInt(hex.slice(1), 16);
+  const r = (bigint >> 16) & 255;
+  const g = (bigint >> 8) & 255;
+  const b = bigint & 255;
+  const a = Math.round(alpha * 255);
+  return `#${((r << 16) | (g << 8) | b).toString(16).padStart(6, "0")}${a.toString(16).padStart(2, "0")}`;
 };
 
 export default theme;

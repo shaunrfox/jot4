@@ -31,6 +31,7 @@ async function main() {
       const page = await prisma.page.create({
         data: {
           title: faker.company.buzzPhrase(),
+          type: "DOC",
           content: generateTiptapContent(),
           date: date,
         },

@@ -5,15 +5,25 @@ export default (mode: modes): SystemStyleObject => ({
   "*, *::before, *::after": {
     boxSizing: "border-box",
   },
-  "html, body, #root": {
-    height: "100%",
+  "html, body": {
+    boxSizing: "border-box",
+    width: "100vw",
+    height: "100vh",
     fontFamily: "default",
     padding: 0,
     margin: 0,
     color: mode === modes.dark ? "gray.20" : "gray.60",
+    overflow: "hidden",
+  },
+  html: {
+    bg: "red",
   },
   body: {
     bg: mode === modes.dark ? "gray.100" : "gray.0",
+    display: "grid",
+    gridTemplateColumns: "1fr",
+    gridTemplateRows: "min-content 1fr",
+    alignItems: "center",
   },
   "p, h1, h2, h3, h4, h5, h6, span, div": {
     padding: 0,
@@ -114,13 +124,6 @@ export default (mode: modes): SystemStyleObject => ({
       paddingLeft: "1rem",
       blockquote: {
         margin: 0,
-        // blockquote: {
-        //   margin: 0,
-
-        //   "& > *": {
-        //     margin: 0,
-        //   },
-        // },
       },
     },
     "blockquote, & > [data-type='blockquoteFigure'] > blockquote": {
@@ -173,10 +176,8 @@ export default (mode: modes): SystemStyleObject => ({
       "& > label": {
         position: "relative",
         display: "block",
-        // width: 7,
-        // height: 7,
-        width: "1.25rem",
-        height: "1.25rem",
+        width: "1.125rem",
+        height: "1.125rem",
         flexGrow: 0,
         flexShrink: 0,
         mt: 2,
@@ -191,10 +192,8 @@ export default (mode: modes): SystemStyleObject => ({
           flexDirection: "column",
           justifyContent: "center",
           alignItems: "center",
-          // width: 7,
-          // height: 7,
-          width: "1.25rem",
-          height: "1.25rem",
+          width: "100%",
+          height: "100%",
           bg: mode === modes.dark ? "gray.80" : "gray.0",
           borderRadius: 3,
           border: "1px solid",

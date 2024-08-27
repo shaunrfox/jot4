@@ -6,10 +6,11 @@ import More from "~/components/icons/More";
 import { IconButton } from "../Button";
 import DateDisplay from "~/components/DateDisplay";
 
-const PageTitleArea: React.FC<{ title: string; date?: Date }> = ({
-  title,
-  date,
-}) => {
+const PageTitleArea: React.FC<{
+  title: string;
+  date?: Date;
+  type?: string;
+}> = ({ title, date, type }) => {
   return (
     <Box
       sx={{
@@ -38,12 +39,19 @@ const PageTitleArea: React.FC<{ title: string; date?: Date }> = ({
         <Heading level={5} sx={{ width: "100%" }}>
           {title}
         </Heading>
-        <Text sx={{ color: "gray.40", whiteSpace: "nowrap" }}>
+        <Text
+          sx={{
+            // color: ({ mode }) => (mode === "dark" ? "gray.60" : "gray.40"),
+            opacity: 0.5,
+            whiteSpace: "nowrap",
+          }}
+        >
           {date ? (
             <DateDisplay utcDate={date.toISOString()} />
           ) : (
             "Date not available"
           )}
+          {type && ` | ${type}`}
         </Text>
       </Box>
       <IconButton variant="hollow">

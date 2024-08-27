@@ -60,11 +60,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
       display: "flex",
       flexDirection: "column",
       alignItems: "center",
-      width: "100%",
-      height: "100%",
-      padding: theme.space[8],
+      width: "100vw",
+      height: "100vh",
       overflow: "auto",
-      // gap: theme.space[8],
     },
     sxPropHelper,
   );
@@ -76,21 +74,12 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <head>
           <Meta />
           <Links />
-          {/* {typeof document === "undefined" ? "__STYLES__" : null} */}
         </head>
         <body>
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              width: "100%",
-              height: "100%",
-            }}
-          >
+          <MainContent>
             <AppHeader />
-            <MainContent>{children}</MainContent>
-          </Box>
+            {children}
+          </MainContent>
           <ScrollRestoration />
           <Scripts />
         </body>

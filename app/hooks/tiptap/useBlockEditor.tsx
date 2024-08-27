@@ -26,9 +26,13 @@ export const useBlockEditor = ({
   const editor = useEditor({
     content: initialContent,
     autofocus: true,
+    immediatelyRender: false, // prevent SSR hydration mismatches
     editorProps: {
       attributes: {
         class: "tiptap",
+        autocomplete: "off",
+        autocorrect: "off",
+        autocapitalize: "off",
       },
     },
     extensions: [

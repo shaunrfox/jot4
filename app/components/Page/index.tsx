@@ -6,10 +6,16 @@ import BlockEditor from "~/components/BlockEditor";
 interface PageProps {
   title: string;
   content: string | Record<string, any>;
+  type?: string;
   onContentChange: (content: string) => void;
 }
 
-const Page: React.FC<PageProps> = ({ title, content, onContentChange }) => {
+const Page: React.FC<PageProps> = ({
+  title,
+  content,
+  type,
+  onContentChange,
+}) => {
   const initialContent = useMemo(() => {
     if (typeof content === "string") {
       try {
@@ -17,26 +23,24 @@ const Page: React.FC<PageProps> = ({ title, content, onContentChange }) => {
       } catch (error) {
         console.error("Failed to parse content:", error);
         return {
-          type: "doc",
+          type: type || "DOC",
           content: [
             { type: "paragraph", content: [{ type: "text", text: content }] },
           ],
         };
       }
     }
-    return content || { type: "doc", content: [{ type: "paragraph" }] };
-  }, [content]);
+    return content || { type: type || "DOC", content: [{ type: "paragraph" }] };
+  }, [content, type]);
 
   return (
     <Box
       sx={{
         display: "flex",
         flexDirection: "column",
-        height: "100%",
-        width: "100%",
       }}
     >
-      <PageTitleArea title={title} />
+      <PageTitleArea title={title} type={type} />
       <BlockEditor
         initialContent={initialContent}
         onContentChange={onContentChange}

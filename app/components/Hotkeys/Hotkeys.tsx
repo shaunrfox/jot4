@@ -1,10 +1,8 @@
-import { useTheme } from "@emotion/react";
 import Box from "~/components/Box";
 import Text from "~/components/Text";
+import { HEX8 } from "~/utils/theme";
 
 export const Hotkeys = ({ hotkeys }: { hotkeys?: string[] }) => {
-  const { mode } = useTheme();
-
   const hotkeysStyles = {
     display: "inline-flex",
     alignItems: "center",
@@ -14,7 +12,7 @@ export const Hotkeys = ({ hotkeys }: { hotkeys?: string[] }) => {
     fontSize: 2,
     fontFamily: "mono",
     color: "currentColor",
-    bg: "rgba(192, 196, 204, 0.4)",
+    bg: HEX8("gray.30", 0.4),
     borderRadius: 2,
     px: 3,
     py: 2,
