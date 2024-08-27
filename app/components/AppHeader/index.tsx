@@ -1,9 +1,6 @@
 import Box from "../Box";
-import Heading from "../Heading";
 import Button, { IconButton } from "../Button";
 import Hamburger from "../icons/Hamburger";
-// import Avatar from "../Avatar";
-// import { useUserContext } from '../../utils/userContext';
 import { modes } from "../../utils/theme";
 import { Link } from "@remix-run/react";
 import { styled } from "styled-components";
@@ -33,8 +30,6 @@ export function Navbar() {
 }
 
 const AppHeader = () => {
-  // const user = useUserContext();
-
   return (
     <Box
       sx={{
@@ -59,7 +54,6 @@ const AppHeader = () => {
           gap: 4,
           px: 4,
           py: 4,
-          // width: "100%",
         }}
       >
         <IconButton variant="hollow">
@@ -75,9 +69,6 @@ const AppHeader = () => {
         <Link to="documents">Documents</Link>
         {/* <Navbar /> */}
       </Box>
-      {/* <Box sx={{ display: "flex", alignItems: "center" }}>
-        <Avatar srcUrl={user?.photos?.[0].value ?? ""} />
-      </Box> */}
     </Box>
   );
 };

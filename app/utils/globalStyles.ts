@@ -28,6 +28,18 @@ export default (mode: modes): SystemStyleObject => ({
     borderColor: mode === modes.dark ? "gray.2" : "gray.60",
     margin: "2rem 0",
   },
+  "ul, ol": {
+    display: "flex",
+    flexDirection: "column",
+    margin: "0.5rem auto",
+    paddingLeft: 8,
+    gap: 1,
+    li: {
+      "ul, ol": {
+        margin: 0,
+      },
+    },
+  },
   // Code styles
   "code, pre": {
     backgroundColor: mode === modes.dark ? "gray.80" : "gray.5",
@@ -70,8 +82,8 @@ export default (mode: modes): SystemStyleObject => ({
       },
     },
   },
-  // Placeholder styles
   ".ProseMirror": {
+    // Placeholder styles
     ".is-empty::before": {
       color: mode === modes.dark ? "gray.40" : "gray.30",
       width: "100%",
@@ -136,6 +148,103 @@ export default (mode: modes): SystemStyleObject => ({
       {
         content: '"none !important"',
       },
+  },
+  // Task List styles
+  "[data-type='taskList']": {
+    listStyle: "none",
+    paddingLeft: 0,
+    gap: 4,
+
+    ul: {
+      mt: 4,
+    },
+
+    "input[type='checkbox']": {
+      position: "absolute",
+      opacity: 0,
+      cursor: "pointer",
+      height: 0,
+      width: 0,
+    },
+
+    li: {
+      display: "flex",
+
+      "& > label": {
+        position: "relative",
+        display: "block",
+        // width: 7,
+        // height: 7,
+        width: "1.25rem",
+        height: "1.25rem",
+        flexGrow: 0,
+        flexShrink: 0,
+        mt: 2,
+        mr: 5,
+        userSelect: "none",
+        cursor: "pointer",
+
+        span: {
+          position: "absolute",
+          verticalAlign: "text-top",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
+          // width: 7,
+          // height: 7,
+          width: "1.25rem",
+          height: "1.25rem",
+          bg: mode === modes.dark ? "gray.80" : "gray.0",
+          borderRadius: 3,
+          border: "1px solid",
+          borderColor: mode === modes.dark ? "gray.60" : "gray.30",
+          userSelect: "none",
+
+          "&::before": {
+            display: "none",
+            content: '""',
+            width: "6px",
+            height: "10px",
+            border: "2px solid",
+            borderColor: mode === modes.dark ? "gray.90" : "gray.0",
+            borderTop: "none",
+            borderLeft: "none",
+            transform: "rotate(45deg)",
+            transformOrigin: "center",
+            mt: "-3px",
+            userSelect: "none",
+          },
+
+          "&:hover": {
+            bg: mode === modes.dark ? "gray.90" : "gray.10",
+          },
+        },
+      },
+
+      "> div": {
+        flex: 1,
+      },
+
+      "&[data-checked=true]": {
+        "> label > span": {
+          bg: mode === modes.dark ? "blue.40" : "blue.50",
+          borderColor: mode === modes.dark ? "blue.40" : "blue.50",
+          "&::before": {
+            display: "block",
+          },
+
+          "&:hover": {
+            bg: mode === modes.dark ? "blue.30" : "blue.40",
+            borderColor: mode === modes.dark ? "blue.30" : "blue.40",
+          },
+        },
+        "> * > p": {
+          textDecoration: "line-through",
+          opacity: 0.5,
+        },
+      },
+    },
   },
   // Selection styles
   ".selection": {
