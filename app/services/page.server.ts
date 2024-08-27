@@ -35,6 +35,7 @@ export async function updatePage(
         content: [
           { type: "paragraph", content: [{ type: "text", text: content }] },
         ],
+        date,
       };
     }
   }

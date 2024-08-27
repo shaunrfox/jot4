@@ -36,6 +36,7 @@ export function updatePage(
     date,
   }: Partial<Pick<Page, "title" | "date">> & { content?: string },
 ) {
+  console.log("👍🏼 updatePage triggered", { id, title, content, date });
   return PageService.updatePage(id, { title, content, date });
 }
 

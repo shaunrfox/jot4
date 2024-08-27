@@ -45,4 +45,4 @@ const Page: React.FC<PageProps> = ({ title, content, onContentChange }) => {
   );
 };
 
-export default Page;
+export default React.memo(Page);

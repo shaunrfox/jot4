@@ -1,4 +1,5 @@
-import { useCallback, useState } from "react";
+import { useCallback, useState, useMemo } from "react";
+import debounce from "lodash/debounce";
 import type { ActionFunctionArgs } from "@remix-run/node";
 import { json, useFetcher, useLoaderData } from "@remix-run/react";
 // import { TiptapCollabProvider } from "@hocuspocus/provider";
@@ -9,6 +10,7 @@ import * as BlockService from "~/services/block.server";
 import { BlockType } from "@prisma/client";
 
 export async function loader() {
+  // console.log("RENDER EVENT (loader)");
   const today = new Date();
   today.setHours(0, 0, 0, 0); // This uses local timezone
 
@@ -41,63 +43,73 @@ export async function loader() {
 }
 
 export async function action({ request }: ActionFunctionArgs) {
-  const form = await request.formData();
-  const intent = String(form.get("intent"));
+  try {
+    const form = await request.formData();
+    const intent = String(form.get("intent"));
 
-  switch (intent) {
-    case "updatePage": {
-      const pageId = String(form.get("pageId"));
-      const content = String(form.get("content"));
-      const dateString = String(form.get("date"));
+    console.log("Action called with intent:", intent);
 
-      if (!pageId || pageId === "null") {
-        throw new Error("Invalid page ID");
+    switch (intent) {
+      case "updatePage": {
+        console.log("👍🏼 Action (updatePage)");
+        const pageId = String(form.get("pageId"));
+        const content = String(form.get("content"));
+        const dateString = String(form.get("date"));
+
+        if (!pageId || pageId === "null") {
+          throw new Error("Invalid page ID");
+        }
+
+        const updateData: { content?: string; date?: Date } = {};
+        if (content) updateData.content = content;
+        if (dateString) updateData.date = new Date(dateString);
+
+        console.log("👍🏼 Updating page:", { pageId, content, dateString });
+        const updatedPage = await PageService.updatePage(pageId, updateData);
+        console.log("👍🏼 Page updated successfully:", updatedPage);
+        return json({ success: true, updatedPage });
       }
+      case "createPage": {
+        const title = String(form.get("title"));
+        const content = String(form.get("content"));
+        await PageService.createPage({ title, content });
+        break;
+      }
+      case "create": {
+        const blockType = String(form.get("blockType")) as BlockType;
+        const content = String(form.get("blockContent"));
+        const pageId = String(form.get("pageId"));
+        await BlockService.createBlock({
+          type: blockType,
+          content,
+          parent_id: pageId,
+        });
+        break;
+      }
+      case "update": {
+        const blockId = String(form.get("blockId"));
+        const content = String(form.get("blockContent"));
+        await BlockService.updateBlock(blockId, { content });
+        break;
+      }
+      case "delete": {
+        const blockId = String(form.get("blockId"));
+        await BlockService.deleteBlock(blockId);
+        break;
+      }
+      case "deleteAll": {
+        await BlockService.deleteAllBlocks();
+        break;
+      }
+      default:
+        throw new Error(`Unsupported intent: ${intent}`);
+    }
 
-      const updateData: { content?: string; date?: Date } = {};
-      if (content) updateData.content = content;
-      if (dateString) updateData.date = new Date(dateString);
-
-      await PageService.updatePage(pageId, updateData);
-      break;
-    }
-    case "createPage": {
-      const title = String(form.get("title"));
-      const content = String(form.get("content"));
-      await PageService.createPage({ title, content });
-      break;
-    }
-    case "create": {
-      const blockType = String(form.get("blockType")) as BlockType;
-      const content = String(form.get("blockContent"));
-      const pageId = String(form.get("pageId"));
-      await BlockService.createBlock({
-        type: blockType,
-        content,
-        parent_id: pageId,
-      });
-      break;
-    }
-    case "update": {
-      const blockId = String(form.get("blockId"));
-      const content = String(form.get("blockContent"));
-      await BlockService.updateBlock(blockId, { content });
-      break;
-    }
-    case "delete": {
-      const blockId = String(form.get("blockId"));
-      await BlockService.deleteBlock(blockId);
-      break;
-    }
-    case "deleteAll": {
-      await BlockService.deleteAllBlocks();
-      break;
-    }
-    default:
-      throw new Error(`Unsupported intent: ${intent}`);
+    return null;
+  } catch (error) {
+    console.error("Error in action:", error);
+    return json({ error: "An error occurred" }, { status: 500 });
   }
-
-  return null;
 }
 
 export default function Index() {
@@ -106,8 +118,19 @@ export default function Index() {
 
   // console.log("Today Page Content:", todayPage.content);
 
+  const debouncedFetcherSubmit = useMemo(
+    () =>
+      debounce((data: any) => {
+        // console.log("RENDER EVENT (fetcher)", { data });
+        console.log("Debounced submit:", data);
+        fetcher.submit(data, { method: "post" });
+      }, 1000),
+    [fetcher],
+  );
+
   const handleContentChange = useCallback(
     (content: string) => {
+      console.log("handleContentChange", { content });
       if (!todayPage || !todayPage.id) {
         console.error("Today's page or its ID is not available");
         return;
@@ -118,6 +141,18 @@ export default function Index() {
         localDate.getTime() - localDate.getTimezoneOffset() * 60000,
       );
 
+      console.log("Content changed, submitting update");
+
+      // console.log("RENDER EVENT (handleContentChange)", { content });
+
+      console.log("Submitting update with fetcher", {
+        intent: "updatePage",
+        pageId: todayPage.id,
+        contentLength: content.length,
+        date: utcDate.toISOString(),
+      });
+
+      // Immediately submit the change
       fetcher.submit(
         {
           intent: "updatePage",
@@ -127,8 +162,15 @@ export default function Index() {
         },
         { method: "post" },
       );
+
+      debouncedFetcherSubmit({
+        intent: "updatePage",
+        pageId: todayPage.id,
+        content,
+        date: utcDate.toISOString(),
+      });
     },
-    [fetcher, todayPage],
+    [fetcher, debouncedFetcherSubmit, todayPage],
   );
 
   return (
@@ -138,6 +180,7 @@ export default function Index() {
         flexDirection: "column",
         gap: 4,
         padding: 4,
+        width: "100%",
       }}
     >
       <Page
