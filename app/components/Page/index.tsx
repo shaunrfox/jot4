@@ -1,27 +1,59 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useEffect, useState } from "react";
 import Box from "~/components/Box";
 import PageTitleArea from "~/components/PageTitleArea";
 import BlockEditor from "~/components/BlockEditor";
 import Rule from "~/components/Rule";
+import { StyleProps } from "~/utils/styled";
 
 interface PageProps {
-  title: string;
-  content: string | Record<string, any>;
-  date?: Date; // Add this line
+  id?: string;
+  title?: string;
+  content?: string | Record<string, any>;
+  date?: Date;
   type?: string;
   onContentChange: (content: string) => void;
+  sx?: StyleProps["sx"];
 }
 
 const Page: React.FC<PageProps> = ({
-  title,
-  content,
-  date, // Add this line
-  type,
+  id,
+  title: initialTitle,
+  content: initialContent,
+  date: initialDate,
+  type: initialType,
   onContentChange,
+  sx,
 }) => {
-  console.log("Page props:", { title, content, date, type }); // Add this line
+  const [pageData, setPageData] = useState({
+    title: initialTitle,
+    content: initialContent,
+    date: initialDate,
+    type: initialType,
+  });
 
-  const initialContent = useMemo(() => {
+  useEffect(() => {
+    async function fetchPage() {
+      if (id) {
+        try {
+          const response = await fetch(`/api/pages/${id}`);
+          if (!response.ok) {
+            throw new Error("Failed to fetch page");
+          }
+          const data = await response.json();
+          setPageData(data);
+        } catch (error) {
+          console.error("Error fetching page:", error);
+        }
+      }
+    }
+    fetchPage();
+  }, [id]);
+
+  const { title, content, date, type } = pageData;
+
+  console.log("Page props:", { id, title, content, date, type });
+
+  const parsedContent = useMemo(() => {
     if (typeof content === "string") {
       try {
         return JSON.parse(content);
@@ -43,11 +75,13 @@ const Page: React.FC<PageProps> = ({
       sx={{
         display: "flex",
         flexDirection: "column",
+        width: "100%",
+        ...sx,
       }}
     >
-      <PageTitleArea title={title} date={date} type={type} />
+      <PageTitleArea id={id} title={title} date={date} type={type} />
       <BlockEditor
-        initialContent={initialContent}
+        initialContent={parsedContent}
         onContentChange={onContentChange}
       />
     </Box>

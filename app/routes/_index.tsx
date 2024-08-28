@@ -187,23 +187,8 @@ export default function Index() {
         flexGrow: 1,
         gap: 14,
         width: "100%",
-        // height: "min-content",
-        // overflow: "hidden",
-        // overflowY: "auto",
-        padding: 4,
       }}
     >
-      {/* <Box
-        ref={contentRef}
-        sx={{
-          flexGrow: 1,
-          display: "flex",
-          flexDirection: "column",
-          gap: 14,
-          padding: 4,
-          width: "100%",
-        }}
-      > */}
       {allPages.map((page, index) => (
         <React.Fragment key={page.id}>
           {index > 0 && (
@@ -217,6 +202,7 @@ export default function Index() {
             />
           )}
           <Page
+            id={page.id}
             title={page.title}
             content={page.content}
             date={page.date}
@@ -227,7 +213,6 @@ export default function Index() {
           />
         </React.Fragment>
       ))}
-      {/* </Box> */}
     </Box>
   );
 }

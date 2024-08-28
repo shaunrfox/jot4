@@ -5,12 +5,14 @@ import Text from "~/components/Text";
 import More from "~/components/icons/More";
 import { IconButton } from "../Button";
 import DateDisplay from "~/components/DateDisplay";
+import MyLink from "~/components/MyLink";
 
 const PageTitleArea: React.FC<{
+  id?: string;
   title: string;
   date?: Date | string;
   type?: string;
-}> = ({ title, date, type }) => {
+}> = ({ id, title, date, type }) => {
   console.log("Page Metadata", title, date, type);
 
   return (
@@ -43,7 +45,7 @@ const PageTitleArea: React.FC<{
         }}
       >
         <Heading level={5} sx={{ width: "100%" }}>
-          {title}
+          {id ? <MyLink to={`/page/${id}`}>{title}</MyLink> : title}
         </Heading>
         <Text
           sx={{

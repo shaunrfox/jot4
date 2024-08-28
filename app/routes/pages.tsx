@@ -1,13 +1,42 @@
+import React from "react";
 import { useLoaderData, useFetcher } from "@remix-run/react";
 import { json, type ActionFunctionArgs } from "@remix-run/node";
 import * as BlockService from "~/services/block.server";
 import * as PageService from "~/services/page.server";
 import { BlockType } from "@prisma/client";
 import Box from "~/components/Box";
-import { IconButton } from "~/components/Button";
-import Trash from "~/components/icons/Trash";
 import Heading from "~/components/Heading";
-import Text from "~/components/Text";
+import Rule from "~/components/Rule";
+import PageTitleArea from "~/components/PageTitleArea";
+import { generateJSON } from "@tiptap/html";
+import { JSONContent } from "@tiptap/react";
+
+// Tiptap extensions
+import Document from "@tiptap/extension-document";
+import Paragraph from "@tiptap/extension-paragraph";
+import Text from "@tiptap/extension-text";
+import Bold from "@tiptap/extension-bold";
+import Italic from "@tiptap/extension-italic";
+import Strike from "@tiptap/extension-strike";
+import Code from "@tiptap/extension-code";
+import CodeBlock from "@tiptap/extension-code-block";
+import TiptapHeading from "@tiptap/extension-heading";
+import BulletList from "@tiptap/extension-bullet-list";
+import OrderedList from "@tiptap/extension-ordered-list";
+import ListItem from "@tiptap/extension-list-item";
+import TaskList from "@tiptap/extension-task-list";
+import TaskItem from "@tiptap/extension-task-item";
+import HorizontalRule from "@tiptap/extension-horizontal-rule";
+import Link from "@tiptap/extension-link";
+import Image from "@tiptap/extension-image";
+import Dropcursor from "@tiptap/extension-dropcursor";
+import GapCursor from "@tiptap/extension-gapcursor";
+import History from "@tiptap/extension-history";
+
+// Custom extensions
+import { Quote } from "~/extensions/BlockquoteFigure/Quote";
+import { QuoteCaption } from "~/extensions/BlockquoteFigure/QuoteCaption";
+import { BlockquoteFigure } from "~/extensions/BlockquoteFigure";
 
 export const loader = async () => {
   const pages = await PageService.getAllPages();
@@ -56,7 +85,7 @@ export async function action({ request }: ActionFunctionArgs) {
 }
 
 export default function DocumentsRoute() {
-  const { pages, blocks } = useLoaderData<typeof loader>();
+  const { pages } = useLoaderData<typeof loader>();
   const fetcher = useFetcher();
 
   const handleDeletePage = (pageId: string) => {
@@ -82,168 +111,76 @@ export default function DocumentsRoute() {
       }}
     >
       <Heading level={6}>Pages</Heading>
-      {pages.map((page) => (
-        <Box
-          key={page.id}
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "stretch",
-            width: "100%",
-            border: "1px solid",
-            borderColor: "gray.30",
-            borderRadius: 4,
-            padding: 8,
-            marginBottom: 8,
-          }}
-        >
+      {pages.map((page, index) => (
+        <React.Fragment key={page.id}>
+          {index > 0 && (
+            <Rule
+              sx={{
+                maxWidth: "650px",
+                my: 10,
+                borderColor: "mint.30",
+                borderBottomWidth: 2,
+              }}
+            />
+          )}
           <Box
             sx={{
               display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
+              flexDirection: "column",
+              alignItems: "stretch",
               width: "100%",
-              borderBottom: "1px solid",
-              borderColor: "gray.20",
-              paddingBottom: 4,
-              marginBottom: 4,
+              marginBottom: 8,
             }}
           >
-            <Heading level={4}>{page.title}</Heading>
-            <IconButton
-              variant="hollow"
-              onClick={() => handleDeletePage(page.id)}
-            >
-              <Trash />
-            </IconButton>
+            <PageTitleArea
+              id={page.id}
+              title={page.title}
+              date={page.date}
+              type={page.type}
+            />
+            <PageContent content={page.content as JSONContent} />
           </Box>
-          <Box sx={{ display: "flex", gap: 10 }}>
-            <details style={{ width: "50%" }}>
-              <Text
-                as="summary"
-                sx={{
-                  position: "relative",
-                  display: "flex",
-                  justifyContent: "space-between",
-                  cursor: "pointer",
-                  "&::marker": {
-                    content: "none",
-                  },
-                  "&::after": {
-                    display: "block",
-                    content: "' '",
-                    width: ".45em",
-                    height: ".45em",
-                    borderBottom: "1px solid",
-                    borderRight: "1px solid",
-                    borderColor: "gray.50",
-                    position: "absolute",
-                    top: "calc(50% - 1px)",
-                    right: 0,
-                    transform: "translateY(-50%) rotate(45deg)",
-                    transformOrigin: "50% 50%",
-                  },
-                }}
-              >
-                Content
-              </Text>
-              <pre
-                style={{
-                  width: "100%",
-                  fontSize: "12px",
-                  padding: "5px 10px",
-                }}
-              >
-                <Box as="code" sx={{ whiteSpace: "pre-wrap" }}>
-                  {JSON.stringify(page.content, null, 2)}
-                </Box>
-              </pre>
-            </details>
-            <Box
-              as="ul"
-              sx={{
-                listStyle: "none",
-                padding: 0,
-                margin: 0,
-                width: "50%",
-              }}
-            >
-              {page.blocks.map((block) => (
-                <Box
-                  as="li"
-                  key={block.id}
-                  sx={{
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "stretch",
-                  }}
-                >
-                  <Box
-                    as="details"
-                    sx={{
-                      width: "100%",
-                      summary: {
-                        position: "relative",
-                        display: "flex",
-                        justifyContent: "space-between",
-                      },
-                      "&[open] > summary::after": {
-                        transform: "rotate(225deg)",
-                      },
-                    }}
-                  >
-                    <Text
-                      as="summary"
-                      sx={{
-                        position: "relative",
-                        display: "flex",
-                        justifyContent: "space-between",
-                        cursor: "pointer",
-                        "&::marker": {
-                          content: "none",
-                        },
-                        "&::after": {
-                          display: "block",
-                          content: "' '",
-                          width: ".45em",
-                          height: ".45em",
-                          borderBottom: "1px solid",
-                          borderRight: "1px solid",
-                          borderColor: "gray.50",
-                          position: "absolute",
-                          top: "calc(50% - 1px)",
-                          right: 0,
-                          transform: "translateY(-50%) rotate(45deg)",
-                          transformOrigin: "50% 50%",
-                        },
-                      }}
-                    >
-                      {block.type}
-                    </Text>
-                    <Text level={2} sx={{ color: "gray.30" }}>
-                      {block.id}
-                    </Text>
-                    <pre
-                      style={{
-                        width: "100%",
-                        fontSize: "12px",
-                        padding: "10px",
-                      }}
-                    >
-                      <Box
-                        as="code"
-                        sx={{ width: "100%", whiteSpace: "pre-wrap" }}
-                      >
-                        {JSON.stringify(block.content, null, 2)}
-                      </Box>
-                    </pre>
-                  </Box>
-                </Box>
-              ))}
-            </Box>
-          </Box>
-        </Box>
+        </React.Fragment>
       ))}
     </Box>
   );
+}
+
+function PageContent({ content }: { content: JSONContent }) {
+  const [html, setHtml] = React.useState<string>("");
+
+  React.useEffect(() => {
+    const extensions = [
+      Document,
+      Paragraph,
+      Text,
+      Bold,
+      Italic,
+      Strike,
+      Code,
+      CodeBlock,
+      TiptapHeading,
+      BulletList,
+      OrderedList,
+      ListItem,
+      TaskList,
+      TaskItem,
+      HorizontalRule,
+      Link,
+      Image,
+      Dropcursor,
+      GapCursor,
+      History,
+      Quote,
+      QuoteCaption,
+      BlockquoteFigure,
+    ];
+
+    import("@tiptap/core").then(({ generateHTML }) => {
+      const generatedHtml = generateHTML(content, extensions);
+      setHtml(generatedHtml);
+    });
+  }, [content]);
+
+  return <Box dangerouslySetInnerHTML={{ __html: html }} />;
 }
