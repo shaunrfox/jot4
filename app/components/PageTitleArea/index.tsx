@@ -8,22 +8,28 @@ import DateDisplay from "~/components/DateDisplay";
 
 const PageTitleArea: React.FC<{
   title: string;
-  date?: Date;
+  date?: Date | string;
   type?: string;
 }> = ({ title, date, type }) => {
+  console.log("Page Metadata", title, date, type);
+
   return (
     <Box
       sx={{
+        position: "sticky",
+        top: 0,
+        zIndex: 100,
         display: "flex",
         alignItems: "center",
         gap: 6,
-        borderBottom: "1px solid",
-        borderColor: "gray.20",
+        // borderBottom: "1px solid",
+        // borderColor: "gray.20",
         marginLeft: "auto",
         marginRight: "auto",
         width: "100%",
         maxWidth: "650px",
         minWidth: "1px",
+        pt: 5,
         pb: 5,
       }}
     >
@@ -41,13 +47,14 @@ const PageTitleArea: React.FC<{
         </Heading>
         <Text
           sx={{
-            // color: ({ mode }) => (mode === "dark" ? "gray.60" : "gray.40"),
             opacity: 0.5,
             whiteSpace: "nowrap",
           }}
         >
           {date ? (
-            <DateDisplay utcDate={date.toISOString()} />
+            <DateDisplay
+              utcDate={typeof date === "string" ? date : date.toISOString()}
+            />
           ) : (
             "Date not available"
           )}

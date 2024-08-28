@@ -5,12 +5,14 @@ export async function createPage({
   title,
   content,
   date,
-}: Pick<Page, "title"> & { content: string; date: Date }) {
+  type = "DOC",
+}: Pick<Page, "title"> & { content: string; date: Date; type?: string }) {
   return prisma.page.create({
     data: {
       title,
-      content: JSON.parse(content),
+      content,
       date,
+      type,
     },
   });
 }
@@ -99,5 +101,23 @@ export async function getRecentPages(days: number) {
     orderBy: {
       created_at: "desc",
     },
+  });
+}
+
+export async function getRecentDailyPages(limit: number, excludeDate?: Date) {
+  const startOfDay = excludeDate ? new Date(excludeDate) : new Date();
+  startOfDay.setUTCHours(0, 0, 0, 0);
+
+  return prisma.page.findMany({
+    where: {
+      type: "DAILY",
+      date: {
+        lt: startOfDay,
+      },
+    },
+    orderBy: {
+      date: "desc",
+    },
+    take: limit,
   });
 }

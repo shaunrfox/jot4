@@ -2,10 +2,12 @@ import React, { useMemo } from "react";
 import Box from "~/components/Box";
 import PageTitleArea from "~/components/PageTitleArea";
 import BlockEditor from "~/components/BlockEditor";
+import Rule from "~/components/Rule";
 
 interface PageProps {
   title: string;
   content: string | Record<string, any>;
+  date?: Date; // Add this line
   type?: string;
   onContentChange: (content: string) => void;
 }
@@ -13,9 +15,12 @@ interface PageProps {
 const Page: React.FC<PageProps> = ({
   title,
   content,
+  date, // Add this line
   type,
   onContentChange,
 }) => {
+  console.log("Page props:", { title, content, date, type }); // Add this line
+
   const initialContent = useMemo(() => {
     if (typeof content === "string") {
       try {
@@ -40,7 +45,7 @@ const Page: React.FC<PageProps> = ({
         flexDirection: "column",
       }}
     >
-      <PageTitleArea title={title} type={type} />
+      <PageTitleArea title={title} date={date} type={type} />
       <BlockEditor
         initialContent={initialContent}
         onContentChange={onContentChange}

@@ -1,9 +1,9 @@
-import { modes, HEX8 } from "../../utils/theme";
+import { modes, HEX8 } from "~/utils/theme";
 
-import { Link } from "@remix-run/react";
-import Box from "../Box";
-import Button, { IconButton } from "../Button";
-import Hamburger from "../icons/Hamburger";
+import Box from "~/components/Box";
+import { IconButton } from "~/components/Button";
+import Hamburger from "~/components/icons/Hamburger";
+import MyLink from "~/components/MyLink";
 
 const AppHeader = () => {
   return (
@@ -35,14 +35,13 @@ const AppHeader = () => {
         <IconButton variant="hollow">
           <Hamburger />
         </IconButton>
-        <Button
-          variant="hollow"
+        <MyLink
           to="/"
-          sx={{ marginRight: 8, fontWeight: "bold" }}
+          style={{ marginRight: 8, fontWeight: "bold", textDecoration: "none" }}
         >
           Jot Home
-        </Button>
-        <Link to="documents">Documents</Link>
+        </MyLink>
+        <MyLink to="pages">Pages</MyLink>
       </Box>
     </Box>
   );

@@ -1,42 +1,53 @@
-import { useCallback, useState, useMemo } from "react";
+import React, { useEffect, useRef, useMemo, useCallback } from "react";
 import debounce from "lodash/debounce";
 import type { ActionFunctionArgs } from "@remix-run/node";
-import { json, useFetcher, useLoaderData } from "@remix-run/react";
+import {
+  json,
+  useFetcher,
+  useLoaderData,
+  useNavigation,
+} from "@remix-run/react";
 // import { TiptapCollabProvider } from "@hocuspocus/provider";
 import Box from "~/components/Box";
 import Page from "~/components/Page";
 import * as PageService from "~/services/page.server";
 import * as BlockService from "~/services/block.server";
 import { BlockType } from "@prisma/client";
+import Rule from "~/components/Rule";
 
 export async function loader() {
   const today = new Date();
   today.setHours(0, 0, 0, 0); // This uses local timezone
 
-  let todayPage = await PageService.getPageByDate(today);
-
-  if (!todayPage) {
-    todayPage = await PageService.createPage({
-      title: `Journal for ${today.toISOString().split("T")[0]}`,
-      content: JSON.stringify({
-        type: "doc",
-        content: [
-          {
-            type: "paragraph",
+  const [todayPage, recentPages] = await Promise.all([
+    PageService.getPageByDate(today).then(async (page) => {
+      if (!page) {
+        return PageService.createPage({
+          title: `Journal for ${today.toISOString().split("T")[0]}`,
+          content: JSON.stringify({
+            type: "doc",
             content: [
               {
-                type: "text",
-                text: "",
+                type: "paragraph",
+                content: [
+                  {
+                    type: "text",
+                    text: "",
+                  },
+                ],
               },
             ],
-          },
-        ],
-      }),
-      date: today,
-    });
-  }
+          }),
+          date: today,
+          type: "DAILY",
+        });
+      }
+      return page;
+    }),
+    PageService.getRecentDailyPages(7, today),
+  ]);
 
-  const recentPages = await PageService.getRecentPages(7);
+  console.log("Loader data:", { todayPage, recentPages });
 
   return json({ todayPage, recentPages });
 }
@@ -114,12 +125,18 @@ export async function action({ request }: ActionFunctionArgs) {
 export default function Index() {
   const { todayPage, recentPages } = useLoaderData<typeof loader>();
   const fetcher = useFetcher();
+  const navigation = useNavigation();
+  const contentRef = useRef<HTMLDivElement>(null);
 
-  // console.log("Today Page Content:", todayPage.content);
+  useEffect(() => {
+    if (navigation.state === "idle" && contentRef.current) {
+      contentRef.current.scrollTop = 0;
+    }
+  }, [navigation.state]);
 
   const debouncedFetcherSubmit = useMemo(
     () =>
-      debounce((data: any) => {
+      debounce((data: FormData) => {
         console.log("Debounced submit:", data);
         fetcher.submit(data, { method: "post" });
       }, 1000),
@@ -127,71 +144,90 @@ export default function Index() {
   );
 
   const handleContentChange = useCallback(
-    (content: string) => {
-      console.log("handleContentChange", { content });
-      if (!todayPage || !todayPage.id) {
-        console.error("Today's page or its ID is not available");
-        return;
-      }
+    (pageId: string, content: string) => {
+      console.log("handleContentChange", { pageId, content });
 
       const localDate = new Date();
       const utcDate = new Date(
         localDate.getTime() - localDate.getTimezoneOffset() * 60000,
       );
 
-      console.log("Submitting update with fetcher", {
-        intent: "updatePage",
-        pageId: todayPage.id,
-        contentLength: content.length,
-        date: utcDate.toISOString(),
-      });
+      const formData = new FormData();
+      formData.append("intent", "updatePage");
+      formData.append("pageId", pageId);
+      formData.append("content", content);
+      formData.append("date", utcDate.toISOString());
 
-      // Immediately submit the change
-      fetcher.submit(
-        {
-          intent: "updatePage",
-          pageId: todayPage.id,
-          content,
-          date: utcDate.toISOString(),
-        },
-        { method: "post" },
+      console.log(
+        "Submitting update with fetcher",
+        Object.fromEntries(formData),
       );
 
-      debouncedFetcherSubmit({
-        intent: "updatePage",
-        pageId: todayPage.id,
-        content,
-        date: utcDate.toISOString(),
-      });
+      // Immediately submit the change
+      fetcher.submit(formData, { method: "post" });
+
+      // Debounced submit
+      debouncedFetcherSubmit(formData);
     },
     [fetcher, debouncedFetcherSubmit, todayPage],
   );
 
+  // Combine todayPage with recentPages
+  const allPages = useMemo(
+    () => [todayPage, ...recentPages],
+    [todayPage, recentPages],
+  );
+
   return (
     <Box
+      ref={contentRef}
       sx={{
         display: "flex",
         flexDirection: "column",
-        gap: 4,
-        padding: 4,
+        flexGrow: 1,
+        gap: 14,
         width: "100%",
+        // height: "min-content",
+        // overflow: "hidden",
+        // overflowY: "auto",
+        padding: 4,
       }}
     >
-      <Page
-        title={todayPage.title}
-        content={todayPage.content}
-        onContentChange={handleContentChange}
-      />
-      {/* {recentPages.map((page) => (
-        <Page
-          key={page.id}
-          title={page.title}
-          content={page.content}
-          onContentChange={(content: string) =>
-            handleContentChange(page.id, content)
-          }
-        />
-      ))} */}
+      {/* <Box
+        ref={contentRef}
+        sx={{
+          flexGrow: 1,
+          display: "flex",
+          flexDirection: "column",
+          gap: 14,
+          padding: 4,
+          width: "100%",
+        }}
+      > */}
+      {allPages.map((page, index) => (
+        <React.Fragment key={page.id}>
+          {index > 0 && (
+            <Rule
+              sx={{
+                maxWidth: "650px",
+                my: 10,
+                borderColor: "mint.30",
+                borderBottomWidth: 2,
+              }}
+            />
+          )}
+          <Page
+            title={page.title}
+            content={page.content}
+            date={page.date}
+            type={page.type}
+            onContentChange={(content: string) =>
+              handleContentChange(page.id, content)
+            }
+          />
+        </React.Fragment>
+      ))}
+      {/* </Box> */}
     </Box>
   );
 }
