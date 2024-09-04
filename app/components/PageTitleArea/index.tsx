@@ -6,14 +6,16 @@ import More from "~/components/icons/More";
 import { IconButton } from "../Button";
 import DateDisplay from "~/components/DateDisplay";
 import MyLink from "~/components/MyLink";
+import ReactTimeAgo from "react-time-ago";
 
 const PageTitleArea: React.FC<{
   id?: string;
   title: string;
   date?: Date | string;
+  updatedAt?: Date | string;
   type?: string;
-}> = ({ id, title, date, type }) => {
-  // console.log("Page Metadata", title, date, type);
+}> = ({ id, title, date, updatedAt, type }) => {
+  console.log("Page Metadata", title, date, updatedAt, type);
 
   return (
     <Box
@@ -51,16 +53,17 @@ const PageTitleArea: React.FC<{
           sx={{
             opacity: 0.5,
             whiteSpace: "nowrap",
+            fontSize: 2.5,
           }}
         >
-          {date ? (
-            <DateDisplay
-              utcDate={typeof date === "string" ? date : date.toISOString()}
+          {updatedAt && (
+            <ReactTimeAgo
+              date={new Date(updatedAt)}
+              locale="en-US"
+              timeStyle="round-minute"
             />
-          ) : (
-            "Date not available"
           )}
-          {type && ` | ${type}`}
+          {/* {type && ` | ${type}`} */}
         </Text>
       </Box>
       <IconButton variant="hollow">

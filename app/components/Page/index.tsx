@@ -11,6 +11,7 @@ interface PageProps {
   content?: string | Record<string, any>;
   date?: Date;
   type?: string;
+  updatedAt?: Date;
   onContentChange: (content: string) => void;
   sx?: StyleProps["sx"];
 }
@@ -20,6 +21,7 @@ const Page: React.FC<PageProps> = ({
   title: initialTitle,
   content: initialContent,
   date: initialDate,
+  updatedAt: initialUpdatedAt,
   type: initialType,
   onContentChange,
   sx,
@@ -28,6 +30,7 @@ const Page: React.FC<PageProps> = ({
     title: initialTitle,
     content: initialContent,
     date: initialDate,
+    updatedAt: initialUpdatedAt,
     type: initialType,
   });
 
@@ -49,9 +52,9 @@ const Page: React.FC<PageProps> = ({
     fetchPage();
   }, [id]);
 
-  const { title, content, date, type } = pageData;
+  const { title, content, date, type, updatedAt } = pageData;
 
-  console.log("Page props:", { id, title, content, date, type });
+  console.log("Page props:", { id, title, content, date, type, updatedAt });
 
   const parsedContent = useMemo(() => {
     if (typeof content === "string") {
@@ -79,7 +82,13 @@ const Page: React.FC<PageProps> = ({
         ...sx,
       }}
     >
-      <PageTitleArea id={id} title={title} date={date} type={type} />
+      <PageTitleArea
+        id={id}
+        title={title}
+        date={date}
+        updatedAt={updatedAt}
+        type={type}
+      />
       <BlockEditor
         initialContent={parsedContent}
         onContentChange={onContentChange}

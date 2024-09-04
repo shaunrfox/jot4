@@ -15,6 +15,10 @@ import * as BlockService from "~/services/block.server";
 import { BlockType } from "@prisma/client";
 import Rule from "~/components/Rule";
 
+import TimeAgo from "javascript-time-ago";
+import en from "javascript-time-ago/locale/en";
+TimeAgo.addDefaultLocale(en);
+
 export async function loader() {
   const today = new Date();
   today.setHours(0, 0, 0, 0); // This uses local timezone
@@ -205,7 +209,8 @@ export default function Index() {
             id={page.id}
             title={page.title}
             content={page.content}
-            date={page.date}
+            date={new Date(page.date)}
+            updatedAt={new Date(page.updated_at)}
             type={page.type}
             onContentChange={(content: string) =>
               handleContentChange(page.id, content)

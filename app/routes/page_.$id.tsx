@@ -2,6 +2,9 @@ import { useParams, useLoaderData, useFetcher } from "@remix-run/react";
 import { json, LoaderFunction, ActionFunction } from "@remix-run/node";
 import Page from "~/components/Page";
 import * as PageService from "~/services/page.server";
+import TimeAgo from "javascript-time-ago";
+import en from "javascript-time-ago/locale/en";
+TimeAgo.addDefaultLocale(en);
 
 interface PageData {
   id: string;
@@ -69,7 +72,8 @@ export default function SinglePage() {
       id={id}
       title={pageData.title}
       content={pageData.content}
-      date={pageData.date}
+      date={new Date(pageData.date)}
+      updatedAt={new Date(pageData.updated_at)}
       type={pageData.type}
       onContentChange={handleContentChange}
       sx={{ pb: "50vh" }}
