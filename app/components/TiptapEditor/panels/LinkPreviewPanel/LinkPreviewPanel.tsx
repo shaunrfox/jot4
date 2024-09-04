@@ -3,7 +3,6 @@ import { Surface } from "~/components/ui/Surface";
 import { Toolbar } from "~/components/ui/Toolbar";
 import Tooltip from "~/components/ui/Tooltip";
 import LinkRemove from "~/components/icons/LinkRemove";
-import ArrowSquareUpRight from "~/components/icons/ArrowSquareUpRight";
 import MyLink from "~/components/MyLink";
 import ArrowSquareOut from "~/components/icons/ArrowSquareOut";
 

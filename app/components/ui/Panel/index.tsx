@@ -1,29 +1,35 @@
 // TODO Update this to use the new UI components
 
 import { forwardRef } from "react";
-import { cn } from "~/utils/tiptap";
 import { Slot } from "@radix-ui/react-slot";
 import { Surface } from "../Surface";
 
-export type PanelProps = {
+import styled from "@emotion/styled";
+import { modes } from "~/utils/theme";
+import { StyleProps, themeHelper } from "~/utils/styled";
+import Box, { BoxProps } from "~/components/Box";
+import Rule from "~/components/Rule";
+
+export type PanelProps = BoxProps & {
+  styleProps?: StyleProps;
   spacing?: "medium" | "small";
   noShadow?: boolean;
   asChild?: boolean;
 } & React.HTMLAttributes<HTMLDivElement>;
 
 export const Panel = forwardRef<HTMLDivElement, PanelProps>(
-  ({ asChild, className, children, spacing, noShadow, ...rest }, ref) => {
-    const panelClass = cn(
-      "p-2",
-      spacing === "small" && "p-[0.2rem]",
-      className,
-    );
+  ({ asChild, children, spacing, noShadow, ...rest }, ref) => {
+    const panelStyle = themeHelper({
+      p: 2,
+      outline: "10px solid red",
+      ...(spacing === "small" && { p: 0.2 }),
+    });
 
-    const Comp = asChild ? Slot : "div";
+    const Comp = asChild ? Slot : Box;
 
     return (
       <Comp ref={ref} {...rest}>
-        <Surface className={panelClass} withShadow={!noShadow}>
+        <Surface {...panelStyle} withShadow={!noShadow}>
           {children}
         </Surface>
       </Comp>
@@ -33,36 +39,30 @@ export const Panel = forwardRef<HTMLDivElement, PanelProps>(
 
 Panel.displayName = "Panel";
 
-export const PanelDivider = forwardRef<
-  HTMLDivElement,
-  { asChild?: boolean } & React.HTMLAttributes<HTMLDivElement>
->(({ asChild, className, children, ...rest }, ref) => {
-  const dividerClass = cn("border-b border-b-black/10 mb-2 pb-2", className);
-
-  const Comp = asChild ? Slot : "div";
-
-  return (
-    <Comp className={dividerClass} {...rest} ref={ref}>
-      {children}
-    </Comp>
-  );
-});
+export const PanelDivider = ({
+  ...rest
+}: React.HTMLAttributes<HTMLDivElement>) => {
+  return <Rule {...rest} />;
+};
 
 PanelDivider.displayName = "PanelDivider";
 
 export const PanelHeader = forwardRef<
   HTMLDivElement,
   { asChild?: boolean } & React.HTMLAttributes<HTMLDivElement>
->(({ asChild, className, children, ...rest }, ref) => {
-  const headerClass = cn(
-    "border-b border-b-black/10 text-sm mb-2 pb-2",
-    className,
-  );
+>(({ asChild, children, ...rest }, ref) => {
+  const headerStyles = themeHelper({
+    borderBottom: "1px solid",
+    borderColor: "gray.10",
+    fontSize: 3,
+    mb: 2,
+    pb: 2,
+  });
 
-  const Comp = asChild ? Slot : "div";
+  const Comp = asChild ? Slot : Box;
 
   return (
-    <Comp className={headerClass} {...rest} ref={ref}>
+    <Comp {...rest} {...headerStyles} ref={ref}>
       {children}
     </Comp>
   );
@@ -73,13 +73,16 @@ PanelHeader.displayName = "PanelHeader";
 export const PanelSection = forwardRef<
   HTMLDivElement,
   { asChild?: boolean } & React.HTMLAttributes<HTMLDivElement>
->(({ asChild, className, children, ...rest }, ref) => {
-  const sectionClass = cn("mt-4 first:mt-1", className);
+>(({ asChild, children, ...rest }, ref) => {
+  const sectionStyles = themeHelper({
+    mt: 4,
+    first: { mt: 1 },
+  });
 
-  const Comp = asChild ? Slot : "div";
+  const Comp = asChild ? Slot : Box;
 
   return (
-    <Comp className={sectionClass} {...rest} ref={ref}>
+    <Comp {...rest} {...sectionStyles} ref={ref}>
       {children}
     </Comp>
   );
@@ -90,16 +93,17 @@ PanelSection.displayName = "PanelSection";
 export const PanelHeadline = forwardRef<
   HTMLDivElement,
   { asChild?: boolean } & React.HTMLAttributes<HTMLDivElement>
->(({ asChild, className, children, ...rest }, ref) => {
-  const headlineClass = cn(
-    "text-black/80 dark:text-white/80 text-xs font-medium mb-2 ml-1.5",
-    className,
-  );
-
-  const Comp = asChild ? Slot : "div";
+>(({ asChild, children, ...rest }, ref) => {
+  const headlineStyles = themeHelper({
+    color: "gray.80", // Default to light mode color
+    fontSize: 0,
+    mb: 2,
+    ml: 1.5,
+  });
+  const Comp = asChild ? Slot : Box;
 
   return (
-    <Comp className={headlineClass} {...rest} ref={ref}>
+    <Comp {...rest} {...headlineStyles} ref={ref}>
       {children}
     </Comp>
   );
@@ -110,16 +114,19 @@ PanelHeadline.displayName = "PanelHeadline";
 export const PanelFooter = forwardRef<
   HTMLDivElement,
   { asChild?: boolean } & React.HTMLAttributes<HTMLDivElement>
->(({ asChild, className, children, ...rest }, ref) => {
-  const footerClass = cn(
-    "border-t border-black/10 text-sm mt-2 pt-2",
-    className,
-  );
+>(({ asChild, children, ...rest }, ref) => {
+  const footerStyles = themeHelper({
+    borderTop: "1px solid",
+    borderColor: "black.10",
+    fontSize: 3,
+    mt: 2,
+    pt: 2,
+  });
 
-  const Comp = asChild ? Slot : "div";
+  const Comp = asChild ? Slot : Box;
 
   return (
-    <Comp className={footerClass} {...rest} ref={ref}>
+    <Comp {...rest} {...footerStyles} ref={ref}>
       {children}
     </Comp>
   );

@@ -9,9 +9,15 @@ import React, {
   useState,
 } from "react";
 
-import { Button } from "~/components/ui/Button";
+import styled from "@emotion/styled";
+import { modes } from "~/utils/theme";
+import { StyleProps, themeHelper } from "~/utils/styled";
+import Box, { BoxProps } from "~/components/Box";
+
+import Button from "~/components/Button";
 import { Panel } from "~/components/ui/Panel";
 import { EmojiListProps } from "../types";
+import Text from "~/components/Text";
 
 const EmojiList = forwardRef((props: EmojiListProps, ref) => {
   const [selectedIndex, setSelectedIndex] = useState(0);
@@ -91,23 +97,51 @@ const EmojiList = forwardRef((props: EmojiListProps, ref) => {
   }
 
   return (
-    <Panel className="overflow-y-auto max-w-[18rem] max-h-[18rem]">
+    <Panel
+      sx={{
+        "> div": {
+          maxWidth: "18rem",
+          maxHeight: "18rem",
+          overflowY: "auto",
+          display: "flex",
+          flexDirection: "column",
+        },
+      }}
+    >
       {props.items.map((item: EmojiItem, index: number) => (
         <Button
           active={index === selectedIndex}
-          variant="ghost"
-          className="justify-start w-full"
-          buttonSize="small"
+          variant="hollow"
+          sx={{
+            display: "flex",
+            justifyContent: "flex-start",
+            gap: 4,
+            width: "100%",
+          }}
+          size="small"
           key={item.name}
           onClick={createClickHandler(index)}
           data-emoji-name={item.name}
         >
           {item.fallbackImage ? (
-            <img src={item.fallbackImage} className="w-5 h-5" alt="emoji" />
+            <Box
+              as="img"
+              src={item.fallbackImage}
+              sx={{ width: "1.25rem", height: "1.25rem" }}
+              alt="emoji"
+            />
           ) : (
             item.emoji
           )}{" "}
-          <span className="truncate text-ellipsis">:{item.name}:</span>
+          <Text
+            sx={{
+              whiteSpace: "nowrap",
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+            }}
+          >
+            :{item.name}:
+          </Text>
         </Button>
       ))}
     </Panel>
