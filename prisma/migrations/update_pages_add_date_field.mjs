@@ -41,7 +41,7 @@ async function main() {
           updated_at: page.updated_at || new Date(),
         },
       });
-      console.log(`Updated page ${page.id} with date ${dateToSet}`);
+      // console.log(`Updated page ${page.id} with date ${dateToSet}`);
     } catch (error) {
       console.error(`Failed to update page ${page.id}:`, error);
     }

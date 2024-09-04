@@ -8,7 +8,7 @@ export async function createPage({
   let parsedContent;
   try {
     parsedContent = JSON.parse(content);
-    console.log("Parsed content:", parsedContent);
+    // console.log("Parsed content:", parsedContent);
   } catch (error) {
     parsedContent = {
       type: "doc",
@@ -36,7 +36,7 @@ export function updatePage(
     date,
   }: Partial<Pick<Page, "title" | "date">> & { content?: string },
 ) {
-  console.log("👍🏼 updatePage triggered", { id, title, content, date });
+  // console.log("👍🏼 updatePage triggered", { id, title, content, date });
   return PageService.updatePage(id, { title, content, date });
 }
 

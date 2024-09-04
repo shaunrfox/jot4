@@ -57,13 +57,13 @@ async function main() {
 				),
 			);
 
-			console.log(`Created page "${page.title}" with ${blocks.length} blocks`);
+			// console.log(`Created page "${page.title}" with ${blocks.length} blocks`);
 
 			return { page, blocks };
 		}),
 	);
 
-	console.log(`Created ${pages.length} pages with blocks`);
+	// console.log(`Created ${pages.length} pages with blocks`);
 }
 
 main()

@@ -46,6 +46,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     setMode(getPreferredTheme());
+    // console.log("Current theme mode:", mode);
     const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
     const handleChange = () =>
       setMode(mediaQuery.matches ? modes.dark : modes.light);

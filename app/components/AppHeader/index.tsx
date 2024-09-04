@@ -17,7 +17,7 @@ const AppHeader = () => {
         top: 0,
         zIndex: 1,
         backgroundColor: ({ mode }) =>
-          mode === modes.dark ? HEX8("gray.80", 0.8) : HEX8("gray.0", 0.8),
+          mode === modes.dark ? HEX8("gray.90", 0.8) : HEX8("gray.0", 0.8),
       }}
     >
       <Box

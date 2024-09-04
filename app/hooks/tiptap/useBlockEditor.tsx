@@ -25,7 +25,7 @@ export const useBlockEditor = ({
 
   const editor = useEditor({
     content: initialContent,
-    autofocus: true,
+    autofocus: false,
     immediatelyRender: false, // prevent SSR hydration mismatches
     editorProps: {
       attributes: {

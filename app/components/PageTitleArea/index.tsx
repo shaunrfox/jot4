@@ -13,7 +13,7 @@ const PageTitleArea: React.FC<{
   date?: Date | string;
   type?: string;
 }> = ({ id, title, date, type }) => {
-  console.log("Page Metadata", title, date, type);
+  // console.log("Page Metadata", title, date, type);
 
   return (
     <Box

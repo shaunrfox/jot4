@@ -1,5 +1,5 @@
 import type { SystemStyleObject } from "@styled-system/css";
-import { modes } from "./theme";
+import theme, { modes } from "./theme";
 
 export default (mode: modes): SystemStyleObject => ({
   "*, *::before, *::after": {
@@ -31,6 +31,36 @@ export default (mode: modes): SystemStyleObject => ({
   },
   "h1, h2, h3, h4, h5, h6": {
     color: mode === modes.dark ? "gray.5" : "gray.80",
+  },
+  a: {
+    color: mode === modes.dark ? theme.colors.gray[5] : theme.colors.gray[80],
+    textDecoration: "none",
+    // backgroundImage:
+    //   "linear-gradient(90deg, transparent 0%, transparent 50%, transparent 100%)",
+    backgroundSize: "100% 1px",
+    backgroundRepeat: "no-repeat",
+    backgroundPositionY: "100%",
+    backgroundImage: `linear-gradient(90deg, ${
+      mode === modes.dark ? theme.colors.gray[60] : theme.colors.gray[20]
+    } 0%, ${
+      mode === modes.dark ? theme.colors.gray[60] : theme.colors.gray[20]
+    } 100%)`,
+    // cursor: "pointer",
+    svg: {
+      fill: "currentColor",
+    },
+    "&:hover, &:visited:hover": {
+      color:
+        mode === modes.dark ? theme.colors.blue[40] : theme.colors.blue[50],
+      backgroundImage: `linear-gradient(90deg, ${
+        mode === modes.dark ? theme.colors.blue[40] : theme.colors.blue[50]
+      } 0%, ${
+        mode === modes.dark ? theme.colors.blue[40] : theme.colors.blue[50]
+      } 100%)`,
+    },
+    "&:visited": {
+      color: mode === modes.dark ? theme.colors.gray[5] : theme.colors.gray[80],
+    },
   },
   hr: {
     border: "none",

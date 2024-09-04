@@ -23,7 +23,7 @@ export const OptimizedBlockEditor = React.memo(
 
     useEffect(() => {
       if (editor) {
-        console.log("Editor instance changed or initialized");
+        // console.log("Editor instance changed or initialized");
         const errorHandler = (err: Error) => {
           console.error("Tiptap error:", err);
           setError(err);
@@ -52,8 +52,9 @@ export const OptimizedBlockEditor = React.memo(
 
     const editorStyles = themeHelper({
       display: "flex",
-      height: "100%",
       width: "100%",
+      height: "100%",
+      minHeight: "40vh",
       flex: 1,
       overflow: "hidden",
 

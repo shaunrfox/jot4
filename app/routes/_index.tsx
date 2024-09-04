@@ -47,7 +47,7 @@ export async function loader() {
     PageService.getRecentDailyPages(7, today),
   ]);
 
-  console.log("Loader data:", { todayPage, recentPages });
+  // console.log("Loader data:", { todayPage, recentPages });
 
   return json({ todayPage, recentPages });
 }
@@ -57,11 +57,11 @@ export async function action({ request }: ActionFunctionArgs) {
     const form = await request.formData();
     const intent = String(form.get("intent"));
 
-    console.log("Action called with intent:", intent);
+    // console.log("Action called with intent:", intent);
 
     switch (intent) {
       case "updatePage": {
-        console.log("👍🏼 Action (updatePage)");
+        // console.log("👍🏼 Action (updatePage)");
         const pageId = String(form.get("pageId"));
         const content = String(form.get("content"));
         const dateString = String(form.get("date"));
@@ -74,9 +74,9 @@ export async function action({ request }: ActionFunctionArgs) {
         if (content) updateData.content = content;
         if (dateString) updateData.date = new Date(dateString);
 
-        console.log("👍🏼 Updating page:", { pageId, content, dateString });
+        // console.log("👍🏼 Updating page:", { pageId, content, dateString });
         const updatedPage = await PageService.updatePage(pageId, updateData);
-        console.log("👍🏼 Page updated successfully:", updatedPage);
+        // console.log("👍🏼 Page updated successfully:", updatedPage);
         return json({ success: true, updatedPage });
       }
       case "createPage": {
@@ -137,7 +137,7 @@ export default function Index() {
   const debouncedFetcherSubmit = useMemo(
     () =>
       debounce((data: FormData) => {
-        console.log("Debounced submit:", data);
+        // console.log("Debounced submit:", data);
         fetcher.submit(data, { method: "post" });
       }, 1000),
     [fetcher],
@@ -145,7 +145,7 @@ export default function Index() {
 
   const handleContentChange = useCallback(
     (pageId: string, content: string) => {
-      console.log("handleContentChange", { pageId, content });
+      // console.log("handleContentChange", { pageId, content });
 
       const localDate = new Date();
       const utcDate = new Date(
@@ -158,10 +158,10 @@ export default function Index() {
       formData.append("content", content);
       formData.append("date", utcDate.toISOString());
 
-      console.log(
-        "Submitting update with fetcher",
-        Object.fromEntries(formData),
-      );
+      // console.log(
+      //   "Submitting update with fetcher",
+      //   Object.fromEntries(formData),
+      // );
 
       // Immediately submit the change
       fetcher.submit(formData, { method: "post" });

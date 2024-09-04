@@ -1,5 +1,5 @@
-import React from 'react';
-import Icon, { IconProps } from '../../Icon';
+import React from "react";
+import Icon, { IconProps } from "../../Icon";
 
 const CaretLeft: React.FunctionComponent<IconProps> = (props) => {
   return (

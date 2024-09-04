@@ -1,58 +1,102 @@
-// TODO Update this to use the new UI components
+import React from "react";
+import styled from "@emotion/styled";
+import { modes } from "~/utils/theme";
+import { StyleProps, themeHelper } from "~/utils/styled";
+import Box, { BoxProps } from "~/components/Box";
 
-import { cn } from "~/utils/tiptap";
-import { useCallback } from "react";
-
-export type ToggleProps = {
-  active?: boolean;
-  onChange: (active: boolean) => void;
-  size?: "small" | "large";
+export type ToggleProps = BoxProps & {
+  styleProps?: StyleProps;
+  checked: boolean;
+  onCheckedChange: (checked: boolean) => void;
+  label?: string;
 };
 
-export const Toggle = ({
-  onChange,
-  active = false,
-  size = "large",
-}: ToggleProps) => {
-  const state = active ? "checked" : "unchecked";
-  const value = active ? "on" : "off";
+const ToggleWrapper = styled(Box.withComponent("label"))<BoxProps>(
+  ({ ...props }) =>
+    themeHelper({
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "flex-start",
+      gap: 4,
+      cursor: "pointer",
+      userSelect: "none",
+    })(props),
+);
 
-  const buttonClass = cn(
-    "inline-flex cursor-pointer items-center rounded-full border-transparent transition-colors",
-    !active ? "bg-neutral-200 hover:bg-neutral-300" : "bg-black",
-    !active ? "dark:bg-neutral-800 dark:hover:bg-neutral-700" : "dark:bg-white",
-    size === "small" && "h-3 w-6 px-0.5",
-    size === "large" && "h-5 w-9 px-0.5",
-  );
+const Label = styled(Box.withComponent("span"))<BoxProps>(({ ...props }) =>
+  themeHelper({
+    color: props.theme?.mode === modes.dark ? "gray.20" : "gray.80",
+    fontSize: 3,
+  })(props),
+);
 
-  const pinClass = cn(
-    "rounded-full pointer-events-none block transition-transform",
-    "bg-white dark:bg-black",
-    size === "small" && "h-2 w-2",
-    size === "large" && "h-4 w-4",
-    active
-      ? cn(
-          size === "small" ? "translate-x-3" : "",
-          size === "large" ? "translate-x-4" : "",
-        )
-      : "translate-x-0",
-  );
+const HiddenCheckbox = styled(Box.withComponent("input"))<BoxProps>(
+  ({ ...props }) =>
+    themeHelper({
+      opacity: 0,
+      width: 0,
+      height: 0,
+      position: "absolute",
+    })(props),
+);
 
-  const handleChange = useCallback(() => {
-    onChange(!active);
-  }, [active, onChange]);
+const ToggleElement = styled(Box)<BoxProps>(({ ...props }) =>
+  themeHelper({
+    display: "inline-block",
+    position: "relative",
+    width: props.theme?.space[9],
+    height: props.theme?.space[6],
+    backgroundColor: props.theme?.mode === modes.dark ? "gray.80" : "gray.20",
+    borderRadius: props.theme?.space[4],
+    transition: "background-color 0.2s",
+
+    "&::before": {
+      content: '""',
+      position: "absolute",
+      width: props.theme?.space[5],
+      height: props.theme?.space[5],
+      left: props.theme?.space[2],
+      bottom: props.theme?.space[2],
+      backgroundColor: props.theme?.mode === modes.dark ? "gray.0" : "gray.100",
+      borderRadius: "50%",
+      transition: "transform 0.2s",
+    },
+
+    "input:checked + &": {
+      backgroundColor: props.theme?.mode === modes.dark ? "gray.0" : "gray.100",
+      "&::before": {
+        transform: `translateX(${props.theme?.space[6]})`,
+        backgroundColor:
+          props.theme?.mode === modes.dark ? "gray.80" : "gray.20",
+      },
+    },
+    "input:focus + &": {
+      boxShadow: `0 0 0 2px ${
+        props.theme?.mode === modes.dark ? "gray.40" : "gray.60"
+      }`,
+    },
+  })(props),
+);
+
+export const Toggle: React.FC<ToggleProps> = ({
+  checked,
+  onCheckedChange,
+  label,
+  ...rest
+}) => {
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    onCheckedChange(event.target.checked);
+  };
 
   return (
-    <button
-      className={buttonClass}
-      type="button"
-      role="switch"
-      aria-checked={active}
-      data-state={state}
-      value={value}
-      onClick={handleChange}
-    >
-      <span className={pinClass} data-state={state} />
-    </button>
+    <ToggleWrapper {...rest}>
+      <HiddenCheckbox
+        type="checkbox"
+        checked={checked}
+        onChange={handleChange}
+      />
+      <ToggleElement />
+      {label && <Label>{label}</Label>}
+    </ToggleWrapper>
   );
 };

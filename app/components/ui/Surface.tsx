@@ -1,6 +1,5 @@
 import { forwardRef } from "react";
 import Box, { BoxProps } from "~/components/Box";
-import { modes } from "~/utils/theme";
 import { useTheme } from "@emotion/react";
 
 export type SurfaceProps = BoxProps & {
@@ -29,17 +28,15 @@ export const Surface = forwardRef<HTMLDivElement, SurfaceWithChildrenProps>(
         ref={ref}
         sx={{
           display: "flex",
-          backgroundColor: ({ mode }) =>
-            mode === modes.dark ? "gray.80" : "gray.0",
+          backgroundColor: mode === "dark" ? "gray.80" : "gray.0",
           borderRadius: 4,
           boxShadow: withShadow
-            ? mode === modes.dark
+            ? mode === "dark"
               ? "high_dark"
               : "high_light"
             : "none",
           border: withBorder ? "1px solid" : "none",
-          borderColor: ({ mode }) =>
-            mode === modes.dark ? "gray.70" : "gray.10",
+          borderColor: mode === "dark" ? "gray.70" : "gray.10",
           p: 3,
           gap: 3,
           ...sx,

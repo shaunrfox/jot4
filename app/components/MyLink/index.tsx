@@ -3,20 +3,79 @@ import { themeHelper, sxPropHelper, StyleProps } from "~/utils/styled";
 import { Link } from "@remix-run/react";
 import { modes } from "~/utils/theme";
 
-const MyLink = styled(Link)<StyleProps>(
+export interface MyLinkProps extends StyleProps {
+  to?: string;
+  target?: string;
+  rel?: string;
+  blue?: boolean;
+}
+
+// const blueLinkStyles = (props: MyLinkProps) => ({
+//   color: props.theme?.mode === modes.dark ? "blue.50" : "blue.50",
+//   backgroundImage: `linear-gradient(90deg, ${
+//     props.theme?.mode === modes.dark ? "blue.20" : "blue.50"
+//   } 0%, ${props.theme?.mode === modes.dark ? "blue.20" : "blue.50"} 100%)`,
+//   "&:hover, &:visited:hover": {
+//     color: props.theme?.mode === modes.dark ? "blue.10" : "blue.40",
+//     backgroundImage: `linear-gradient(90deg, ${
+//       props.theme?.mode === modes.dark ? "blue.10" : "blue.40"
+//     } 0%, ${props.theme?.mode === modes.dark ? "blue.10" : "blue.40"} 100%)`,
+//   },
+//   "&:visited": {
+//     color: props.theme?.mode === modes.dark ? "blue.20" : "blue.50",
+//     backgroundImage: `linear-gradient(90deg, ${
+//       props.theme?.mode === modes.dark ? "blue.20" : "blue.50"
+//     } 0%, ${props.theme?.mode === modes.dark ? "blue.20" : "blue.50"} 100%)`,
+//   },
+// });
+
+const MyLink = styled(Link)<MyLinkProps>(
   ({ ...props }) =>
     themeHelper({
-      color: props.theme?.mode === modes.dark ? "gray.5" : "gray.80",
-      borderBottomStyle: "solid",
-      borderBottomWidth: "1px",
-      borderColor: "transparent",
       textDecoration: "none",
-      "&:hover": {
-        color: props.theme?.mode === modes.dark ? "blue.20" : "blue.60",
-        borderColor: props.theme?.mode === modes.dark ? "blue.20" : "blue.60",
+      backgroundSize: "100% 1px",
+      backgroundRepeat: "no-repeat",
+      backgroundPositionY: "100%",
+      cursor: "pointer",
+      svg: {
+        fill: "currentColor",
       },
+      ...(props.blue
+        ? {
+            color: props.theme?.mode === modes.dark ? "blue.50" : "blue.50",
+            backgroundImage: `linear-gradient(90deg, ${
+              props.theme?.mode === modes.dark ? "blue.20" : "blue.50"
+            } 0%, ${props.theme?.mode === modes.dark ? "blue.20" : "blue.50"} 100%)`,
+            "&:hover, &:visited:hover": {
+              color: props.theme?.mode === modes.dark ? "blue.10" : "blue.40",
+              backgroundImage: `linear-gradient(90deg, ${
+                props.theme?.mode === modes.dark ? "blue.10" : "blue.40"
+              } 0%, ${props.theme?.mode === modes.dark ? "blue.10" : "blue.40"} 100%)`,
+            },
+            "&:visited": {
+              color: props.theme?.mode === modes.dark ? "blue.20" : "blue.50",
+              backgroundImage: `linear-gradient(90deg, ${
+                props.theme?.mode === modes.dark ? "blue.20" : "blue.50"
+              } 0%, ${props.theme?.mode === modes.dark ? "blue.20" : "blue.50"} 100%)`,
+            },
+          }
+        : {
+            color: props.theme?.mode === modes.dark ? "gray.5" : "gray.80",
+            backgroundImage: `linear-gradient(90deg, transparent 0%, transparent 100%)`,
+            "&:hover, &:visited:hover": {
+              color: props.theme?.mode === modes.dark ? "blue.20" : "blue.50",
+              backgroundImage: `linear-gradient(90deg, ${
+                props.theme?.mode === modes.dark ? "blue.20" : "blue.50"
+              } 0%, ${
+                props.theme?.mode === modes.dark ? "blue.20" : "blue.50"
+              } 100%)`,
+            },
+            "&:visited": {
+              color: props.theme?.mode === modes.dark ? "gray.5" : "gray.80",
+            },
+          }),
     })(props),
-  sxPropHelper
+  sxPropHelper,
 );
 
 export default MyLink;

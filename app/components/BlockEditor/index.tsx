@@ -25,11 +25,17 @@ export const BlockEditor = React.memo(
       onContentChange: debouncedOnContentChangeRef.current,
     });
 
+    // useEffect(() => {
+    //   return () => {
+    //     debouncedOnContentChangeRef.current.cancel();
+    //   };
+    // }, []);
+
     useEffect(() => {
-      return () => {
-        debouncedOnContentChangeRef.current.cancel();
-      };
-    }, []);
+      if (editor) {
+        console.log("Editor initialized with content:", editor.getJSON());
+      }
+    }, [editor]);
 
     return (
       <OptimizedBlockEditor

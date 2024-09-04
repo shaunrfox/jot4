@@ -229,6 +229,62 @@ const variants = {
             },
           },
         },
+  utility: (mode: modes) =>
+    mode === modes.dark
+      ? {
+          backgroundColor: "gray.5",
+          color: "gray.80",
+          svg: {
+            fill: "gray.80",
+          },
+          ":hover": {
+            backgroundColor: "gray.2",
+          },
+          ":active": {
+            backgroundColor: "gray.20",
+            borderColor: "transparent",
+          },
+          ":focus-visible": {
+            borderColor: "blue.50",
+            backgroundColor: "gray.5",
+            ":active": {
+              backgroundColor: "gray.20",
+            },
+          },
+          ":disabled": {
+            cursor: "not-allowed",
+            ":hover": {
+              backgroundColor: "transparent",
+            },
+          },
+        }
+      : {
+          backgroundColor: "gray.80",
+          color: "gray.5",
+          svg: {
+            fill: "gray.5",
+          },
+          ":hover": {
+            backgroundColor: "gray.60",
+          },
+          ":active": {
+            backgroundColor: "gray.100",
+            borderColor: "transparent",
+          },
+          ":focus-visible": {
+            borderColor: "blue.20",
+            backgroundColor: "gray.70",
+            ":active": {
+              backgroundColor: "gray.100",
+            },
+          },
+          ":disabled": {
+            cursor: "not-allowed",
+            ":hover": {
+              backgroundColor: "transparent",
+            },
+          },
+        },
 };
 
 const activeStyles = (mode: modes) =>

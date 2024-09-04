@@ -72,7 +72,7 @@ export default function SinglePage() {
       date={pageData.date}
       type={pageData.type}
       onContentChange={handleContentChange}
-      sx={{ height: "100%" }}
+      sx={{ pb: "50vh" }}
     />
   );
 }
