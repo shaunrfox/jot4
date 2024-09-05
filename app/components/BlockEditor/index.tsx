@@ -4,7 +4,7 @@ import React, { useRef, useEffect } from "react";
 import debounce from "lodash/debounce";
 import { useBlockEditor } from "~/hooks/tiptap/useBlockEditor";
 import { OptimizedBlockEditor } from "./components/OptimizedBlockEditor";
-
+import EditorParsedContent from "./components/EditorParsedContent";
 export const BlockEditor = React.memo(
   ({
     initialContent,
@@ -38,10 +38,17 @@ export const BlockEditor = React.memo(
     }, [editor]);
 
     return (
-      <OptimizedBlockEditor
-        editor={editor}
-        menuContainerRef={menuContainerRef}
-      />
+      <>
+        {editor && (
+          <>
+            <OptimizedBlockEditor
+              editor={editor}
+              menuContainerRef={menuContainerRef}
+            />
+            {/* <EditorParsedContent editor={editor} /> */}
+          </>
+        )}
+      </>
     );
   },
 );

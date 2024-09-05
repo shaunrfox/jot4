@@ -4,6 +4,7 @@ import { Editor, NodeViewWrapper } from "@tiptap/react";
 import { useCallback } from "react";
 
 import { ImageUploader } from "./ImageUploader";
+import Box from "~/components/Box";
 
 export const ImageUpload = ({
   getPos,
@@ -28,9 +29,9 @@ export const ImageUpload = ({
 
   return (
     <NodeViewWrapper>
-      <div className="p-0 m-0" data-drag-handle>
+      <Box sx={{ p: 0, m: 0 }} data-drag-handle>
         <ImageUploader onUpload={onUpload} />
-      </div>
+      </Box>
     </NodeViewWrapper>
   );
 };

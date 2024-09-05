@@ -2,10 +2,19 @@
 
 import { Spinner } from "~/components/ui/Spinner";
 import { useDropZone, useFileUpload, useUploader } from "./hooks";
-import { Button } from "~/components/ui/Button";
+import Button from "~/components/Button";
 import { Icon } from "~/components/ui/Icon";
 import { cn } from "~/utils/tiptap";
 import { ChangeEvent, useCallback } from "react";
+
+import styled from "@emotion/styled";
+import { modes } from "~/utils/theme";
+import { StyleProps, themeHelper } from "~/utils/styled";
+import Box, { BoxProps } from "~/components/Box";
+import Image from "~/components/icons/Image";
+import Text from "~/components/Text";
+import Upload from "~/components/icons/Upload";
+import { HEX8 } from "~/utils/theme";
 
 export const ImageUploader = ({
   onUpload,
@@ -26,53 +35,90 @@ export const ImageUploader = ({
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center p-8 rounded-lg min-h-[10rem] bg-opacity-80">
-        <Spinner className="text-neutral-500" size={1.5} />
-      </div>
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          padding: 8,
+          minHeight: "10rem",
+          backgroundColor: "gray.10",
+        }}
+      >
+        <Spinner size={1.5} />
+      </Box>
     );
   }
 
-  const wrapperClass = cn(
-    "flex flex-col items-center justify-center px-8 py-10 rounded-lg bg-opacity-80",
-    draggedInside && "bg-neutral-100",
-  );
-
   return (
-    <div
-      className={wrapperClass}
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        gap: 4,
+        maxWidth: "100%",
+        // maxHeight: "300px",
+        height: "250px",
+        padding: 8,
+        border: "2px dashed",
+        borderColor: "gray.20",
+        // backgroundColor: HEX8("mint.10", 0.125),
+        borderRadius: "1rem",
+        ...(draggedInside && {
+          backgroundColor: "blue.5",
+          borderColor: "blue.40",
+        }),
+      }}
       onDrop={onDrop}
       onDragOver={onDragEnter}
       onDragLeave={onDragLeave}
       contentEditable={false}
     >
-      <Icon
-        name="Image"
-        className="w-12 h-12 mb-4 text-black dark:text-white opacity-20"
-      />
-      <div className="flex flex-col items-center justify-center gap-2">
-        <div className="text-sm font-medium text-center text-neutral-400 dark:text-neutral-500">
+      <Image sx={{ width: "4rem", height: "4rem", opacity: 0.3 }} />
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          gap: 4,
+        }}
+      >
+        <Text
+          sx={{
+            fontSize: 3,
+            fontWeight: "medium",
+            textAlign: "center",
+            color: "gray.40",
+          }}
+        >
           {draggedInside ? "Drop image here" : "Drag and drop or"}
-        </div>
-        <div>
-          <Button
-            disabled={draggedInside}
-            onClick={handleUploadClick}
-            variant="primary"
-            buttonSize="small"
-          >
-            <Icon name="Upload" />
-            Upload an image
-          </Button>
-        </div>
-      </div>
-      <input
-        className="w-0 h-0 overflow-hidden opacity-0"
+        </Text>
+        <Button
+          disabled={draggedInside}
+          onClick={handleUploadClick}
+          variant="primary"
+        >
+          <Upload />
+          Upload an image
+        </Button>
+      </Box>
+      <Box
+        as="input"
+        sx={{
+          width: 0,
+          height: 0,
+          overflow: "hidden",
+          opacity: 0,
+        }}
         ref={ref}
         type="file"
         accept=".jpg,.jpeg,.png,.webp,.gif"
         onChange={onFileChange}
       />
-    </div>
+    </Box>
   );
 };
 
