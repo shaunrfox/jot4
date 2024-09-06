@@ -1,20 +1,12 @@
-// TODO Update this to use the new UI components
-
 import { Spinner } from "~/components/ui/Spinner";
 import { useDropZone, useFileUpload, useUploader } from "./hooks";
 import Button from "~/components/Button";
-import { Icon } from "~/components/ui/Icon";
-import { cn } from "~/utils/tiptap";
 import { ChangeEvent, useCallback } from "react";
 
-import styled from "@emotion/styled";
-import { modes } from "~/utils/theme";
-import { StyleProps, themeHelper } from "~/utils/styled";
-import Box, { BoxProps } from "~/components/Box";
+import Box from "~/components/Box";
 import Image from "~/components/icons/Image";
 import Text from "~/components/Text";
 import Upload from "~/components/icons/Upload";
-import { HEX8 } from "~/utils/theme";
 
 export const ImageUploader = ({
   onUpload,
@@ -59,12 +51,10 @@ export const ImageUploader = ({
         justifyContent: "center",
         gap: 4,
         maxWidth: "100%",
-        // maxHeight: "300px",
         height: "250px",
         padding: 8,
         border: "2px dashed",
         borderColor: "gray.20",
-        // backgroundColor: HEX8("mint.10", 0.125),
         borderRadius: "1rem",
         ...(draggedInside && {
           backgroundColor: "blue.5",

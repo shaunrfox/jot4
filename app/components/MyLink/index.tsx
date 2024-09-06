@@ -7,30 +7,11 @@ export interface MyLinkProps extends StyleProps {
   to?: string;
   target?: string;
   rel?: string;
-  blue?: boolean;
+  blue?: boolean | string;
 }
 
-// const blueLinkStyles = (props: MyLinkProps) => ({
-//   color: props.theme?.mode === modes.dark ? "blue.50" : "blue.50",
-//   backgroundImage: `linear-gradient(90deg, ${
-//     props.theme?.mode === modes.dark ? "blue.20" : "blue.50"
-//   } 0%, ${props.theme?.mode === modes.dark ? "blue.20" : "blue.50"} 100%)`,
-//   "&:hover, &:visited:hover": {
-//     color: props.theme?.mode === modes.dark ? "blue.10" : "blue.40",
-//     backgroundImage: `linear-gradient(90deg, ${
-//       props.theme?.mode === modes.dark ? "blue.10" : "blue.40"
-//     } 0%, ${props.theme?.mode === modes.dark ? "blue.10" : "blue.40"} 100%)`,
-//   },
-//   "&:visited": {
-//     color: props.theme?.mode === modes.dark ? "blue.20" : "blue.50",
-//     backgroundImage: `linear-gradient(90deg, ${
-//       props.theme?.mode === modes.dark ? "blue.20" : "blue.50"
-//     } 0%, ${props.theme?.mode === modes.dark ? "blue.20" : "blue.50"} 100%)`,
-//   },
-// });
-
 const MyLink = styled(Link)<MyLinkProps>(
-  ({ ...props }) =>
+  ({ blue, ...props }) =>
     themeHelper({
       textDecoration: "none",
       backgroundSize: "100% 1px",
@@ -40,7 +21,7 @@ const MyLink = styled(Link)<MyLinkProps>(
       svg: {
         fill: "currentColor",
       },
-      ...(props.blue
+      ...(blue === true || blue === "true"
         ? {
             color: props.theme?.mode === modes.dark ? "blue.50" : "blue.50",
             backgroundImage: `linear-gradient(90deg, ${

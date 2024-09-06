@@ -1,8 +1,7 @@
-import React, { useMemo, useEffect, useState } from "react";
+import React, { useMemo } from "react";
 import Box from "~/components/Box";
 import PageTitleArea from "~/components/PageTitleArea";
 import BlockEditor from "~/components/BlockEditor";
-import Rule from "~/components/Rule";
 import { StyleProps } from "~/utils/styled";
 
 interface PageProps {
@@ -18,44 +17,14 @@ interface PageProps {
 
 const Page: React.FC<PageProps> = ({
   id,
-  title: initialTitle,
-  content: initialContent,
-  date: initialDate,
-  updatedAt: initialUpdatedAt,
-  type: initialType,
+  title,
+  content,
+  date,
+  updatedAt,
+  type,
   onContentChange,
   sx,
 }) => {
-  const [pageData, setPageData] = useState({
-    title: initialTitle,
-    content: initialContent,
-    date: initialDate,
-    updatedAt: initialUpdatedAt,
-    type: initialType,
-  });
-
-  useEffect(() => {
-    async function fetchPage() {
-      if (id) {
-        try {
-          const response = await fetch(`/api/pages/${id}`);
-          if (!response.ok) {
-            throw new Error("Failed to fetch page");
-          }
-          const data = await response.json();
-          setPageData(data);
-        } catch (error) {
-          console.error("Error fetching page:", error);
-        }
-      }
-    }
-    fetchPage();
-  }, [id]);
-
-  const { title, content, date, type, updatedAt } = pageData;
-
-  console.log("Page props:", { id, title, content, date, type, updatedAt });
-
   const parsedContent = useMemo(() => {
     if (typeof content === "string") {
       try {

@@ -33,7 +33,7 @@ export const BlockEditor = React.memo(
 
     useEffect(() => {
       if (editor) {
-        console.log("Editor initialized with content:", editor.getJSON());
+        // console.log("Editor initialized with content:", editor.getJSON());
       }
     }, [editor]);
 

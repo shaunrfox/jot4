@@ -1,5 +1,3 @@
-// TODO Update this to use the new UI components
-
 import { Editor, NodeViewWrapper } from "@tiptap/react";
 import { useCallback } from "react";
 

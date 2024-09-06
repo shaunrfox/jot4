@@ -11,17 +11,11 @@ declare module "@tiptap/core" {
 
 export const ImageUpload = Node.create({
   name: "imageUpload",
-
   isolating: true,
-
   defining: true,
-
   group: "block",
-
   draggable: true,
-
   selectable: true,
-
   inline: false,
 
   parseHTML() {

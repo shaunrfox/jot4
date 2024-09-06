@@ -24,8 +24,6 @@ export const LinkMenu = ({ editor, appendTo }: MenuProps): JSX.Element => {
 
   const shouldShow = useCallback(() => {
     const isActive = editor.isActive("link");
-    console.log("Link is active:", isActive);
-    console.log("Link attributes in shouldShow:", editor.getAttributes("link"));
     return isActive;
   }, [editor]);
 
@@ -53,8 +51,6 @@ export const LinkMenu = ({ editor, appendTo }: MenuProps): JSX.Element => {
     updateLinkData();
     return null;
   }, [editor, updateLinkData]);
-
-  console.log("Current link data:", linkData);
 
   return (
     <BaseBubbleMenu

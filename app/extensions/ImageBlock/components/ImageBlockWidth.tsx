@@ -1,6 +1,7 @@
-// TODO Update this to use the new UI components
+import Box from "~/components/Box";
 
-import { memo, useCallback, useEffect, useState } from "react";
+import { memo, useCallback, useState } from "react";
+import { Input } from "~/components/Input";
 
 export type ImageBlockWidthProps = {
   onChange: (value: number) => void;
@@ -11,21 +12,38 @@ export const ImageBlockWidth = memo(
   ({ onChange, value }: ImageBlockWidthProps) => {
     const [currentValue, setCurrentValue] = useState(value);
 
-    useEffect(() => {
-      setCurrentValue(value);
-    }, [value]);
-
     const handleChange = useCallback(
       (e: React.ChangeEvent<HTMLInputElement>) => {
-        onChange(parseInt(e.target.value));
+        const newValue = parseInt(e.target.value, 10);
+        setCurrentValue(newValue);
+        onChange(newValue);
       },
       [onChange],
     );
 
     return (
-      <div className="flex items-center gap-2">
-        <input
-          className="h-2 bg-neutral-200 border-0 rounded appearance-none fill-neutral-300"
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          gap: 2,
+          px: 4,
+        }}
+      >
+        <Input
+          sx={{
+            height: "0.625rem",
+            minHeight: "0.625rem",
+            p: 0,
+            backgroundColor: "gray.20",
+            border: 0,
+            borderRadius: 3,
+            appearance: "none",
+            fill: "gray.30",
+            maxWidth: "150px",
+            minWidth: "100px",
+          }}
           type="range"
           min="25"
           max="100"
@@ -33,10 +51,17 @@ export const ImageBlockWidth = memo(
           onChange={handleChange}
           value={currentValue}
         />
-        <span className="text-xs font-semibold text-neutral-500 select-none">
-          {value}%
-        </span>
-      </div>
+        <Box
+          as="span"
+          sx={{
+            fontSize: "2.5",
+            color: "gray.50",
+            userSelect: "none",
+          }}
+        >
+          {currentValue}%
+        </Box>
+      </Box>
     );
   },
 );

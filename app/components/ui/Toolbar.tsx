@@ -18,6 +18,10 @@ const ToolbarWrapper = forwardRef<HTMLDivElement, ToolbarWrapperProps>(
     { shouldShowContent = true, children, isVertical = false, sx, ...rest },
     ref,
   ) => {
+    console.log(
+      "ToolbarWrapper rendering, shouldShowContent:",
+      shouldShowContent,
+    );
     return (
       shouldShowContent && (
         <Surface
@@ -39,6 +43,7 @@ const ToolbarWrapper = forwardRef<HTMLDivElement, ToolbarWrapperProps>(
           {...rest}
           ref={ref}
         >
+          {console.log("ToolbarWrapper Surface rendering")}
           {children}
         </Surface>
       )
@@ -90,8 +95,6 @@ const ToolbarButton = forwardRef<HTMLButtonElement, ToolbarButtonProps>(
     },
     ref,
   ) => {
-    // console.log("ToolbarButton rendering", { tooltip, tooltipShortcut });
-
     const content = (
       <Button
         variant={variant}
@@ -106,7 +109,6 @@ const ToolbarButton = forwardRef<HTMLButtonElement, ToolbarButtonProps>(
     );
 
     if (tooltip) {
-      // console.log("Rendering Tooltip for ToolbarButton");
       return (
         <Tooltip title={tooltip} shortcut={tooltipShortcut} enabled={true}>
           {content}

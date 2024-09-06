@@ -15,7 +15,7 @@ const PageTitleArea: React.FC<{
   updatedAt?: Date | string;
   type?: string;
 }> = ({ id, title, date, updatedAt, type }) => {
-  console.log("Page Metadata", title, date, updatedAt, type);
+  // console.log("Page Metadata", title, date, updatedAt, type);
 
   return (
     <Box

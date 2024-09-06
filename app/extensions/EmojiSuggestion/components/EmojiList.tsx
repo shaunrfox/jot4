@@ -1,5 +1,3 @@
-// TODO Update this to use the new UI components
-
 import { EmojiItem } from "@tiptap-pro/extension-emoji";
 import React, {
   forwardRef,

@@ -1,13 +1,17 @@
 import { BubbleMenu as BaseBubbleMenu } from "@tiptap/react";
-import React, { useCallback, useRef } from "react";
+import { useCallback, useRef } from "react";
 import { Instance, sticky } from "tippy.js";
 import { v4 as uuid } from "uuid";
 
 import { Toolbar } from "~/components/ui/Toolbar";
-import { Icon } from "~/components/ui/Icon";
 import { ImageBlockWidth } from "./ImageBlockWidth";
 import { MenuProps } from "~/components/TiptapEditor/menus/types";
 import { getRenderContainer } from "~/utils/tiptap/getRenderContainer";
+import AlignLeft from "~/components/icons/AlignLeft";
+import AlignCenter from "~/components/icons/AlignCenter";
+import AlignRight from "~/components/icons/AlignRight";
+import Rule from "~/components/Rule";
+import Box from "~/components/Box";
 
 export const ImageBlockMenu = ({
   editor,
@@ -22,11 +26,14 @@ export const ImageBlockMenu = ({
       renderContainer?.getBoundingClientRect() ||
       new DOMRect(-1000, -1000, 0, 0);
 
+    // console.log("renderContainer", renderContainer);
+    // console.log("rect", rect);
     return rect;
   }, [editor]);
 
   const shouldShow = useCallback(() => {
     const isActive = editor.isActive("imageBlock");
+    // console.log("isActive", isActive);
 
     return isActive;
   }, [editor]);
@@ -73,7 +80,7 @@ export const ImageBlockMenu = ({
       shouldShow={shouldShow}
       updateDelay={0}
       tippyOptions={{
-        offset: [0, 8],
+        offset: [0, 2],
         popperOptions: {
           modifiers: [{ name: "flip", enabled: false }],
         },
@@ -88,33 +95,46 @@ export const ImageBlockMenu = ({
         sticky: "popper",
       }}
     >
-      <Toolbar.Wrapper shouldShowContent={shouldShow()} ref={menuRef}>
-        <Toolbar.Button
-          tooltip="Align image left"
-          active={editor.isActive("imageBlock", { align: "left" })}
-          onClick={onAlignImageLeft}
+      <Toolbar.Wrapper
+        // shouldShowContent={shouldShow()}
+        ref={menuRef}
+        data-testid="image-block-menu"
+      >
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "space-around",
+            alignItems: "center",
+            gap: 3,
+          }}
         >
-          <Icon name="AlignHorizontalDistributeStart" />
-        </Toolbar.Button>
-        <Toolbar.Button
-          tooltip="Align image center"
-          active={editor.isActive("imageBlock", { align: "center" })}
-          onClick={onAlignImageCenter}
-        >
-          <Icon name="AlignHorizontalDistributeCenter" />
-        </Toolbar.Button>
-        <Toolbar.Button
-          tooltip="Align image right"
-          active={editor.isActive("imageBlock", { align: "right" })}
-          onClick={onAlignImageRight}
-        >
-          <Icon name="AlignHorizontalDistributeEnd" />
-        </Toolbar.Button>
-        <Toolbar.Divider />
-        <ImageBlockWidth
-          onChange={onWidthChange}
-          value={parseInt(editor.getAttributes("imageBlock").width)}
-        />
+          <Toolbar.Button
+            tooltip="Align image left"
+            active={editor.isActive("imageBlock", { align: "left" })}
+            onClick={onAlignImageLeft}
+          >
+            <AlignLeft />
+          </Toolbar.Button>
+          <Toolbar.Button
+            tooltip="Align image center"
+            active={editor.isActive("imageBlock", { align: "center" })}
+            onClick={onAlignImageCenter}
+          >
+            <AlignCenter />
+          </Toolbar.Button>
+          <Toolbar.Button
+            tooltip="Align image right"
+            active={editor.isActive("imageBlock", { align: "right" })}
+            onClick={onAlignImageRight}
+          >
+            <AlignRight />
+          </Toolbar.Button>
+          <Rule orientation="vertical" />
+          <ImageBlockWidth
+            onChange={onWidthChange}
+            value={parseInt(editor.getAttributes("imageBlock").width)}
+          />
+        </Box>
       </Toolbar.Wrapper>
     </BaseBubbleMenu>
   );

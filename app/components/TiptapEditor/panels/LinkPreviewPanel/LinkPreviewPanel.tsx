@@ -19,9 +19,6 @@ export const LinkPreviewPanel = ({
   url,
   openInNewTab,
 }: LinkPreviewPanelProps) => {
-  console.log("URL in LinkPreviewPanel:", url);
-  console.log("Open in new tab:", openInNewTab);
-
   return (
     <Surface
       sx={{

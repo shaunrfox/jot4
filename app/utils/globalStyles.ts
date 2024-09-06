@@ -123,6 +123,21 @@ export default (mode: modes): SystemStyleObject => ({
     },
   },
   ".ProseMirror": {
+    // Image block styles
+    ".node-imageBlock": {
+      img: {
+        overflow: "hidden",
+        borderRadius: "0.75rem",
+        border: "4px solid",
+        borderColor: "transparent",
+      },
+      "&:hover img": {
+        borderColor: mode === modes.dark ? "blue.30" : "gray.40",
+      },
+      "&:has(.is-active) img, &.has-focus img": {
+        borderColor: mode === modes.dark ? "blue.40" : "blue.50",
+      },
+    },
     // Placeholder styles
     ".is-empty::before": {
       color: mode === modes.dark ? "gray.40" : "gray.30",

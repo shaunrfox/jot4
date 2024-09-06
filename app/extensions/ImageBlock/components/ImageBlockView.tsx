@@ -1,6 +1,4 @@
-// TODO Update this to use the new UI components
-
-import { cn } from "~/utils/tiptap";
+import Box from "~/components/Box";
 import { Node } from "@tiptap/pm/model";
 import { Editor, NodeViewWrapper } from "@tiptap/react";
 import { useCallback, useRef } from "react";
@@ -21,23 +19,38 @@ export const ImageBlockView = (props: ImageBlockViewProps) => {
   const imageWrapperRef = useRef<HTMLDivElement>(null);
   const { src } = node.attrs;
 
-  const wrapperClassName = cn(
-    node.attrs.align === "left" ? "ml-0" : "ml-auto",
-    node.attrs.align === "right" ? "mr-0" : "mr-auto",
-    node.attrs.align === "center" && "mx-auto",
-  );
-
   const onClick = useCallback(() => {
     editor.commands.setNodeSelection(getPos());
   }, [getPos, editor.commands]);
 
   return (
     <NodeViewWrapper>
-      <div className={wrapperClassName} style={{ width: node.attrs.width }}>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          width: node.attrs.width,
+          ...(node.attrs.align === "left" ? { ml: "0" } : { ml: "auto" }),
+          ...(node.attrs.align === "right" ? { mr: "0" } : { mr: "auto" }),
+          ...(node.attrs.align === "center"
+            ? {
+                ml: "auto",
+                mr: "auto",
+              }
+            : {}),
+        }}
+      >
         <div contentEditable={false} ref={imageWrapperRef}>
-          <img className="block" src={src} alt="" onClick={onClick} />
+          <Box
+            as="img"
+            sx={{ display: "block" }}
+            src={src}
+            alt=""
+            onClick={onClick}
+          />
         </div>
-      </div>
+      </Box>
     </NodeViewWrapper>
   );
 };
