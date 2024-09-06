@@ -17,9 +17,9 @@ import CodeInline from "~/components/icons/CodeInline";
 import Code from "~/components/icons/Code";
 import Highlight from "~/components/icons/Highlight";
 import CharacterColor from "~/components/icons/CharacterColor";
-import AlignLeft from "~/components/icons/AlignLeft";
-import AlignCenter from "~/components/icons/AlignCenter";
-import AlignRight from "~/components/icons/AlignRight";
+import TextAlignLeft from "~/components/icons/TextAlignLeft";
+import TextAlignCenter from "~/components/icons/TextAlignCenter";
+import TextAlignRight from "~/components/icons/TextAlignRight";
 import Rule from "~/components/Rule";
 import ChevronDown from "~/components/icons/ChevronDown";
 import ChevronUp from "~/components/icons/ChevronUp";
@@ -90,11 +90,11 @@ export const TextMenu = ({ editor }: TextMenuProps) => {
               sx={{ display: "flex", alignItems: "center", gap: 0 }}
             >
               {states.isAlignCenter ? (
-                <AlignCenter />
+                <TextAlignCenter />
               ) : states.isAlignRight ? (
-                <AlignRight />
+                <TextAlignRight />
               ) : (
-                <AlignLeft />
+                <TextAlignLeft />
               )}
               {isOpen ? <ChevronUp /> : <ChevronDown />}
             </MemoButton>
@@ -107,7 +107,7 @@ export const TextMenu = ({ editor }: TextMenuProps) => {
                 onClick={commands.onAlignLeft}
                 active={states.isAlignLeft}
               >
-                <AlignLeft />
+                <TextAlignLeft />
               </MemoButton>
               <MemoButton
                 tooltip="Align center"
@@ -115,7 +115,7 @@ export const TextMenu = ({ editor }: TextMenuProps) => {
                 onClick={commands.onAlignCenter}
                 active={states.isAlignCenter}
               >
-                <AlignCenter />
+                <TextAlignCenter />
               </MemoButton>
               <MemoButton
                 tooltip="Align right"
@@ -123,7 +123,7 @@ export const TextMenu = ({ editor }: TextMenuProps) => {
                 onClick={commands.onAlignRight}
                 active={states.isAlignRight}
               >
-                <AlignRight />
+                <TextAlignRight />
               </MemoButton>
             </Toolbar.Wrapper>
           </Popover.Content>

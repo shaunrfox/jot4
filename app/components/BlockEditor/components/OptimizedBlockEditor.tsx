@@ -65,7 +65,7 @@ export const OptimizedBlockEditor = React.memo(
         width: "100%",
         height: "100%",
         overflow: "hidden",
-        gap: "10px",
+        gap: "0.75rem",
 
         "> *": {
           position: "relative",

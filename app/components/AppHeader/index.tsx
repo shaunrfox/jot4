@@ -1,9 +1,10 @@
 import { modes, HEX8 } from "~/utils/theme";
 
 import Box from "~/components/Box";
-import { IconButton } from "~/components/Button";
+import Button, { IconButton } from "~/components/Button";
 import Hamburger from "~/components/icons/Hamburger";
 import MyLink from "~/components/MyLink";
+import Plus from "../icons/Plus";
 
 const AppHeader = () => {
   return (
@@ -42,6 +43,9 @@ const AppHeader = () => {
           Jot Home
         </MyLink>
         <MyLink to="pages">Pages</MyLink>
+        <Button sx={{ ml: "auto" }} size="small" variant="hollow">
+          New Page <Plus />
+        </Button>
       </Box>
     </Box>
   );

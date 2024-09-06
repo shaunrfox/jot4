@@ -35,8 +35,6 @@ export default (mode: modes): SystemStyleObject => ({
   a: {
     color: mode === modes.dark ? theme.colors.gray[5] : theme.colors.gray[80],
     textDecoration: "none",
-    // backgroundImage:
-    //   "linear-gradient(90deg, transparent 0%, transparent 50%, transparent 100%)",
     backgroundSize: "100% 1px",
     backgroundRepeat: "no-repeat",
     backgroundPositionY: "100%",
@@ -45,7 +43,6 @@ export default (mode: modes): SystemStyleObject => ({
     } 0%, ${
       mode === modes.dark ? theme.colors.gray[60] : theme.colors.gray[20]
     } 100%)`,
-    // cursor: "pointer",
     svg: {
       fill: "currentColor",
     },
@@ -113,7 +110,7 @@ export default (mode: modes): SystemStyleObject => ({
     img: {
       display: "block",
       height: "auto",
-      margin: "1.5rem 0",
+      margin: "1rem 0",
       maxWidth: "100%",
 
       "&.ProseMirror-selectednode": {
@@ -136,6 +133,62 @@ export default (mode: modes): SystemStyleObject => ({
       },
       "&:has(.is-active) img, &.has-focus img": {
         borderColor: mode === modes.dark ? "blue.40" : "blue.50",
+      },
+    },
+    // Columns styles
+    "[data-type='columns']": {
+      display: "grid",
+      gap: 4,
+      my: "1rem",
+
+      "&.layout-sidebar-left": {
+        gridTemplateColumns: "40fr 60fr",
+      },
+
+      "&.layout-sidebar-right": {
+        gridTemplateColumns: "60fr 40fr",
+      },
+
+      "&.layout-two-column": {
+        gridTemplateColumns: "1fr 1fr",
+      },
+
+      "[data-type='column']": {
+        display: "flex",
+        flexDirection: "column",
+        gap: "0.75rem",
+        overflow: "auto",
+        outline: "2px dotted",
+        outlineColor: "transparent",
+        outlineOffset: "3px",
+        borderRadius: 2,
+        p: 0,
+        transition: "outline 160ms cubic-bezier(0.45, 0.05, 0.55, 0.95)",
+        "&[data-position='left']": {
+          borderTopRightRadius: 0,
+          borderBottomRightRadius: 0,
+        },
+        "&[data-position='right']": {
+          borderTopLeftRadius: 0,
+          borderBottomLeftRadius: 0,
+        },
+        "&:hover, &:has(.is-active), &.has-focus": {
+          outlineColor: mode === modes.dark ? "gray.70" : "gray.20",
+        },
+        img: {
+          my: 0,
+        },
+        "* + .node-imageBlock img, .node-imageBlock + *": {
+          mt: "0.75rem",
+        },
+      },
+
+      "&.has-focus [data-type='column'], &:hover [data-type='column']": {
+        outline: "2px dotted",
+        outlineColor: mode === modes.dark ? "gray.70" : "gray.20",
+      },
+      "[data-type='column'].has-focus": {
+        outlineColor: mode === modes.dark ? "gray.60" : "gray.30",
       },
     },
     // Placeholder styles
