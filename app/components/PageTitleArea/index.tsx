@@ -1,12 +1,14 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Box from "~/components/Box";
 import Heading from "~/components/Heading";
 import Text from "~/components/Text";
 import More from "~/components/icons/More";
 import { IconButton } from "../Button";
-import DateDisplay from "~/components/DateDisplay";
 import MyLink from "~/components/MyLink";
 import ReactTimeAgo from "react-time-ago";
+import Edit from "~/components/icons/Edit";
+import { Input } from "~/components/Input";
+import Check from "~/components/icons/Check";
 
 const PageTitleArea: React.FC<{
   id?: string;
@@ -14,8 +16,153 @@ const PageTitleArea: React.FC<{
   date?: Date | string;
   updatedAt?: Date | string;
   type?: string;
-}> = ({ id, title, date, updatedAt, type }) => {
-  // console.log("Page Metadata", title, date, updatedAt, type);
+  onTitleChange?: (newTitle: string) => void;
+  isViewingPage?: boolean;
+}> = ({ id, title, updatedAt, type, onTitleChange, isViewingPage }) => {
+  const [isEditing, setIsEditing] = useState(false);
+  const [editedTitle, setEditedTitle] = useState(title);
+
+  useEffect(() => {
+    setEditedTitle(title);
+  }, [title]);
+
+  const handleEditClick = () => {
+    if (type !== "DAILY") {
+      setIsEditing(true);
+    }
+  };
+
+  const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setEditedTitle(e.target.value);
+  };
+
+  const handleTitleSubmit = () => {
+    if (onTitleChange && editedTitle !== title) {
+      onTitleChange(editedTitle);
+    }
+    setIsEditing(false);
+  };
+
+  const HeadingWrapper = ({ children }: { children: React.ReactNode }) => (
+    <Box
+      sx={{
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "start",
+        gap: "0.25rem",
+        "&:hover": {
+          button: {
+            opacity: 1,
+          },
+        },
+      }}
+    >
+      {children}
+    </Box>
+  );
+
+  const expandableInput = (
+    <Box
+      as="label"
+      htmlFor="page-title"
+      data-value={editedTitle}
+      sx={{
+        display: "inline-grid",
+        verticalAlign: "top",
+        alignItems: "center",
+        position: "relative",
+        padding: 0,
+        fontSize: 5,
+        fontWeight: "bold",
+        fontFamily: "default",
+        "&::after, input, textarea": {
+          width: "auto",
+          minWidth: "1em",
+          maxWidth: "100%",
+          gridArea: "1 / 2",
+          font: "inherit",
+          padding: "0 4px",
+          margin: 0,
+          resize: "none",
+          background: "none",
+          appearance: "none",
+          border: "none",
+        },
+        "&::after": {
+          content: "attr(data-value) ' '",
+          visibility: "hidden",
+          whiteSpace: "pre-wrap",
+        },
+        "&:focus-within": {
+          outline: "solid 2px",
+          outlineColor: "blue.50",
+          outlineOffset: "2px",
+          borderRadius: 2,
+          ml: "-4px",
+        },
+      }}
+    >
+      <Box
+        as="input"
+        type="text"
+        id="page-title"
+        onInput={(e: React.FormEvent<HTMLInputElement>) => {
+          const target = e.currentTarget;
+          const parent = target.parentNode as HTMLElement;
+          parent.dataset.value = target.value || "";
+        }}
+        value={editedTitle}
+        onChange={handleTitleChange}
+        onBlur={handleTitleSubmit}
+        onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) =>
+          e.key === "Enter" && handleTitleSubmit()
+        }
+        autoFocus
+        sx={{
+          font: "inherit",
+          mt: "-1px",
+          ml: "-1px",
+          "&:focus-visible": {
+            border: "none",
+            outline: "none",
+          },
+        }}
+        size="4"
+      />
+    </Box>
+  );
+
+  const renderTitle = () => {
+    if (isEditing) {
+      return <HeadingWrapper>{expandableInput}</HeadingWrapper>;
+    }
+
+    const headingContent = <Heading level={5}>{title}</Heading>;
+    const editButton = (
+      <IconButton
+        variant="hollow"
+        onClick={handleEditClick}
+        sx={{ opacity: 0 }}
+      >
+        <Edit />
+      </IconButton>
+    );
+
+    if (isViewingPage || !id) {
+      return (
+        <HeadingWrapper>
+          {headingContent}
+          {type !== "DAILY" && editButton}
+        </HeadingWrapper>
+      );
+    }
+
+    return (
+      <HeadingWrapper>
+        <MyLink to={`/page/${id}`}>{headingContent}</MyLink>
+      </HeadingWrapper>
+    );
+  };
 
   return (
     <Box
@@ -24,10 +171,10 @@ const PageTitleArea: React.FC<{
         top: 0,
         zIndex: 100,
         display: "flex",
-        alignItems: "center",
+        alignItems: "baseline",
+        justifyContent: "space-between",
         gap: 6,
-        // borderBottom: "1px solid",
-        // borderColor: "gray.20",
+        flexGrow: 1,
         marginLeft: "auto",
         marginRight: "auto",
         width: "100%",
@@ -40,15 +187,26 @@ const PageTitleArea: React.FC<{
       <Box
         sx={{
           display: "flex",
-          alignItems: "baseline",
-          gap: 6,
-          flexGrow: 1,
-          width: "100%",
+          alignItems: "center",
+          justifyContent: "start",
+          gap: "0.25rem",
+          "&:hover": {
+            button: {
+              opacity: 1,
+            },
+          },
         }}
       >
-        <Heading level={5} sx={{ width: "100%" }}>
-          {id ? <MyLink to={`/page/${id}`}>{title}</MyLink> : title}
-        </Heading>
+        {renderTitle()}
+      </Box>
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "flex-end",
+          gap: "0.25rem",
+        }}
+      >
         <Text
           sx={{
             opacity: 0.5,
@@ -63,12 +221,11 @@ const PageTitleArea: React.FC<{
               timeStyle="round-minute"
             />
           )}
-          {/* {type && ` | ${type}`} */}
         </Text>
+        <IconButton variant="hollow">
+          <More />
+        </IconButton>
       </Box>
-      <IconButton variant="hollow">
-        <More />
-      </IconButton>
     </Box>
   );
 };

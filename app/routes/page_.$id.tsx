@@ -10,7 +10,7 @@ interface PageData {
   id: string;
   type: string;
   title: string;
-  content: string | Record<string, any>;
+  content: string | Record<string, unknown>;
   date: Date;
   created_at: Date;
   updated_at: Date;
@@ -27,7 +27,7 @@ export const loader: LoaderFunction = async ({ params }) => {
     if (!page) {
       throw new Response("Not Found", { status: 404 });
     }
-    return json<PageData>(page);
+    return json(page as PageData);
   } catch (error) {
     console.error("Error fetching page:", error);
     throw new Response("Internal Server Error", { status: 500 });
@@ -42,13 +42,17 @@ export const action: ActionFunction = async ({ request, params }) => {
 
   const formData = await request.formData();
   const content = formData.get("content");
-
-  if (typeof content !== "string") {
-    return json({ error: "Invalid content" }, { status: 400 });
-  }
+  const title = formData.get("title");
 
   try {
-    const updatedPage = await PageService.updatePage(id, { content });
+    let updatedPage;
+    if (typeof content === "string") {
+      updatedPage = await PageService.updatePage(id, { content });
+    } else if (typeof title === "string") {
+      updatedPage = await PageService.updatePage(id, { title });
+    } else {
+      return json({ error: "Invalid data" }, { status: 400 });
+    }
     return json(updatedPage);
   } catch (error) {
     console.error("Error updating page:", error);
@@ -67,6 +71,12 @@ export default function SinglePage() {
     fetcher.submit(formData, { method: "post" });
   };
 
+  const handleTitleChange = (newTitle: string) => {
+    const formData = new FormData();
+    formData.append("title", newTitle);
+    fetcher.submit(formData, { method: "post" });
+  };
+
   return (
     <Page
       id={id}
@@ -76,6 +86,8 @@ export default function SinglePage() {
       updatedAt={new Date(pageData.updated_at)}
       type={pageData.type}
       onContentChange={handleContentChange}
+      onTitleChange={handleTitleChange}
+      isViewingPage={true}
       sx={{ pb: "50vh" }}
     />
   );

@@ -59,6 +59,12 @@ export default (mode: modes): SystemStyleObject => ({
       color: mode === modes.dark ? theme.colors.gray[5] : theme.colors.gray[80],
     },
   },
+  "a > h1, a > h2, a > h3, a > h4, a > h5, a > h6": {
+    "&:hover, &:visited:hover": {
+      color:
+        mode === modes.dark ? theme.colors.blue[40] : theme.colors.blue[50],
+    },
+  },
   hr: {
     border: "none",
     borderTop: "1px solid",

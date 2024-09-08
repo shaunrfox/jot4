@@ -7,11 +7,13 @@ import { StyleProps } from "~/utils/styled";
 interface PageProps {
   id?: string;
   title?: string;
-  content?: string | Record<string, any>;
+  content?: string | Record<string, unknown>;
   date?: Date;
   type?: string;
   updatedAt?: Date;
   onContentChange: (content: string) => void;
+  onTitleChange?: (title: string) => void;
+  isViewingPage?: boolean;
   sx?: StyleProps["sx"];
 }
 
@@ -23,6 +25,8 @@ const Page: React.FC<PageProps> = ({
   updatedAt,
   type,
   onContentChange,
+  onTitleChange,
+  isViewingPage,
   sx,
 }) => {
   const parsedContent = useMemo(() => {
@@ -57,6 +61,8 @@ const Page: React.FC<PageProps> = ({
         date={date}
         updatedAt={updatedAt}
         type={type}
+        onTitleChange={onTitleChange}
+        isViewingPage={isViewingPage}
       />
       <BlockEditor
         initialContent={parsedContent}
@@ -66,4 +72,4 @@ const Page: React.FC<PageProps> = ({
   );
 };
 
-export default React.memo(Page);
+export default Page;

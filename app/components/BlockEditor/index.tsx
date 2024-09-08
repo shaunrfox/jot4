@@ -45,7 +45,7 @@ export const BlockEditor = React.memo(
               editor={editor}
               menuContainerRef={menuContainerRef}
             />
-            <EditorParsedContent editor={editor} />
+            {/* <EditorParsedContent editor={editor} /> */}
           </>
         )}
       </>
