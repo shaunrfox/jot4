@@ -79,10 +79,11 @@ export default (mode: modes): SystemStyleObject => ({
   },
   // Code styles
   "code, pre": {
-    backgroundColor: mode === modes.dark ? "gray.80" : "gray.5",
-    color: mode === modes.dark ? "gray.5" : "gray.80",
-    fontSize: "inherit",
-    fontFamily: "mono",
+    fontSize: 2.5,
+    fontFamily: theme.fonts.mono,
+    backgroundColor: mode === modes.dark ? "gray.10" : "gray.90",
+    color: mode === modes.dark ? "gray.90" : "gray.5",
+    caretColor: mode === modes.dark ? "gray.90" : "gray.5",
   },
   code: {
     px: 4,
@@ -97,6 +98,33 @@ export default (mode: modes): SystemStyleObject => ({
     backgroundColor: "transparent",
     color: "inherit",
     fontSize: "inherit",
+    pl: 0,
+  },
+  ".hljs-comment, .hljs-quote": {
+    color: mode === modes.dark ? "gray.60" : "gray.40",
+  },
+  ".hljs-variable,.hljs-template-variable,.hljs-attribute,.hljs-tag,.hljs-name,.hljs-regexp,.hljs-link,.hljs-name,.hljs-selector-id,.hljs-selector-class":
+    {
+      color: mode === modes.dark ? "red.60" : "red.30",
+    },
+  ".hljs-number,.hljs-meta,.hljs-built_in,.hljs-builtin-name,.hljs-literal,.hljs-type,.hljs-params":
+    {
+      color: mode === modes.dark ? "orange.40" : "orange.30",
+    },
+  ".hljs-string,.hljs-symbol,.hljs-bullet": {
+    color: mode === modes.dark ? "green.40" : "green.30",
+  },
+  ".hljs-title,.hljs-section": {
+    color: mode === modes.dark ? "yellow.40" : "yellow.30",
+  },
+  ".hljs-keyword, .hljs-selector-tag": {
+    color: mode === modes.dark ? "indigo.40" : "indigo.30",
+  },
+  ".hljs-emphasis": {
+    fontStyle: "italic",
+  },
+  ".hljs-strong": {
+    fontWeight: "bold",
   },
   // Tiptap styles
   ".tiptap": {
@@ -344,8 +372,14 @@ export default (mode: modes): SystemStyleObject => ({
     },
   },
   // Selection styles
-  ".selection": {
+  "*::selection, .selection": {
     display: "inline",
+    backgroundColor: mode === modes.dark ? "gray.70" : "gray.10",
+    color: mode === modes.dark ? "gray.5" : "gray.90",
+  },
+  "code::selection, code *::selection": {
+    backgroundColor: mode === modes.dark ? "gray.40" : "gray.60",
+    color: "inherit",
   },
   // Table styles
   ".resize-cursor": {
