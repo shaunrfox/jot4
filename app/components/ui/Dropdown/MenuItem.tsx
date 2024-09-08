@@ -1,6 +1,5 @@
 import Button from "~/components/Button";
 import { useTheme } from "@emotion/react";
-import Box from "~/components/Box";
 import Text from "~/components/Text";
 import { StyleProps } from "~/utils/styled";
 import Rule from "~/components/Rule";

@@ -35,6 +35,7 @@ export const Rule = ({ orientation = "horizontal", ...props }: RuleProps) => {
         ...baseRuleStyles(theme),
         ...orientationStyles,
         ...sxStyles,
+        ...props,
       })}
     >
       &nbsp;

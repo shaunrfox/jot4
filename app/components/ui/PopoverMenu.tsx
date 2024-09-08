@@ -1,11 +1,12 @@
 // TODO Update this to use the new UI components
 
 import * as Popover from "@radix-ui/react-popover";
-import { cn } from "~/utils/tiptap";
 import { icons } from "lucide-react";
 import { forwardRef } from "react";
 import { Surface } from "./Surface";
 import { Toolbar } from "./Toolbar";
+import { MenuItem } from "./Dropdown/MenuItem";
+import Rule from "~/components/Rule";
 
 export const Trigger = Popover.Trigger;
 export const Portal = Popover.Portal;
@@ -47,16 +48,40 @@ export const Menu = ({
         </Trigger>
       )}
       {withPortal ? (
-        <Popover.Portal className="z-9999">
+        <Popover.Portal>
           <Popover.Content asChild sideOffset={8}>
-            <Surface className="min-w-[15rem] p-2 flex flex-col gap-0.5 max-h-80 overflow-auto z-[9999]">
+            <Surface
+              data-testid="popover-content"
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                gap: 3,
+                minWidth: "15rem",
+                maxHeight: "320px",
+                p: 4,
+                overflow: "auto",
+                zIndex: 9999,
+              }}
+            >
               {children}
             </Surface>
           </Popover.Content>
         </Popover.Portal>
       ) : (
         <Popover.Content asChild sideOffset={8}>
-          <Surface className="min-w-[15rem] p-2 flex flex-col gap-0.5 max-h-80 overflow-auto z-[9999]">
+          <Surface
+            data-testid="popover-content"
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              gap: 3,
+              minWidth: "15rem",
+              maxHeight: "320px",
+              p: 4,
+              overflow: "auto",
+              zIndex: 9999,
+            }}
+          >
             {children}
           </Surface>
         </Popover.Content>
@@ -84,24 +109,19 @@ export const Item = ({
   onClick: () => void;
   isActive?: boolean;
 }) => {
-  const className = cn(
-    "flex items-center gap-2 p-1.5 text-sm font-medium text-neutral-500 text-left bg-transparent w-full rounded",
-    !isActive && !disabled,
-    "hover:bg-neutral-100 hover:text-neutral-800 dark:hover:bg-neutral-900 dark:hover:text-neutral-200",
-    isActive &&
-      !disabled &&
-      "bg-neutral-100 text-neutral-800 dark:bg-neutral-900 dark:text-neutral-200",
-    disabled && "text-neutral-400 cursor-not-allowed dark:text-neutral-600",
-  );
-
-  const IconComponent = icon ? icons[icon] : null;
+  const IconComponent = icon ? icon : null;
   const IconCustomComponent = iconComponent || null;
 
-  const ItemComponent = close ? Popover.Close : "button";
+  const ItemComponent = close ? Popover.Close : Toolbar.Button;
 
   return (
-    <ItemComponent className={className} onClick={onClick} disabled={disabled}>
-      {IconComponent && <IconComponent className="w-4 h-4" />}
+    <ItemComponent
+      sx={{ display: "flex", alignItems: "center", whiteSpace: "nowrap" }}
+      onClick={onClick}
+      disabled={disabled}
+      active={isActive}
+    >
+      {IconComponent && <IconComponent />}
       {IconCustomComponent}
       {label}
     </ItemComponent>
@@ -113,21 +133,11 @@ export type CategoryTitle = {
 };
 
 export const CategoryTitle = ({ children }: CategoryTitle) => {
-  return (
-    <div className="mt-4 first:mt-1.5 mb-1.5 text-[0.625rem] font-medium text-neutral-400 dark:text-neutral-600 uppercase select-none px-1">
-      {children}
-    </div>
-  );
+  return <MenuItem itemType="subheader">{children}</MenuItem>;
 };
 
 export const Divider = forwardRef<HTMLHRElement>((props, ref) => {
-  return (
-    <hr
-      {...props}
-      ref={ref}
-      className="my-1 border-neutral-200 dark:border-neutral-800"
-    />
-  );
+  return <Rule {...props} ref={ref} />;
 });
 
 Divider.displayName = "Divider";

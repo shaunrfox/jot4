@@ -18,10 +18,10 @@ const ToolbarWrapper = forwardRef<HTMLDivElement, ToolbarWrapperProps>(
     { shouldShowContent = true, children, isVertical = false, sx, ...rest },
     ref,
   ) => {
-    console.log(
-      "ToolbarWrapper rendering, shouldShowContent:",
-      shouldShowContent,
-    );
+    // console.log(
+    //   "ToolbarWrapper rendering, shouldShowContent:",
+    //   shouldShowContent,
+    // );
     return (
       shouldShowContent && (
         <Surface

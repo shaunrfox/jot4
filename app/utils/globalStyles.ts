@@ -347,4 +347,167 @@ export default (mode: modes): SystemStyleObject => ({
   ".selection": {
     display: "inline",
   },
+  // Table styles
+  ".resize-cursor": {
+    cursor: "col-resize",
+  },
+  ".tableWrapper": {
+    my: "2rem",
+  },
+  table: {
+    width: "100%",
+    borderCollapse: "collapse",
+    border: "1px solid",
+    borderColor: mode === modes.dark ? "gray.80" : "gray.10",
+    borderRadius: 3,
+    textIndent: 0,
+    "td, th": {
+      position: "relative",
+      border: "1px solid",
+      borderColor: mode === modes.dark ? "gray.80" : "gray.10",
+      p: "0.5rem",
+      minWidth: "100px",
+      textAlign: "left",
+      verticalAlign: "top",
+      "&:first-of-type:not(a)": {
+        mt: 0,
+      },
+      "& > p": {
+        m: 0,
+
+        "& + p": {
+          mt: "0.25rem",
+        },
+      },
+    },
+    th: {
+      fontWeight: "bold",
+    },
+    ".selectedCell": {
+      backgroundColor: mode === modes.dark ? "gray.5" : "blue.5",
+      borderColor: mode === modes.dark ? "gray.5" : "blue.20",
+    },
+    ".column-resize-handle": {
+      position: "absolute",
+      right: "-0.25rem",
+      top: 0,
+      bottom: "-2px",
+      width: "0.5rem",
+      display: "flex",
+      pointerEvents: "none",
+      "&::before": {
+        content: '""',
+        display: "block",
+        height: "100%",
+        width: "1px",
+        ml: "0.5rem",
+        bg: mode === modes.dark ? "gray.60" : "gray.30",
+      },
+    },
+    ".grip-column, .grip-row": {
+      position: "absolute",
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      bg: mode === modes.dark ? "gray.80" : "gray.5",
+      zIndex: 10,
+      cursor: "pointer",
+      "&::before": {
+        content: '""',
+        borderColor: "transparent",
+      },
+      "&:hover": {
+        bg: mode === modes.dark ? "gray.70" : "gray.10",
+        "&::before": {
+          borderColor: mode === modes.dark ? "gray.30" : "gray.70",
+        },
+      },
+      "&.selected": {
+        bg: mode === modes.dark ? "blue.70" : "blue.30",
+        "&::before": {
+          borderColor: mode === modes.dark ? "gray.80" : "gray.5",
+        },
+      },
+      "&.first": {
+        borderColor: "transparent",
+      },
+    },
+    ".grip-column": {
+      top: "-0.75rem",
+      left: 0,
+      width: "calc(100% + 1px)",
+      height: "0.75rem",
+      ml: "-1px",
+      borderLeft: "1px solid",
+      borderColor: mode === modes.dark ? "gray.80" : "gray.10",
+      "&:hover": {
+        backgroundImage: `linear-gradient(90deg, ${
+          mode === modes.dark ? theme.colors.gray[60] : theme.colors.gray[20]
+        } 0%, ${
+          mode === modes.dark ? theme.colors.gray[60] : theme.colors.gray[20]
+        } 100%)`,
+        "&::before": {
+          width: "1rem",
+          borderBottom: "3px dotted",
+          borderColor: mode === modes.dark ? "gray.30" : "gray.70",
+        },
+      },
+      "&.selected": {
+        backgroundImage: `linear-gradient(90deg, ${
+          mode === modes.dark ? theme.colors.blue[30] : theme.colors.blue[50]
+        } 0%, ${
+          mode === modes.dark ? theme.colors.blue[30] : theme.colors.blue[50]
+        } 100%)`,
+        "&::before": {
+          width: "1rem",
+          borderBottom: "3px dotted",
+          borderColor: mode === modes.dark ? "gray.100" : "gray.0",
+        },
+        "&:hover": {
+          backgroundImage: `linear-gradient(90deg, ${
+            mode === modes.dark ? theme.colors.blue[30] : theme.colors.blue[50]
+          } 0%, ${
+            mode === modes.dark ? theme.colors.blue[30] : theme.colors.blue[50]
+          } 100%)`,
+        },
+      },
+      "&.first": {
+        borderTopLeftRadius: "0.125rem",
+      },
+      "&.last": {
+        borderTopRightRadius: "0.125rem",
+      },
+    },
+    ".grip-row": {
+      width: "0.75rem",
+      height: "calc(100% + 1px)",
+      left: "-0.75rem",
+      top: 0,
+      mt: "-1px",
+      borderTop: "1px solid",
+      borderColor: mode === modes.dark ? "gray.80" : "gray.10",
+      backgroundImage:
+        "linear-gradient(90deg, transparent 0%, transparent 100%)",
+      "&:hover": {
+        "&::before": {
+          height: "1rem",
+          borderLeft: "3px dotted",
+          borderColor: mode === modes.dark ? "gray.30" : "gray.70",
+        },
+      },
+      "&.selected": {
+        "&::before": {
+          height: "1rem",
+          borderLeft: "3px dotted",
+          borderColor: mode === modes.dark ? "gray.100" : "gray.0",
+        },
+      },
+      "&.first": {
+        borderTopLeftRadius: "0.125rem",
+      },
+      "&.last": {
+        borderBottomLeftRadius: "0.125rem",
+      },
+    },
+  },
 });

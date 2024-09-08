@@ -1,5 +1,3 @@
-// TODO Update this to use the new UI components
-
 import { mergeAttributes, Node } from "@tiptap/core";
 import { Plugin } from "@tiptap/pm/state";
 import { Decoration, DecorationSet } from "@tiptap/pm/view";
