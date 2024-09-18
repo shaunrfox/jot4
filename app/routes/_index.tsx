@@ -7,7 +7,6 @@ import {
   useLoaderData,
   useNavigation,
 } from "@remix-run/react";
-// import { TiptapCollabProvider } from "@hocuspocus/provider";
 import Box from "~/components/Box";
 import Page from "~/components/Page";
 import * as PageService from "~/services/page.server";
@@ -18,6 +17,8 @@ import Rule from "~/components/Rule";
 import TimeAgo from "javascript-time-ago";
 import en from "javascript-time-ago/locale/en";
 TimeAgo.addDefaultLocale(en);
+
+import * as PageModel from "~/models/page.server";
 
 export async function loader() {
   const today = new Date();
@@ -86,8 +87,8 @@ export async function action({ request }: ActionFunctionArgs) {
       case "createPage": {
         const title = String(form.get("title"));
         const content = String(form.get("content"));
-        await PageService.createPage({ title, content });
-        break;
+        const newPage = await PageModel.createPage({ title, content });
+        return json({ newPageId: newPage.id });
       }
       case "create": {
         const blockType = String(form.get("blockType")) as BlockType;
@@ -207,8 +208,8 @@ export default function Index() {
           )}
           <Page
             id={page.id}
-            title={page.title}
-            content={page.content}
+            title={page.title || "Untitled"}
+            content={page.content as string}
             date={new Date(page.date)}
             updatedAt={new Date(page.updated_at)}
             type={page.type}

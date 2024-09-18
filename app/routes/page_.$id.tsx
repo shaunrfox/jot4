@@ -18,7 +18,7 @@ interface PageData {
 
 export const loader: LoaderFunction = async ({ params }) => {
   const { id } = params;
-  if (!id) {
+  if (!id || !/^[0-9a-fA-F]{24}$/.test(id)) {
     throw new Response("Not Found", { status: 404 });
   }
 
@@ -77,11 +77,17 @@ export default function SinglePage() {
     fetcher.submit(formData, { method: "post" });
   };
 
+  // Parse the content if it's a string
+  const parsedContent =
+    typeof pageData.content === "string"
+      ? JSON.parse(pageData.content)
+      : pageData.content;
+
   return (
     <Page
       id={id}
-      title={pageData.title}
-      content={pageData.content}
+      title={pageData.title || "Untitled"}
+      content={parsedContent}
       date={new Date(pageData.date)}
       updatedAt={new Date(pageData.updated_at)}
       type={pageData.type}

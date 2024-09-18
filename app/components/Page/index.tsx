@@ -6,7 +6,7 @@ import { StyleProps } from "~/utils/styled";
 
 interface PageProps {
   id?: string;
-  title?: string;
+  title: string; // Changed from optional to required
   content?: string | Record<string, unknown>;
   date?: Date;
   type?: string;

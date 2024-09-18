@@ -1,12 +1,33 @@
 import { modes, HEX8 } from "~/utils/theme";
-
 import Box from "~/components/Box";
 import Button, { IconButton } from "~/components/Button";
 import Hamburger from "~/components/icons/Hamburger";
 import MyLink from "~/components/MyLink";
 import Plus from "../icons/Plus";
+import { useFetcher, useNavigate } from "@remix-run/react";
+import { useEffect } from "react";
+
+interface FetcherData {
+  newPageId?: string;
+}
 
 const AppHeader = () => {
+  const fetcher = useFetcher<FetcherData>();
+  const navigate = useNavigate();
+
+  const handleNewPage = () => {
+    fetcher.submit(
+      { intent: "createPage", title: "Untitled", content: "" },
+      { method: "post", action: "/?index" },
+    );
+  };
+
+  useEffect(() => {
+    if (fetcher.data && fetcher.data.newPageId) {
+      navigate(`/page/${fetcher.data.newPageId}`);
+    }
+  }, [fetcher.data, navigate]);
+
   return (
     <Box
       sx={{
@@ -43,7 +64,12 @@ const AppHeader = () => {
           Jot Home
         </MyLink>
         <MyLink to="pages">Pages</MyLink>
-        <Button sx={{ ml: "auto" }} size="small" variant="hollow">
+        <Button
+          sx={{ ml: "auto" }}
+          size="small"
+          variant="hollow"
+          onClick={handleNewPage}
+        >
           New Page <Plus />
         </Button>
       </Box>

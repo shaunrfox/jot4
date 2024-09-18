@@ -43,7 +43,7 @@ const ToolbarWrapper = forwardRef<HTMLDivElement, ToolbarWrapperProps>(
           {...rest}
           ref={ref}
         >
-          {console.log("ToolbarWrapper Surface rendering")}
+          {/* {console.log("ToolbarWrapper Surface rendering")} */}
           {children}
         </Surface>
       )

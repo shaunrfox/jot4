@@ -7,9 +7,10 @@ export async function createPage({
 }: Pick<Page, "title"> & { content: string }) {
   let parsedContent;
   try {
+    // Check if content is already a JSON string
     parsedContent = JSON.parse(content);
-    // console.log("Parsed content:", parsedContent);
   } catch (error) {
+    // If parsing fails, assume it's a plain string and create a default structure
     parsedContent = {
       type: "doc",
       content: [
@@ -23,7 +24,7 @@ export async function createPage({
 
   return PageService.createPage({
     title,
-    content: JSON.stringify(parsedContent),
+    content: JSON.stringify(parsedContent), // Stringify only once
     date: new Date(),
   });
 }
@@ -36,7 +37,6 @@ export function updatePage(
     date,
   }: Partial<Pick<Page, "title" | "date">> & { content?: string },
 ) {
-  // console.log("👍🏼 updatePage triggered", { id, title, content, date });
   return PageService.updatePage(id, { title, content, date });
 }
 

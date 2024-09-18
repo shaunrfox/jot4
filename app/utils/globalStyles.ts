@@ -90,6 +90,7 @@ export default (mode: modes): SystemStyleObject => ({
     backgroundColor: mode === modes.dark ? "gray.10" : "gray.90",
     color: mode === modes.dark ? "gray.90" : "gray.5",
     caretColor: mode === modes.dark ? "gray.90" : "gray.5",
+    tabSize: "1rem",
   },
   code: {
     px: 4,
