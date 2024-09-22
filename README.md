@@ -1,40 +1,27 @@
-# Welcome to Remix!
+# Jot 4!
 
-- 📖 [Remix docs](https://remix.run/docs)
+For real this time...
 
 ## Development
 
-Run the dev server:
+|     | Step                   | Command               |
+| --- | ---------------------- | --------------------- |
+| 1   | Install dependencies   | `npm install`         |
+| 2   | Run Docker             | `docker compose up`   |
+| 3   | Generate Prisma Client | `npx prisma generate` |
+| 4   | Seed DB (if needed)    | `npm run seed`        |
+| 5   | Run Remix              | `npm run dev`         |
+| 6   | Run Prisma Studio      | `npx prisma studio`   |
 
-```shellscript
-npm run dev
-```
+## Technologies
 
-## Deployment
+- [Remix](https://remix.run/) + [Prisma](https://www.prisma.io/) + [MongoDB](https://www.mongodb.com/)
+- [Lexical](https://playground.lexical.dev/) or [SlateJS](https://www.slatejs.org/examples/richtext)
+- [Jot Pattern Library](https://jot.st/components)
 
-First, build your app for production:
+## MongoDB
 
-```sh
-npm run build
-```
+Options for connecting to the database:
 
-Then run the app in production mode:
-
-```sh
-npm start
-```
-
-Now you'll need to pick a host to deploy it to.
-
-### DIY
-
-If you're familiar with deploying Node applications, the built-in Remix app server is production-ready.
-
-Make sure to deploy the output of `npm run build`
-
-- `build/server`
-- `build/client`
-
-## Styling
-
-This template comes with [Tailwind CSS](https://tailwindcss.com/) already configured for a simple default starting experience. You can use whatever css framework you prefer. See the [Vite docs on css](https://vitejs.dev/guide/features.html#css) for more information.
+- Use [Mongo Compass](https://www.mongodb.com/products/tools/compass)
+- Use [Prisma Studio](https://www.prisma.io/docs/orm/tools/prisma-studio): `npx prisma studio`
