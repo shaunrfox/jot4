@@ -2,9 +2,6 @@ import { useParams, useLoaderData, useFetcher } from "@remix-run/react";
 import { json, LoaderFunction, ActionFunction } from "@remix-run/node";
 import Page from "~/components/Page";
 import * as PageService from "~/services/page.server";
-import TimeAgo from "javascript-time-ago";
-import en from "javascript-time-ago/locale/en";
-TimeAgo.addDefaultLocale(en);
 
 interface PageData {
   id: string;

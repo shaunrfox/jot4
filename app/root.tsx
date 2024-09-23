@@ -38,7 +38,7 @@ function getPreferredTheme() {
   return modes.light;
 }
 
-export function Layout({ children }: { children: React.ReactNode }) {
+export function Layout() {
   const [mode, setMode] = useState(() => {
     if (typeof window === "undefined") return modes.light;
     return getPreferredTheme();
@@ -79,7 +79,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <body>
           <MainContent>
             <AppHeader />
-            {children}
+            <Outlet />
           </MainContent>
           <ScrollRestoration />
           <Scripts />
@@ -90,5 +90,5 @@ export function Layout({ children }: { children: React.ReactNode }) {
 }
 
 export default function App() {
-  return <Outlet />;
+  return <Layout />;
 }

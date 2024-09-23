@@ -7,7 +7,7 @@ export interface MyLinkProps extends StyleProps {
   to?: string;
   target?: string;
   rel?: string;
-  blue?: boolean | string;
+  blue?: boolean;
 }
 
 const MyLink = styled(Link)<MyLinkProps>(
@@ -21,7 +21,7 @@ const MyLink = styled(Link)<MyLinkProps>(
       svg: {
         fill: "currentColor",
       },
-      ...(blue === true || blue === "true"
+      ...(blue === true
         ? {
             color: props.theme?.mode === modes.dark ? "blue.50" : "blue.50",
             backgroundImage: `linear-gradient(90deg, ${
