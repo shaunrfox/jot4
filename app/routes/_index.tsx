@@ -49,7 +49,7 @@ export async function loader() {
       }
       return page;
     }),
-    PageService.getRecentDailyPages(7, today),
+    PageService.getRecentDailyPages(30, today),
   ]);
 
   // console.log("Loader data:", { todayPage, recentPages });

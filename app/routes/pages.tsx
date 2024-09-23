@@ -6,6 +6,7 @@ import * as PageService from "~/services/page.server";
 import { BlockType } from "@prisma/client";
 import Box from "~/components/Box";
 import Heading from "~/components/Heading";
+import Text from "~/components/Text";
 import Rule from "~/components/Rule";
 import PageTitleArea from "~/components/PageTitleArea";
 import { generateJSON } from "@tiptap/html";
@@ -37,6 +38,8 @@ import History from "@tiptap/extension-history";
 import { Quote } from "~/extensions/BlockquoteFigure/Quote";
 import { QuoteCaption } from "~/extensions/BlockquoteFigure/QuoteCaption";
 import { BlockquoteFigure } from "~/extensions/BlockquoteFigure";
+import MyLink from "~/components/MyLink";
+import DateDisplay from "~/components/DateDisplay";
 
 export const loader = async () => {
   const pages = await PageService.getAllPages();
@@ -56,7 +59,8 @@ export async function action({ request }: ActionFunctionArgs) {
   if (intent === "createPage") {
     const title = String(form.get("title"));
     const content = String(form.get("content"));
-    await PageService.createPage({ title, content });
+    const date = new Date();
+    await PageService.createPage({ title, content, date });
   }
 
   if (intent === "createBlock") {
@@ -84,6 +88,22 @@ export async function action({ request }: ActionFunctionArgs) {
   return null;
 }
 
+function Tag({ children }: { children: React.ReactNode }) {
+  return (
+    <Box
+      sx={{
+        backgroundColor: "highlight.light.cyan",
+        px: 3,
+        py: 1,
+        borderRadius: 3,
+        fontSize: 2,
+      }}
+    >
+      {children}
+    </Box>
+  );
+}
+
 export default function DocumentsRoute() {
   const { pages } = useLoaderData<typeof loader>();
   const fetcher = useFetcher();
@@ -101,47 +121,50 @@ export default function DocumentsRoute() {
       sx={{
         display: "flex",
         flexDirection: "column",
+        gap: 6,
         alignItems: "stretch",
         height: "100%",
-        gap: 4,
-        maxWidth: "650px",
         "&:last-child": {
           marginBottom: 8,
         },
       }}
     >
       <Heading level={6}>Pages</Heading>
-      {pages.map((page, index) => (
-        <React.Fragment key={page.id}>
-          {index > 0 && (
-            <Rule
-              sx={{
-                maxWidth: "650px",
-                my: 10,
-                borderColor: "mint.30",
-                borderBottomWidth: 2,
-              }}
-            />
-          )}
+      {pages
+        .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+        .map((page) => (
           <Box
+            key={page.id}
             sx={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "stretch",
-              width: "100%",
-              marginBottom: 8,
+              display: "grid",
+              gridTemplateColumns: "1fr auto",
+              rowGap: 4,
+              columnGap: 8,
             }}
           >
-            <PageTitleArea
-              id={page.id}
-              title={page.title}
-              date={page.date}
-              type={page.type}
+            <Box sx={{ display: "flex", alignItems: "center", gap: 4 }}>
+              <MyLink
+                to={`/page/${page.id}`}
+                sx={{
+                  fontSize: 3,
+                  width: "fit-content",
+                  maxWidth: "300px",
+                  textWrap: "wrap",
+                }}
+              >
+                {page.title}
+              </MyLink>
+              {page.type === "DAILY" ? <Tag>Daily</Tag> : ""}
+            </Box>
+            <DateDisplay
+              utcDate={page.date}
+              dateFormat="MMM dd, yyyy"
+              level={2}
+              font="mono"
+              sx={{ textTransform: "uppercase", color: "gray.40" }}
             />
-            <PageContent content={page.content as JSONContent} />
           </Box>
-        </React.Fragment>
-      ))}
+        ))}
     </Box>
   );
 }

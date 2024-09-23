@@ -7,10 +7,23 @@ export async function createPage({
   date,
   type = "DOC",
 }: Pick<Page, "title"> & { content: string; date: Date; type?: string }) {
+  let parsedContent;
+  try {
+    parsedContent = JSON.parse(content);
+  } catch (error) {
+    console.error("Error parsing content:", error);
+    parsedContent = {
+      type: "doc",
+      content: [
+        { type: "paragraph", content: [{ type: "text", text: content }] },
+      ],
+    };
+  }
+
   return prisma.page.create({
     data: {
       title,
-      content,
+      content: JSON.stringify(parsedContent),
       date,
       type,
     },
