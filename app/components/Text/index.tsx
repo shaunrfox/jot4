@@ -3,7 +3,7 @@ import { themeHelper, sxPropHelper, StyleProps } from "~/utils/styled";
 import { modes } from "~/utils/theme";
 
 export interface TextProps extends StyleProps {
-  level?: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8;
+  level?: 1 | 2 | 2.5 | 3 | 4 | 5 | 6 | 7 | 8;
   font?: "default" | "mono";
 }
 

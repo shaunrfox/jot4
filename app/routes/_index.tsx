@@ -10,15 +10,7 @@ import {
 import Box from "~/components/Box";
 import Page from "~/components/Page";
 import * as PageService from "~/services/page.server";
-import * as BlockService from "~/services/block.server";
-import { BlockType } from "@prisma/client";
 import Rule from "~/components/Rule";
-
-import TimeAgo from "javascript-time-ago";
-import en from "javascript-time-ago/locale/en";
-TimeAgo.addDefaultLocale(en);
-
-import * as PageModel from "~/models/page.server";
 
 export async function loader() {
   const today = new Date();
@@ -87,35 +79,39 @@ export async function action({ request }: ActionFunctionArgs) {
       case "createPage": {
         const title = String(form.get("title"));
         const content = String(form.get("content"));
-        const newPage = await PageModel.createPage({ title, content });
+        const newPage = await PageService.createPage({
+          title,
+          content,
+          date: new Date(),
+        });
         return json({ newPageId: newPage.id });
       }
-      case "create": {
-        const blockType = String(form.get("blockType")) as BlockType;
-        const content = String(form.get("blockContent"));
-        const pageId = String(form.get("pageId"));
-        await BlockService.createBlock({
-          type: blockType,
-          content,
-          parent_id: pageId,
-        });
-        break;
-      }
-      case "update": {
-        const blockId = String(form.get("blockId"));
-        const content = String(form.get("blockContent"));
-        await BlockService.updateBlock(blockId, { content });
-        break;
-      }
-      case "delete": {
-        const blockId = String(form.get("blockId"));
-        await BlockService.deleteBlock(blockId);
-        break;
-      }
-      case "deleteAll": {
-        await BlockService.deleteAllBlocks();
-        break;
-      }
+      // case "create": {
+      //   const blockType = String(form.get("blockType")) as BlockType;
+      //   const content = String(form.get("blockContent"));
+      //   const pageId = String(form.get("pageId"));
+      //   await BlockService.createBlock({
+      //     type: blockType,
+      //     content,
+      //     parent_id: pageId,
+      //   });
+      //   break;
+      // }
+      // case "update": {
+      //   const blockId = String(form.get("blockId"));
+      //   const content = String(form.get("blockContent"));
+      //   await BlockService.updateBlock(blockId, { content });
+      //   break;
+      // }
+      // case "delete": {
+      //   const blockId = String(form.get("blockId"));
+      //   await BlockService.deleteBlock(blockId);
+      //   break;
+      // }
+      // case "deleteAll": {
+      //   await BlockService.deleteAllBlocks();
+      //   break;
+      // }
       default:
         throw new Error(`Unsupported intent: ${intent}`);
     }

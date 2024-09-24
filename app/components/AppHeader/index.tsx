@@ -6,8 +6,9 @@ import MyLink from "~/components/MyLink";
 import Plus from "../icons/Plus";
 import { useFetcher, useNavigate } from "@remix-run/react";
 import { useEffect, useState } from "react";
-import { SearchCommand } from "~/components/SearchCommand";
 import Search from "~/components/icons/Search";
+import { CommandBar } from "~/components/CommandBar";
+import { Hotkeys } from "~/components/Hotkeys";
 
 interface FetcherData {
   newPageId?: string;
@@ -84,19 +85,22 @@ const AppHeader = () => {
             Jot Home
           </MyLink>
           <MyLink to="pages">Pages</MyLink>
-          <IconButton
+          <Button
             sx={{ ml: "auto" }}
             variant="hollow"
+            size="small"
             onClick={() => setIsSearchOpen(true)}
           >
+            <Hotkeys hotkeys={["⌘", "k"]} />
+            Search
             <Search />
-          </IconButton>
+          </Button>
           <Button size="small" variant="hollow" onClick={handleNewPage}>
             New Page <Plus />
           </Button>
         </Box>
       </Box>
-      <SearchCommand isOpen={isSearchOpen} setOpen={setIsSearchOpen} />
+      <CommandBar isOpen={isSearchOpen} setOpen={setIsSearchOpen} />
     </>
   );
 };

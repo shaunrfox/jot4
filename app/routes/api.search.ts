@@ -23,9 +23,15 @@ export const loader: LoaderFunction = async ({ request }) => {
           title: 1,
           content: 1,
         },
-        limit: 10,
+        limit: 50,
+        // Start of Selection
+        sort: { createdAt: -1 }, // Sort by createdAt in descending order
       },
     });
+
+    if (!results) {
+      return json({ results: [] });
+    }
 
     return json({
       results: results.map((result: any) => ({

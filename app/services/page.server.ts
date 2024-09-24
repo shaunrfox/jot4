@@ -38,22 +38,24 @@ export async function updatePage(
     date,
   }: Partial<Pick<Page, "title" | "date">> & { content?: string },
 ) {
-  const updateData: any = {};
+  const updateData: Partial<Pick<Page, "title" | "date">> & {
+    content?: string;
+  } = {};
   if (title !== undefined) updateData.title = title;
   if (content !== undefined) {
     try {
       updateData.content = JSON.parse(content);
     } catch (error) {
       console.error("Error parsing content:", error);
-      updateData.content = {
+      updateData.content = JSON.stringify({
         type: "doc",
         content: [
           { type: "paragraph", content: [{ type: "text", text: content }] },
         ],
-        date,
-      };
+      });
     }
   }
+  if (date !== undefined) updateData.date = date;
 
   return prisma.page.update({
     where: { id },

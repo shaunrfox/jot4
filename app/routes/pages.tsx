@@ -1,15 +1,15 @@
 import React from "react";
 import { useLoaderData, useFetcher } from "@remix-run/react";
 import { json, type ActionFunctionArgs } from "@remix-run/node";
-import * as BlockService from "~/services/block.server";
+// import * as BlockService from "~/services/block.server";
 import * as PageService from "~/services/page.server";
-import { BlockType } from "@prisma/client";
+// import { BlockType } from "@prisma/client";
 import Box from "~/components/Box";
 import Heading from "~/components/Heading";
 import Text from "~/components/Text";
-import Rule from "~/components/Rule";
-import PageTitleArea from "~/components/PageTitleArea";
-import { generateJSON } from "@tiptap/html";
+// import Rule from "~/components/Rule";
+// import PageTitleArea from "~/components/PageTitleArea";
+// import { generateJSON } from "@tiptap/html";
 import { JSONContent } from "@tiptap/react";
 
 // Tiptap extensions
@@ -46,7 +46,7 @@ export const loader = async () => {
   const pagesWithBlocks = await Promise.all(
     pages.map(async (page) => ({
       ...page,
-      blocks: await BlockService.getBlocksByPageId(page.id),
+      // blocks: await BlockService.getBlocksByPageId(page.id),
     })),
   );
   return json({ pages: pagesWithBlocks });
@@ -63,27 +63,27 @@ export async function action({ request }: ActionFunctionArgs) {
     await PageService.createPage({ title, content, date });
   }
 
-  if (intent === "createBlock") {
-    const blockType = String(form.get("blockType")) as BlockType;
-    const content = String(form.get("blockContent"));
-    const pageId = String(form.get("pageId"));
+  // if (intent === "createBlock") {
+  //   const blockType = String(form.get("blockType")) as BlockType;
+  //   const content = String(form.get("blockContent"));
+  //   const pageId = String(form.get("pageId"));
 
-    await BlockService.createBlock({
-      type: blockType,
-      content,
-      parent_id: pageId,
-    });
-  }
+  //   await BlockService.createBlock({
+  //     type: blockType,
+  //     content,
+  //     parent_id: pageId,
+  //   });
+  // }
 
   if (intent === "deletePage") {
     const pageId = String(form.get("pageId"));
     await PageService.deletePage(pageId);
   }
 
-  if (intent === "deleteBlock") {
-    const blockId = String(form.get("blockId"));
-    await BlockService.deleteBlock(blockId);
-  }
+  // if (intent === "deleteBlock") {
+  //   const blockId = String(form.get("blockId"));
+  //   await BlockService.deleteBlock(blockId);
+  // }
 
   return null;
 }
@@ -112,9 +112,9 @@ export default function DocumentsRoute() {
     fetcher.submit({ intent: "deletePage", pageId }, { method: "POST" });
   };
 
-  const handleDeleteBlock = (blockId: string) => {
-    fetcher.submit({ intent: "deleteBlock", blockId }, { method: "POST" });
-  };
+  // const handleDeleteBlock = (blockId: string) => {
+  //   fetcher.submit({ intent: "deleteBlock", blockId }, { method: "POST" });
+  // };
 
   return (
     <Box

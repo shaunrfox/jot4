@@ -26,6 +26,7 @@ const StyledLabel = styled(Box.withComponent("label"))<BoxProps>(
       width: "min-content",
       color: "gray.80",
       fontSize: "2.5",
+      fontFamily: "default",
       "&:focus-within": {
         borderColor: props.theme?.mode === modes.dark ? "gray.60" : "blue.40",
       },
