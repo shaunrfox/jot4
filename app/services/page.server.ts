@@ -14,16 +14,14 @@ export async function createPage({
     console.error("Error parsing content:", error);
     parsedContent = {
       type: "doc",
-      content: [
-        { type: "paragraph", content: [{ type: "text", text: content }] },
-      ],
+      content: ` `,
     };
   }
 
   return prisma.page.create({
     data: {
       title,
-      content: JSON.stringify(parsedContent),
+      content: parsedContent,
       date,
       type,
     },
