@@ -1,58 +1,89 @@
 import * as React from "react";
 import { useNavigate } from "@remix-run/react";
 import { useRef, useEffect, useState } from "react";
-import styled from "@emotion/styled";
-import { StyleProps } from "~/utils/styled";
+import { StyleProps, themeHelper } from "~/utils/styled";
 import Box, { BoxProps } from "~/components/Box";
-import { Command } from "./command";
 import { useDebounce } from "~/hooks/use-debounce";
+import Heading from "~/components/Heading";
+import Text from "~/components/Text";
+import styled from "@emotion/styled";
+import { Input, InputProps } from "./Input";
 
-export type SearchCommandProps = BoxProps & {
+interface CommandProps {
+  isOpen: boolean;
+  onClose: () => void;
+  children: React.ReactNode;
+}
+
+export type CommandBarProps = BoxProps & {
   styleProps?: StyleProps;
   isOpen: boolean;
   setOpen: (isOpen: boolean) => void;
 };
 
 interface SearchResult {
-  id: string;
+  id: { $oid: string };
   title: string;
   content: string;
+  updatedAt: string;
 }
 
-const SearchButton = styled.button`
-  position: fixed;
-  right: 20px;
-  bottom: 20px;
-  background-color: #4a5568;
-  color: white;
-  border: none;
-  border-radius: 50%;
-  width: 50px;
-  height: 50px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  box-shadow:
-    0 4px 6px -1px rgba(0, 0, 0, 0.1),
-    0 2px 4px -1px rgba(0, 0, 0, 0.06);
+const CommandBarDialog = styled(Box)<BoxProps>(({ ...props }) =>
+  themeHelper({
+    position: "fixed",
+    top: "10%",
+    left: "50%",
+    transform: "translateX(-50%)",
+    width: "100%",
+    maxWidth: "500px",
+    background: "gray.0",
+    borderRadius: 4,
+    overflow: "hidden",
+    boxShadow: "low_dark",
+    zIndex: 1000,
+  })(props),
+);
 
-  &:hover {
-    background-color: #2d3748;
-  }
-`;
+const Skrim = styled(Box)<BoxProps>(({ ...props }) =>
+  themeHelper({
+    position: "fixed",
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: "gray.90",
+    opacity: 0.5,
+    zIndex: 999,
+  })(props),
+);
 
-const ResultTitle = styled.h3`
-  margin: 0;
-  font-size: 16px;
-  font-weight: 600;
-`;
+const CommandBarInput = styled(Box.withComponent("input"))<InputProps>(
+  ({ ...props }) =>
+    themeHelper({
+      width: "100%",
+      py: 6,
+      px: 8,
+      fontSize: 4,
+      border: "none",
+      borderBottom: "1px solid",
+      borderColor: "gray.20",
+      outline: "none",
+      fontFamily: "default",
+      backgroundColor: "gray.0",
+      m: 0,
+    })(props),
+);
 
-const ResultContent = styled.p`
-  margin: 4px 0 0;
-  font-size: 14px;
-  color: #718096;
-`;
+export function CommandBarWrapper({ isOpen, onClose, children }: CommandProps) {
+  if (!isOpen) return null;
+
+  return (
+    <>
+      <Skrim onClick={onClose} />
+      <CommandBarDialog>{children}</CommandBarDialog>
+    </>
+  );
+}
 
 const extractTextFromContent = (content: any): string => {
   if (typeof content === "string") return content;
@@ -65,37 +96,36 @@ const extractTextFromContent = (content: any): string => {
   return "";
 };
 
-const HighlightedText = styled.span`
-  background-color: yellow;
-  font-weight: bold;
-`;
-
-const highlightText = (text: string, highlight: string) => {
+const highlightTextMatch = (text: string, highlight: string) => {
   if (!highlight.trim()) {
     return <span>{text}</span>;
   }
   const regex = new RegExp(`(${highlight})`, "gi");
   const parts = text.split(regex);
   return (
-    <span>
+    <>
       {parts.map((part, i) =>
         regex.test(part) ? (
-          <HighlightedText key={i}>{part}</HighlightedText>
+          <Box
+            as="span"
+            key={i}
+            sx={{
+              backgroundColor: "yellow.10",
+              fontWeight: "bold",
+              color: "gray.90",
+            }}
+          >
+            {part}
+          </Box>
         ) : (
           part
         ),
       )}
-    </span>
+    </>
   );
 };
 
-export type SearchCommandProps = BoxProps & {
-  styleProps?: StyleProps;
-  isOpen: boolean;
-  setOpen: (isOpen: boolean) => void;
-};
-
-export function SearchCommand({ isOpen, setOpen }: SearchCommandProps) {
+export const CommandBar = ({ isOpen, setOpen }: CommandBarProps) => {
   const navigate = useNavigate();
   const [query, setQuery] = useState("");
   const debouncedQuery = useDebounce(query, 300);
@@ -112,7 +142,8 @@ export function SearchCommand({ isOpen, setOpen }: SearchCommandProps) {
     }
   }, [isOpen]);
 
-  React.useEffect(() => {
+  // open the command bar with cmd+k
+  useEffect(() => {
     const down = (e: KeyboardEvent) => {
       if (e.key === "k" && (e.metaKey || e.ctrlKey)) {
         e.preventDefault();
@@ -124,7 +155,8 @@ export function SearchCommand({ isOpen, setOpen }: SearchCommandProps) {
     return () => document.removeEventListener("keydown", down);
   }, [isOpen, setOpen]);
 
-  React.useEffect(() => {
+  // search the pages
+  useEffect(() => {
     if (debouncedQuery.length === 0) {
       setResults([]);
       return;
@@ -161,6 +193,7 @@ export function SearchCommand({ isOpen, setOpen }: SearchCommandProps) {
     searchPages();
   }, [debouncedQuery]);
 
+  // focus the input when the command bar opens
   useEffect(() => {
     if (isOpen) {
       // Focus the input when the command palette opens
@@ -179,11 +212,12 @@ export function SearchCommand({ isOpen, setOpen }: SearchCommandProps) {
     }
   }, [isOpen]);
 
+  // reset the selected index when the results change
   useEffect(() => {
-    // Reset selected index when results change
     setSelectedIndex(0);
   }, [results]);
 
+  // scroll the selected result into view
   useEffect(() => {
     if (results.length > 0) {
       resultRefs.current[selectedIndex]?.scrollIntoView({
@@ -193,28 +227,29 @@ export function SearchCommand({ isOpen, setOpen }: SearchCommandProps) {
     }
   }, [selectedIndex, results]);
 
+  // handle the keyboard events for navigating the results
   const handleKeyDown = (e: React.KeyboardEvent) => {
-    let testId;
+    // let testId;
     switch (e.key) {
       case "ArrowDown":
         e.preventDefault();
         setSelectedIndex((prevIndex) =>
           prevIndex < results.length - 1 ? prevIndex + 1 : prevIndex,
         );
-        testId = results[selectedIndex].id;
-        console.log("selectedIndex", selectedIndex);
-        console.log("result ID", testId);
-        console.log("ID type", typeof testId);
+        // testId = results[selectedIndex].id;
+        // console.log("selectedIndex", selectedIndex);
+        // console.log("result ID", testId);
+        // console.log("ID type", typeof testId);
         break;
       case "ArrowUp":
         e.preventDefault();
         setSelectedIndex((prevIndex) =>
           prevIndex > 0 ? prevIndex - 1 : prevIndex,
         );
-        testId = results[selectedIndex].id;
-        console.log("selectedIndex", selectedIndex);
-        console.log("result ID", testId);
-        console.log("ID type", typeof testId);
+        // testId = results[selectedIndex].id;
+        // console.log("selectedIndex", selectedIndex);
+        // console.log("result ID", testId);
+        // console.log("ID type", typeof testId);
         break;
       case "Enter":
         e.preventDefault();
@@ -228,14 +263,16 @@ export function SearchCommand({ isOpen, setOpen }: SearchCommandProps) {
     }
   };
 
+  // navigate to the page when a result is clicked
   const handleResultClick = (result: SearchResult) => {
     setOpen(false);
-    navigate(`/page/${result.id.$oid}`);
+    const id = result.id.$oid;
+    navigate(`/page/${id}`);
   };
 
   return (
-    <Command isOpen={isOpen} onClose={() => setOpen(false)}>
-      <Command.Input
+    <CommandBarWrapper isOpen={isOpen} onClose={() => setOpen(false)}>
+      <CommandBarInput
         ref={inputRef}
         placeholder="Search pages..."
         value={query}
@@ -243,12 +280,52 @@ export function SearchCommand({ isOpen, setOpen }: SearchCommandProps) {
         onKeyDown={handleKeyDown}
         aria-label="Search pages"
       />
-      <Command.List>
+      <Box
+        as="ul"
+        aria-label="Search results"
+        sx={{
+          maxHeight: "300px",
+          overflowY: "auto",
+          backgroundColor: "gray.10",
+          listStyle: "none",
+          p: 0,
+          m: 0,
+          display: "flex",
+          flexDirection: "column",
+          gap: 1,
+          li: {
+            py: 6,
+            px: 8,
+          },
+        }}
+      >
         {results.length === 0 && query !== "" && (
-          <Command.Empty>No results found.</Command.Empty>
+          <Box
+            as="li"
+            sx={{
+              color: "gray.40",
+              fontSize: 2.5,
+              textAlign: "center",
+              backgroundColor: "gray.3",
+            }}
+          >
+            No results found for &quot;
+            <Box
+              as="span"
+              sx={{
+                backgroundColor: "yellow.10",
+                fontWeight: "bold",
+                color: "gray.90",
+              }}
+            >
+              {query}
+            </Box>
+            &quot;
+          </Box>
         )}
         {results.map((result, index) => (
-          <Command.Item
+          <Box
+            as="li"
             key={`${result.id}-${index}`}
             onClick={() => handleResultClick(result)}
             onKeyDown={(e) => {
@@ -258,36 +335,28 @@ export function SearchCommand({ isOpen, setOpen }: SearchCommandProps) {
             }}
             ref={(el) => (resultRefs.current[index] = el)}
             tabIndex={0}
-            style={{
-              backgroundColor:
-                index === selectedIndex ? "rgba(0, 0, 0, 0.1)" : "transparent",
+            sx={{
+              backgroundColor: index === selectedIndex ? "gray.5" : "gray.0",
               cursor: "pointer",
+              "&:hover": {
+                backgroundColor: "blue.5",
+              },
             }}
           >
-            <div>
-              <ResultTitle>{highlightText(result.title, query)}</ResultTitle>
-              <ResultContent>
-                {highlightText(result.content.substring(0, 100), query)}...
-              </ResultContent>
-            </div>
-          </Command.Item>
+            <Heading level={3}>
+              {highlightTextMatch(result.title, query)}
+            </Heading>
+            <Text
+              level={2.5}
+              sx={{
+                color: "gray.40",
+              }}
+            >
+              {highlightTextMatch(result.content.substring(0, 100), query)}...
+            </Text>
+          </Box>
         ))}
-      </Command.List>
-    </Command>
+      </Box>
+    </CommandBarWrapper>
   );
-}
-
-// Helper function to extract text from Tiptap content
-function extractTextFromTiptapContent(content) {
-  // Implement the logic to extract text from Tiptap's JSON content
-  // This is a simplified example and may need to be adjusted based on your content structure
-  let text = "";
-  content.content.forEach((node) => {
-    if (node.type === "text") {
-      text += node.text;
-    } else if (node.content) {
-      text += extractTextFromTiptapContent(node);
-    }
-  });
-  return text;
-}
+};

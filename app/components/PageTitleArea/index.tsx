@@ -5,10 +5,8 @@ import Text from "~/components/Text";
 import More from "~/components/icons/More";
 import { IconButton } from "../Button";
 import MyLink from "~/components/MyLink";
-import ReactTimeAgo from "react-time-ago";
+import TimeSince from "~/components/TimeSince";
 import Edit from "~/components/icons/Edit";
-import { Input } from "~/components/Input";
-import Check from "~/components/icons/Check";
 
 const PageTitleArea: React.FC<{
   id?: string;
@@ -214,13 +212,7 @@ const PageTitleArea: React.FC<{
             fontSize: 2.5,
           }}
         >
-          {updatedAt && (
-            <ReactTimeAgo
-              date={new Date(updatedAt)}
-              locale="en-US"
-              timeStyle="round-minute"
-            />
-          )}
+          {updatedAt && <TimeSince date={new Date(updatedAt)} />}
         </Text>
         <IconButton variant="hollow">
           <More />
